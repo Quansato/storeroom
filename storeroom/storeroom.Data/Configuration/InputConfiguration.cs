@@ -21,7 +21,7 @@ namespace storeroom.Data.Configuration
 
             builder.Property(x => x.DeliveryUnit).IsRequired().IsUnicode(true).HasMaxLength(200);
 
-            builder.HasOne(x => x.Storeroom).WithMany(y => y.Inputs).HasForeignKey(y => y.Id);
+            builder.HasOne(x => x.Storeroom).WithMany(y => y.Inputs).HasForeignKey(y => y.StoreroomId);
 
             builder.Property(x => x.Shipper).IsRequired().IsUnicode(true).HasMaxLength(50);
 

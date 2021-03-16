@@ -17,6 +17,22 @@ namespace storeroom.Data.EF
         {
             modelBuilder.ApplyConfiguration(new BrandConfiguration());
             modelBuilder.ApplyConfiguration(new CountryConfiguration());
+            modelBuilder.ApplyConfiguration(new InputConfiguration());
+            modelBuilder.ApplyConfiguration(new MaterialConfiguration());
+            modelBuilder.ApplyConfiguration(new MaterialGroupConfiguration());
+            modelBuilder.ApplyConfiguration(new MaterialInputConfiguration());
+            modelBuilder.ApplyConfiguration(new MaterialOutputConfiguration());
+            modelBuilder.ApplyConfiguration(new MaterialPurchaseOrderConfiguration());
+            modelBuilder.ApplyConfiguration(new MaterialPurchaseProposalConfiguration());
+            modelBuilder.ApplyConfiguration(new MaterialStoreroomConfiguration());
+            modelBuilder.ApplyConfiguration(new MaterialTransferConfiguration());
+            modelBuilder.ApplyConfiguration(new OutputConfiguration());
+            modelBuilder.ApplyConfiguration(new PurchaseOrderConfiguration());
+            modelBuilder.ApplyConfiguration(new PurchaseProposalConfiguration());
+            modelBuilder.ApplyConfiguration(new StoreroomConfiguration());
+            modelBuilder.ApplyConfiguration(new SuplierConfiguration());
+            modelBuilder.ApplyConfiguration(new TransferConfiguration());
+            modelBuilder.ApplyConfiguration(new UnitConfiguration());
             /*base.OnModelCreating(modelBuilder);*/
         }
 

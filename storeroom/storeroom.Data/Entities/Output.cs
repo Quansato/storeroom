@@ -17,7 +17,6 @@ namespace storeroom.Data.Entities
 
         public List<MaterialOutput> MaterialOutputs { get; set; }
 
-
         public Storeroom Storeroom { get; set; }
         //user
     }
