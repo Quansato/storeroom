@@ -28,6 +28,9 @@ namespace storeroom.Data.Entities
         public List<MaterialOutput> MaterialOutputs { get; set; }
         public List<MaterialPurchaseOrder> MaterialPurchaseOrders { get; set; }
         public List<MaterialPurchaseProposal> MaterialPurchaseProposals { get; set; }
+        public List<MaterialTransfer> MaterialTransfers { get; set; }
+        public List<MaterialStoreroom> MaterialStorerooms { get; set; }
+
 
 
         public Unit Unit { get; set; }

@@ -17,7 +17,6 @@ namespace storeroom.Data.Entities
 
         public List<MaterialPurchaseOrder> MaterialPurchaseOrders { get; set; }
 
-
         public Storeroom Storeroom { get; set; }
         public Suplier Suplier { get; set; }
         //user

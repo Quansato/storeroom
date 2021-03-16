@@ -17,7 +17,9 @@ namespace storeroom.Data.Entities
         public List<Output> Outputs { get; set; }
         public List<PurchaseOrder> PurchaseOrders { get; set; }
         public List<PurchaseProposal> PurchaseProposals { get; set; }
-        
+        public List<MaterialStoreroom> MaterialStorerooms { get; set; }
+
+
         //iduser
     }
 }

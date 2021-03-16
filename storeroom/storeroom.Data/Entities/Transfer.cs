@@ -14,6 +14,9 @@ namespace storeroom.Data.Entities
         public DateTime DateTransfer { get; set; }
         public string Desciption { get; set; }
         public DateTime CreationTime { get; set; }
+
+        public List<MaterialTransfer> MaterialTransfers { get; set; }
+
         public Storeroom Storeroom { get; set; }
     }
 }
