@@ -1,0 +1,9 @@
+E:\Đồ án\storeroom\storeroom\storeroom.Application\bin\Debug\netcoreapp3.1\storeroom.Application.deps.json
+E:\Đồ án\storeroom\storeroom\storeroom.Application\bin\Debug\netcoreapp3.1\storeroom.Application.dll
+E:\Đồ án\storeroom\storeroom\storeroom.Application\bin\Debug\netcoreapp3.1\storeroom.Application.pdb
+E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.csprojAssemblyReference.cache
+E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.AssemblyInfoInputs.cache
+E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.AssemblyInfo.cs
+E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.csproj.CoreCompileInputs.cache
+E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.dll
+E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.pdb

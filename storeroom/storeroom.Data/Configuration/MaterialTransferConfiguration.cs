@@ -11,7 +11,7 @@ namespace storeroom.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<MaterialTransfer> builder)
         {
-            builder.HasKey(t => new { t.Transfer, t.MaterialId });
+            builder.HasKey(t => new { t.TransferId, t.MaterialId });
 
             builder.ToTable("MaterialTransfers");
 

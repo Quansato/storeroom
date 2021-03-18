@@ -11,7 +11,7 @@ namespace storeroom.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<MaterialPurchaseProposal> builder)
         {
-            builder.HasKey(t => new { t.PurchaseProposal, t.MaterialId });
+            builder.HasKey(t => new { t.PurchaseProposalId, t.MaterialId });
 
             builder.ToTable("MaterialPurchaseProposals");
 
