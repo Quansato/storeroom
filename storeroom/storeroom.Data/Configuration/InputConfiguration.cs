@@ -27,6 +27,8 @@ namespace storeroom.Data.Configuration
 
             builder.Property(x => x.Description).IsUnicode(true).HasMaxLength(200);
 
+            builder.HasOne(x => x.AppUser).WithMany(y => y.Inputs).HasForeignKey(y => y.UserId);
+
         }
     }
 }

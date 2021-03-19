@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using storeroom.Data.Configuration;
 using storeroom.Data.Entities;
 using System;
@@ -7,7 +9,7 @@ using System.Text;
 
 namespace storeroom.Data.EF
 {
-    public class storeroomDbContext : DbContext
+    public class storeroomDbContext : IdentityDbContext<AppUser,AppRole,Guid>
     {
         public storeroomDbContext(DbContextOptions options) : base(options)
         {
@@ -33,6 +35,13 @@ namespace storeroom.Data.EF
             modelBuilder.ApplyConfiguration(new SuplierConfiguration());
             modelBuilder.ApplyConfiguration(new TransferConfiguration());
             modelBuilder.ApplyConfiguration(new UnitConfiguration());
+            modelBuilder.ApplyConfiguration(new AppUserConfiguration());
+            modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
+            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new { x.UserId, x.RoleId });
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
+            modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("AppRoleClaims");
+            modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("AppUserToken").HasKey(x => x.UserId);
             /*base.OnModelCreating(modelBuilder);*/
         }
 

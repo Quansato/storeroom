@@ -26,6 +26,9 @@ namespace storeroom.Data.Configuration
             builder.Property(x => x.DateTransfer).IsRequired();
 
             builder.Property(x => x.Desciption).IsUnicode(true).HasMaxLength(200);
+
+            builder.HasOne(x => x.AppUser).WithMany(y => y.Transfers).HasForeignKey(y => y.UserId);
+
         }
     }
 }

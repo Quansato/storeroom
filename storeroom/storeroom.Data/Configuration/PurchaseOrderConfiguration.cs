@@ -25,6 +25,8 @@ namespace storeroom.Data.Configuration
 
             builder.HasOne(x => x.Suplier).WithMany(y => y.PurchaseOrders).HasForeignKey(y => y.SuplierId);
 
+            builder.HasOne(x => x.AppUser).WithMany(y => y.PurchaseOrders).HasForeignKey(y => y.UserId);
+
         }
     }
 }

@@ -14,7 +14,9 @@ namespace storeroom.Data.Entities
         public DateTime DateOutput { get; set; }
         public DateTime CreationTime { get; set; }
         public string Description { get; set; }
+        public Guid UserId { get; set; }
 
+        public AppUser AppUser { get; set; }
         public List<MaterialOutput> MaterialOutputs { get; set; }
 
         public Storeroom Storeroom { get; set; }

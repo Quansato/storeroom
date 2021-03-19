@@ -14,7 +14,9 @@ namespace storeroom.Data.Entities
         public int Status { get; set; }
         public int SuplierId { get; set; }
         public int Priority { get; set; }
+        public Guid UserId { get; set; }
 
+        public AppUser AppUser { get; set; }
         public List<MaterialPurchaseOrder> MaterialPurchaseOrders { get; set; }
 
         public Storeroom Storeroom { get; set; }

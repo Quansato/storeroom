@@ -22,6 +22,9 @@ namespace storeroom.Data.Configuration
             builder.Property(x => x.Area).IsRequired();
 
             builder.Property(x => x.Address).IsRequired().IsUnicode(true).HasMaxLength(200);
+
+            builder.HasOne(x => x.AppUser).WithMany(y => y.Storerooms).HasForeignKey(y => y.UserId).OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

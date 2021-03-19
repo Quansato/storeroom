@@ -1,0 +1,1 @@
+*Xem lại FK giữa storeroom vs user

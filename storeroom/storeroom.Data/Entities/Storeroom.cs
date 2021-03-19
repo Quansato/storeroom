@@ -12,6 +12,9 @@ namespace storeroom.Data.Entities
         public decimal Area { get; set; }
         public string Address { get; set; }
         public bool Status { get; set; }
+        public Guid UserId { get; set; }
+
+        public AppUser AppUser { get; set; }
         public List<Transfer> Transfers { get; set; }
         public List<Input> Inputs { get; set; }
         public List<Output> Outputs { get; set; }

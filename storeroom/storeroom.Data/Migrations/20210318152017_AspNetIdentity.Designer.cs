@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using storeroom.Data.EF;
 
 namespace storeroom.Data.Migrations
 {
     [DbContext(typeof(storeroomDbContext))]
-    partial class storeroomDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210318152017_AspNetIdentity")]
+    partial class AspNetIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
