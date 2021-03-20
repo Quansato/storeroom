@@ -1,1 +1,3 @@
 *Xem lại FK giữa storeroom vs user
+///////////CẤU TRÚC APPLICATION/////////
+DTOS: chứa các ViewModel để tương tác với database
