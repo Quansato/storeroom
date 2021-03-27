@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "storeroom.Data", "storeroom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "storeroom.Application", "storeroom.Application\storeroom.Application.csproj", "{4EBE0674-342A-4D46-9DDA-8B970ECEE55C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "storeroom.BackendApi", "storeroom.BackendApi\storeroom.BackendApi.csproj", "{FFB668AD-BE33-4658-8407-C1E214FE87B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4EBE0674-342A-4D46-9DDA-8B970ECEE55C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EBE0674-342A-4D46-9DDA-8B970ECEE55C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EBE0674-342A-4D46-9DDA-8B970ECEE55C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFB668AD-BE33-4658-8407-C1E214FE87B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFB668AD-BE33-4658-8407-C1E214FE87B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFB668AD-BE33-4658-8407-C1E214FE87B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFB668AD-BE33-4658-8407-C1E214FE87B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
