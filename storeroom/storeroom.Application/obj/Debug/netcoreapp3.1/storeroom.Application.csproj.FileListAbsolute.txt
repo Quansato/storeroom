@@ -7,3 +7,6 @@ E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\s
 E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.csproj.CoreCompileInputs.cache
 E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.dll
 E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.pdb
+E:\Đồ án\storeroom\storeroom\storeroom.Application\bin\Debug\netcoreapp3.1\storeroom.Data.dll
+E:\Đồ án\storeroom\storeroom\storeroom.Application\bin\Debug\netcoreapp3.1\storeroom.Data.pdb
+E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.csproj.CopyComplete

@@ -30,6 +30,7 @@ namespace storeroom.Data.Entities
         public List<MaterialPurchaseProposal> MaterialPurchaseProposals { get; set; }
         public List<MaterialTransfer> MaterialTransfers { get; set; }
         public List<MaterialStoreroom> MaterialStorerooms { get; set; }
+        public List<MaterialImage> MaterialImages { get; set; }
 
 
 

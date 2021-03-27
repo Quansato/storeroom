@@ -3,9 +3,11 @@ using storeroom.Application.Dtos;
 using storeroom.Data.EF;
 using storeroom.Data.Entities;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace storeroom.Application.Catalog.Materials
 {
@@ -25,14 +27,14 @@ namespace storeroom.Application.Catalog.Materials
                 Price = request.Price,
                 YearManufacture = request.YearManufacture,
                 UnitId = request.UnitId,
-                UnitOrderId=request.UnitOrderId,
-                MaterialGroupId=request.MaterialGroupId,
-                CountryId=request.CountryId,
-                BrandId=request.BrandId,
-                ExperyDate=request.ExperyDate,
-                Status=request.Status,
-                Img=request.Img,
-                Specification=request.Specification,
+                UnitOrderId = request.UnitOrderId,
+                MaterialGroupId = request.MaterialGroupId,
+                CountryId = request.CountryId,
+                BrandId = request.BrandId,
+                ExperyDate = request.ExperyDate,
+                Status = request.Status,
+                Img = request.Img,
+                Specification = request.Specification,
             };
             _context.Materials.Add(material);
             return await _context.SaveChangesAsync();
@@ -41,7 +43,7 @@ namespace storeroom.Application.Catalog.Materials
         public async Task<int> Delete(int MaterialId)
         {
             var material = await _context.Materials.FindAsync(MaterialId);
-            if (material == null) throw new StoreroomException($"Cannot find a material: {MaterialId}"); 
+            if (material == null) throw new StoreroomException($"Cannot find a material: {MaterialId}");
             _context.Materials.Remove(material);
             return await _context.SaveChangesAsync();
         }
@@ -54,65 +56,48 @@ namespace storeroom.Application.Catalog.Materials
         public async Task<PagedResult<MaterialViewModel>> GetAllPaging(GetMaterialPagingRequest request)
         {
             //1. Select join
-            var query = from a in _context.YeuCaus
-                        join b in _context.Loais on a.MaLoai equals b.MaLoai
-                        join c in _context.TrangThais on a.MaTrangThai equals c.MaTrangThai
-                        join d in _context.NhanViens on a.MaNV equals d.MaNV
-                        join e in _context.KhachHangs on a.MaKH equals e.MaKH
-                        join f in _context.MucDos on a.MaMucDo equals f.MaMucDo
+            var query = from a in _context.Materials
+                        join b in _context.Units on a.UnitId equals b.Id
+                        join c in _context.Units on a.UnitOrderId equals c.Id
+                        join d in _context.MaterialGroups on a.MaterialGroupId equals d.Id
+                        join e in _context.Countries on a.CountryId equals e.Id
+                        join f in _context.Brands on a.BrandId equals f.Id
                         select new { a, b, c, d, e, f };
             //2. filter
-            if (!string.IsNullOrEmpty(request.Noidung))
+            if (!string.IsNullOrEmpty(request.keyword))
             {
-                query = query.Where(x => x.a.Noidung.Contains(request.Noidung));
-            }
-            if (!string.IsNullOrEmpty(request.TenKH))
-            {
-                query = query.Where(x => x.e.TenKH.Contains(request.TenKH));
-            }
-            if (request.MaLoai.HasValue)
-            {
-                query = query.Where(x => x.a.MaLoai == request.MaLoai);
-            }
-            if (request.NgayBatDau.HasValue)
-            {
-                query = query.Where(x => x.a.NgayTiepNhan >= request.NgayBatDau);
-            }
-            if (request.NgayKetThuc.HasValue)
-            {
-                query = query.Where(x => x.a.NgayTiepNhan <= request.NgayKetThuc);
-            }
-            if (request.MaTrangThai.HasValue)
-            {
-                query = query.Where(x => x.a.MaTrangThai == request.MaTrangThai);
+                query = query.Where(x => x.a.DisplayName.Contains(request.keyword));
             }
             //3. Paging
             int totalRow = await query.CountAsync();
 
             var data = await query.Skip((request.page - 1) * request.limit)
                        .Take(request.limit)
-                       .Select(x => new YeuCauViewModel()
+                       .Select(x => new MaterialViewModel()
                        {
-                           MaYeuCau = x.a.MaYeuCau,
-                           MaLoai = x.b.MaLoai,
-                           TenLoai = x.b.TenLoai,
-                           MaTrangThai = x.c.MaTrangThai,
-                           TenTrangThai = x.c.TenTrangThai,
-                           MaMucDo = x.f.MaMucDo,
-                           TenMucDo = x.f.TenMucDo,
-                           MaNV = x.d.MaNV,
-                           TenNV = x.d.TenNV,
-                           MaKH = x.e.MaKH,
-                           TenKH = x.e.TenKH,
-                           NgayTiepNhan = x.a.NgayTiepNhan,
-                           Noidung = x.a.Noidung,
-                           DiaDiem = x.a.DiaDiem,
-                           MoTa = x.a.MoTa,
-                           SDT = x.e.SDT,
-                           Email = x.e.Email
+                           Id = x.a.Id,
+                           MaterialCode = x.a.MaterialCode,
+                           Description = x.a.Description,
+                           Price = x.a.Price,
+                           YearManufacture = x.a.YearManufacture,
+                           UnitId = x.b.Id,
+                           UnitName = x.b.DisplayName,
+                           UnitOrderId = x.c.Id,
+                           UnitOrderName = x.c.DisplayName,
+                           MaterialGroupId = x.d.Id,
+                           MaterialGroupName = x.d.DisplayName,
+                           CountryId = x.e.Id,
+                           CountryName = x.e.DisplayName,
+                           BrandId = x.f.Id,
+                           BrandName = x.f.DisplayName,
+                           ExperyDate = x.a.ExperyDate,
+                           Status = x.a.Status,
+                           Img = x.a.Img,
+                           Specification = x.a.Specification,
+                           QRCode = x.a.QRCode
                        }).ToListAsync();
             //4. Select and projection
-            var pagedResult = new PagedResult<YeuCauViewModel>()
+            var pagedResult = new PagedResult<MaterialViewModel>()
             {
                 TotalRecord = totalRow,
                 Items = data
@@ -122,7 +107,25 @@ namespace storeroom.Application.Catalog.Materials
 
         public async Task<int> Update(MaterialUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var materialId = _context.Materials.FindAsync(request.Id);
+            var material = await _context.Materials.FirstOrDefaultAsync(x => x.Id == request.Id);
+            if (material == null) throw new StoreroomException($"Cannot find a material: {request.Id}");
+            material.MaterialCode = request.MaterialCode;
+            material.Description = request.Description;
+            material.Price = request.Price;
+            material.YearManufacture = request.YearManufacture;
+            material.UnitId = request.UnitId;
+            material.UnitOrderId = request.UnitOrderId;
+            material.MaterialGroupId = request.MaterialGroupId;
+            material.CountryId = request.CountryId;
+            material.BrandId = request.BrandId;
+            material.ExperyDate = request.ExperyDate;
+            material.Status = request.Status;
+            material.Img = request.Img;
+            material.Specification = request.Specification;
+            material.QRCode = request.QRCode;
+
+            return await _context.SaveChangesAsync();
         }
 
     }
