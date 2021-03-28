@@ -20,7 +20,7 @@ namespace storeroom.BackendApi.Controllers
         }
 
         [HttpGet()]
-        public async Task<IActionResult> Get([FromQuery] GetBrandPagingRequest request)
+        public async Task<IActionResult> Get([FromQuery] GetMaterialPagingRequest request)
         {
             var materials = await _materialService.GetAllPaging(request);
             return Ok(materials);

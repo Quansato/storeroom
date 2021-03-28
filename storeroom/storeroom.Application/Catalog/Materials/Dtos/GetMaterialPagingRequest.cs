@@ -5,7 +5,7 @@ using System.Text;
 
 namespace storeroom.Application.Catalog.Materials.Dtos
 {
-    public class GetBrandPagingRequest: PagingRequestBase
+    public class GetMaterialPagingRequest: PagingRequestBase
     {
         public int page { set; get; }
         public int start { set; get; }
