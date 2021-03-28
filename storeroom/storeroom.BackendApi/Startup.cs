@@ -34,11 +34,8 @@ namespace storeroom.BackendApi
 
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v3", new OpenApiInfo
-                {
-                    Title = "Service API",
-                    Version = "v3",
-                });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
+                options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
         }
 
@@ -64,7 +61,11 @@ namespace storeroom.BackendApi
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(options => options.SwaggerEndpoint("v3/swagger.json", "API"));
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1");
+                options.RoutePrefix = string.Empty;
+            });
 
             app.UseEndpoints(endpoints =>
             {

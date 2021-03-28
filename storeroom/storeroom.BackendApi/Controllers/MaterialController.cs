@@ -19,7 +19,8 @@ namespace storeroom.BackendApi.Controllers
             _materialService = materialService;
         }
 
-        public async Task<IActionResult> Get([FromBody] GetMaterialPagingRequest request)
+        [HttpGet()]
+        public async Task<IActionResult> Get([FromQuery] GetBrandPagingRequest request)
         {
             var materials = await _materialService.GetAllPaging(request);
             return Ok(materials);

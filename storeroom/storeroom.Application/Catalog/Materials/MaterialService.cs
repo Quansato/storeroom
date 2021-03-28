@@ -53,7 +53,7 @@ namespace storeroom.Application.Catalog.Materials
             throw new NotImplementedException();
         }
 
-        public async Task<PagedResult<MaterialViewModel>> GetAllPaging(GetMaterialPagingRequest request)
+        public async Task<PagedResult<MaterialViewModel>> GetAllPaging(GetBrandPagingRequest request)
         {
             //1. Select join
             var query = from a in _context.Materials

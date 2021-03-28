@@ -13,6 +13,6 @@ namespace storeroom.Application.Catalog.Materials
         Task<int> Update(MaterialUpdateRequest request);
         Task<int> Delete(int MaterialId);
         Task<List<MaterialViewModel>> GetAll();
-        Task<PagedResult<MaterialViewModel>> GetAllPaging(GetMaterialPagingRequest request);
+        Task<PagedResult<MaterialViewModel>> GetAllPaging(GetBrandPagingRequest request);
     }
 }
