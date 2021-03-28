@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using storeroom.Application.Catalog.Brands;
+using storeroom.Application.Catalog.MaterialGroups;
 using storeroom.Application.Catalog.Materials;
 using storeroom.Data.EF;
 using System;
@@ -32,6 +33,7 @@ namespace storeroom.BackendApi
             options.UseSqlServer(Configuration.GetConnectionString("storeroomDBTest")));
             services.AddTransient<IMaterialService, MaterialService>();
             services.AddTransient<IBrandService, BrandService>();
+            services.AddTransient<IMaterialGroupService, MaterialGroupService>();
             services.AddControllersWithViews();
 
             services.AddSwaggerGen(options =>

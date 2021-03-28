@@ -81,4 +81,3 @@ E:\Đồ án\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Microsoft
 E:\Đồ án\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 E:\Đồ án\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 E:\Đồ án\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-E:\Đồ án\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.MvcApplicationPartsAssemblyInfo.cs

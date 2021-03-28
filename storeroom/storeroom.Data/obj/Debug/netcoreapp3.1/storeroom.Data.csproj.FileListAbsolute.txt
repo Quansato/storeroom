@@ -3,7 +3,6 @@ E:\Đồ án\storeroom\storeroom\storeroom.Data\bin\Debug\netcoreapp3.1\storeroo
 E:\Đồ án\storeroom\storeroom\storeroom.Data\bin\Debug\netcoreapp3.1\storeroom.Data.runtimeconfig.dev.json
 E:\Đồ án\storeroom\storeroom\storeroom.Data\bin\Debug\netcoreapp3.1\storeroom.Data.dll
 E:\Đồ án\storeroom\storeroom\storeroom.Data\bin\Debug\netcoreapp3.1\storeroom.Data.pdb
-E:\Đồ án\storeroom\storeroom\storeroom.Data\obj\Debug\netcoreapp3.1\storeroom.Data.csprojAssemblyReference.cache
 E:\Đồ án\storeroom\storeroom\storeroom.Data\obj\Debug\netcoreapp3.1\storeroom.Data.AssemblyInfoInputs.cache
 E:\Đồ án\storeroom\storeroom\storeroom.Data\obj\Debug\netcoreapp3.1\storeroom.Data.AssemblyInfo.cs
 E:\Đồ án\storeroom\storeroom\storeroom.Data\obj\Debug\netcoreapp3.1\storeroom.Data.csproj.CoreCompileInputs.cache
