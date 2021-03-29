@@ -3,6 +3,7 @@ using storeroom.Application.Dtos;
 using storeroom.Data.EF;
 using storeroom.Data.Entities;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,10 @@ namespace storeroom.Application.Catalog.Storerooms
 
         public async Task<int> Delete(int StoreroomId)
         {
-            var storeroomId = _context.Storerooms.FindAsync(StoreroomId);
+            var storeroom = await _context.Storerooms.FindAsync(StoreroomId);
+            if (storeroom == null) throw new StoreroomException($"Cannot find storeroom {StoreroomId}");
+            _context.Storerooms.Remove(storeroom);
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<PagedResult<StoreroomViewModel>> GetAllPaging(GetStoreroomPagingRequest request)
