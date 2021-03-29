@@ -12,6 +12,7 @@ namespace storeroom.Application.Catalog.MaterialGroups
         Task<int> Create(MaterialGroupCreateRequest request);
         Task<int> Update(MaterialGroupUpdateRequest request);
         Task<int> Delete(int MaterialGroupId);
+        Task<MaterialGroupViewModel> GetDetail(int MaterialGroupId);
         Task<PagedResult<MaterialGroupViewModel>> GetAllPaging(GetMaterialGroupPagingRequest request);
     }
 }

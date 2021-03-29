@@ -8,4 +8,8 @@
     <ProjectReference Include="..\storeroom.Data\storeroom.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Catalog\Storerooms\Dtos\" />
+  </ItemGroup>
+
 </Project>

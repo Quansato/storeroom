@@ -24,6 +24,16 @@ namespace storeroom.BackendApi.Controllers
             var materialgroups = await _materialGroupService.GetAllPaging(request);
             return Ok(materialgroups);
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDetail(int materialGroupId)
+        {
+            var materialGroup = await _materialGroupService.GetDetail(materialGroupId);
+            if(materialGroup == null)
+            {
+                return BadRequest("Cannot find materialGroup");
+            }
+            return Ok(materialGroup);
+        }
         [HttpPost()]
         public async Task<IActionResult> Create(MaterialGroupCreateRequest request)
         {
