@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RBm8oP9GSf9OiRA2kvEkB1FMxh5sgU9tbdhilqTBJ5cdGG1TMPZw/KcgXILCpe1+q1xKICAN7viR4xFNMV/6cA==",
+  "dgSpecHash": "Sgl7lTv6vmIdJZLpPvUm6kSC4tYHsaZGuPkzt43VEfwHb7UnlIIn+AIj8PcjANgYHeA5rVI63Sgthbw9/zKYzg==",
   "success": true,
-  "projectFilePath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj",
+  "projectFilePath": "E:\\G\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.4\\microsoft.aspnetcore.cryptography.internal.5.0.4.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\5.0.4\\microsoft.aspnetcore.cryptography.keyderivation.5.0.4.nupkg.sha512",

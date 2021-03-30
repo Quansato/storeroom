@@ -1,5 +1,5 @@
 $app-name:  dynamic( 'Admin' );
-$image-search-path: 'E:/G/demos/UI_DoAn/UI_DoAn/wwwroot/build/manage/classic/resources';
+$image-search-path: 'E:/G/storeroom/storeroom/storeroom.WebApp/wwwroot/build/manage/classic/resources';
 $theme-name:  dynamic( 'theme-triton' );
 $include-admin-application: dynamic(true);;
 $include-admin-model-mdmhangsanxuat: dynamic(true);;

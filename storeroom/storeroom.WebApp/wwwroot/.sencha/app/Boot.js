@@ -727,7 +727,6 @@ Ext.Boot = Ext.Boot || (function (emptyFn) {
 //                 _debug("Boot.load called");
                 //</debug>
                 var request = new Request(request);
-                request.prependBaseUrl = true;
 
                 if (request.sync || Boot.syncMode) {
                     return Boot.loadSync(request);
@@ -756,7 +755,6 @@ Ext.Boot = Ext.Boot || (function (emptyFn) {
 //                 _debug("Boot.loadSync called");
                 //</debug>
                 var request = new Request(request);
-                request.prependBaseUrl = true;
 
                 Boot.syncMode++;
                 Boot.processRequest(request, true);

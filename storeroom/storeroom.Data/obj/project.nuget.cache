@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HRLg7U57GGLOZ2iThqhl4UOwGt9Yt77U4ICaHrtyR+LwLgfHZONIimWXsqztX8iZz+iuI4e9OGdQEgluJTfQeg==",
+  "dgSpecHash": "yZKnRfru2dvhDLcJmr1t/Ls4EkfPeLnMtCaWGz15+3pYu+NtQDGrDzHiRfKxxGgvvHE6estyNZLn6MxY8MIuuw==",
   "success": true,
-  "projectFilePath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj",
+  "projectFilePath": "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ASUS\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.4\\microsoft.aspnetcore.cryptography.internal.5.0.4.nupkg.sha512",

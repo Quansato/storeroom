@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj": {}
+    "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj": {}
   },
   "projects": {
-    "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj": {
+    "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj",
+        "projectUniqueName": "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj",
         "projectName": "storeroom.Data",
-        "projectPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj",
+        "projectPath": "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj",
         "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\obj\\",
+        "outputPath": "E:\\G\\storeroom\\storeroom\\storeroom.Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",

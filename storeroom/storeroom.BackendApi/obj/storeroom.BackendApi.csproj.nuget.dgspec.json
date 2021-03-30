@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Đồ án\\storeroom\\storeroom\\storeroom.BackendApi\\storeroom.BackendApi.csproj": {}
+    "E:\\G\\storeroom\\storeroom\\storeroom.BackendApi\\storeroom.BackendApi.csproj": {}
   },
   "projects": {
-    "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj": {
+    "E:\\G\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj",
+        "projectUniqueName": "E:\\G\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj",
         "projectName": "storeroom.Application",
-        "projectPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj",
+        "projectPath": "E:\\G\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj",
         "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Application\\obj\\",
+        "outputPath": "E:\\G\\storeroom\\storeroom\\storeroom.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj": {
-                "projectPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj"
+              "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj": {
+                "projectPath": "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj"
               }
             }
           }
@@ -62,14 +62,14 @@
         }
       }
     },
-    "E:\\Đồ án\\storeroom\\storeroom\\storeroom.BackendApi\\storeroom.BackendApi.csproj": {
+    "E:\\G\\storeroom\\storeroom\\storeroom.BackendApi\\storeroom.BackendApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.BackendApi\\storeroom.BackendApi.csproj",
+        "projectUniqueName": "E:\\G\\storeroom\\storeroom\\storeroom.BackendApi\\storeroom.BackendApi.csproj",
         "projectName": "storeroom.BackendApi",
-        "projectPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.BackendApi\\storeroom.BackendApi.csproj",
+        "projectPath": "E:\\G\\storeroom\\storeroom\\storeroom.BackendApi\\storeroom.BackendApi.csproj",
         "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.BackendApi\\obj\\",
+        "outputPath": "E:\\G\\storeroom\\storeroom\\storeroom.BackendApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -86,11 +86,11 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj": {
-                "projectPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj"
+              "E:\\G\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj": {
+                "projectPath": "E:\\G\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj"
               },
-              "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj": {
-                "projectPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj"
+              "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj": {
+                "projectPath": "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj"
               }
             }
           }
@@ -132,14 +132,14 @@
         }
       }
     },
-    "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj": {
+    "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj",
+        "projectUniqueName": "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj",
         "projectName": "storeroom.Data",
-        "projectPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj",
+        "projectPath": "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj",
         "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\obj\\",
+        "outputPath": "E:\\G\\storeroom\\storeroom\\storeroom.Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",

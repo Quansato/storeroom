@@ -6117,11 +6117,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj",
+      "projectUniqueName": "E:\\G\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj",
       "projectName": "storeroom.Application",
-      "projectPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj",
+      "projectPath": "E:\\G\\storeroom\\storeroom\\storeroom.Application\\storeroom.Application.csproj",
       "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-      "outputPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Application\\obj\\",
+      "outputPath": "E:\\G\\storeroom\\storeroom\\storeroom.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -6138,8 +6138,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj": {
-              "projectPath": "E:\\Đồ án\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj"
+            "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj": {
+              "projectPath": "E:\\G\\storeroom\\storeroom\\storeroom.Data\\storeroom.Data.csproj"
             }
           }
         }
