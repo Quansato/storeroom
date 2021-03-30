@@ -4,4 +4,13 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\storeroom.Application\storeroom.Application.csproj" />
+    <ProjectReference Include="..\storeroom.Data\storeroom.Data.csproj" />
+  </ItemGroup>
+
 </Project>

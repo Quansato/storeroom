@@ -12,6 +12,6 @@ namespace storeroom.Application.Catalog.Storerooms.Dtos
         public decimal Area { get; set; }
         public string Address { get; set; }
         public bool Status { get; set; }
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
     }
 }

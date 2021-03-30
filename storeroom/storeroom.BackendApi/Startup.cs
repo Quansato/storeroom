@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using storeroom.Application.Catalog.Brands;
 using storeroom.Application.Catalog.MaterialGroups;
 using storeroom.Application.Catalog.Materials;
+using storeroom.Application.Catalog.Storerooms;
 using storeroom.Data.EF;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace storeroom.BackendApi
             services.AddTransient<IMaterialService, MaterialService>();
             services.AddTransient<IBrandService, BrandService>();
             services.AddTransient<IMaterialGroupService, MaterialGroupService>();
+            services.AddTransient<IStoreroomService, StoreroomService>();
             services.AddControllersWithViews();
 
             services.AddSwaggerGen(options =>

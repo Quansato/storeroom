@@ -1,0 +1,1 @@
+sencha -sdk D:\dev\ExtJS_6.2 generate app -s D:\dev\ExtJS_6.2\templates\admin-dashboard\ Manage D:\dev\eKMap\ekmap-editor\src\eKMapEditor.Web.Mvc\wwwroot\manage

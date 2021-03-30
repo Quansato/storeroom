@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace storeroom.Application.Catalog.Storerooms
 {
@@ -42,17 +43,64 @@ namespace storeroom.Application.Catalog.Storerooms
 
         public async Task<PagedResult<StoreroomViewModel>> GetAllPaging(GetStoreroomPagingRequest request)
         {
-            throw new NotImplementedException();
+            //1. Select join
+            var query = from a in _context.Storerooms
+                        join b in _context.Users on a.UserId equals b.Id
+                        select new { a, b };
+            //2. filter
+            if (!string.IsNullOrEmpty(request.keyword))
+            {
+                query = query.Where(x => x.a.DisplayName.Contains(request.keyword));
+            }
+            //3. Paging
+            int totalRow = await query.CountAsync();
+
+            var data = await query.Skip((request.page - 1) * request.limit)
+                       .Take(request.limit)
+                       .Select(x => new StoreroomViewModel()
+                       {
+                           Id = x.a.Id,
+                           DisplayName=x.a.DisplayName,
+                           StoreroomCode=x.a.StoreroomCode
+                       }).ToListAsync();
+            //4. Select and projection
+            var pagedResult = new PagedResult<StoreroomViewModel>()
+            {
+                TotalRecord = totalRow,
+                Items = data
+            };
+            return pagedResult;
         }
 
-        public async Task<StoreroomViewModel> GetDetail(int MaterialGroupId)
+        public async Task<StoreroomViewModel> GetDetail(int StoreroomId)
         {
-            throw new NotImplementedException();
+            var storeroom = await _context.Storerooms.FindAsync(StoreroomId);
+            var listDetail = new StoreroomViewModel()
+            {
+                Id = storeroom.Id,
+                DisplayName = storeroom.DisplayName,
+                Area=storeroom.Area,
+                Address=storeroom.Address,
+                Status=storeroom.Status,
+                UserId=storeroom.UserId,
+                StoreroomCode = storeroom.StoreroomCode
+            };
+            return listDetail;
         }
 
         public async Task<int> Update(StoreroomUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var storeroomId = await _context.Storerooms.FindAsync(request.Id);
+            var storeroom = await _context.Storerooms.FirstOrDefaultAsync(x => x.Id == request.Id);
+            if (storeroom == null) throw new StoreroomException($"Cannot find storeroom:{request.Id}");
+            storeroom.Id = request.Id;
+            storeroom.DisplayName = request.DisplayName;
+            storeroom.Area = request.Area;
+            storeroom.Address = request.Address;
+            storeroom.Status = request.Status;
+            storeroom.UserId = request.UserId;
+            storeroom.StoreroomCode = request.StoreroomCode;
+            return await _context.SaveChangesAsync();
         }
     }
 }
