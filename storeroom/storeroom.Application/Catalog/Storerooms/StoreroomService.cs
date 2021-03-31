@@ -61,7 +61,9 @@ namespace storeroom.Application.Catalog.Storerooms
                        {
                            Id = x.a.Id,
                            DisplayName=x.a.DisplayName,
-                           StoreroomCode=x.a.StoreroomCode
+                           StoreroomCode=x.a.StoreroomCode,
+                           UserId = x.b.Id,
+                           UserName=x.b.UserName
                        }).ToListAsync();
             //4. Select and projection
             var pagedResult = new PagedResult<StoreroomViewModel>()

@@ -62,17 +62,17 @@ Ext.define('Admin.view.danhmuckho.dsKho', {
                 sortable: false
             }, {
                 xtype: 'gridcolumn',
-                dataIndex: 'ma',
+                dataIndex: 'storeroomCode',
                 width: 150,
                 text: 'Mã'
             }, {
                 xtype: 'gridcolumn',
-                dataIndex: 'moTa',
+                dataIndex: 'displayName',
                 flex: 1,
                 text: 'Tên'
             }, {
                 xtype: 'gridcolumn',
-                dataIndex: 'tenNguoiDaiDien',
+                dataIndex: 'userName',
                 width: 180,
                 text: 'Người đại diện'
             }, {
@@ -235,7 +235,7 @@ Ext.define('Admin.view.danhmuckho.dsKhoController', {
         //if (abp.auth.hasPermission('CMMS.Inventory.Kho.Manager') && abp.setting.get('Ekgis.CMMS.PhanQuyenKho').toLowerCase() == 'true') {
         //    btnPhanQuyen.setVisible(true);
         //}
-        //me.onTimKiem();
+        me.onTimKiem();
     },
 
     //specialkey: function (field, e) {
@@ -245,38 +245,39 @@ Ext.define('Admin.view.danhmuckho.dsKhoController', {
     //    }
     //},
 
-    //onTimKiem: function () {
-    //    var me = this;
-    //    me.loadKho();
-    //},
+    onTimKiem: function () {
+        var me = this;
+        me.loadKho();
+    },
 
-    //loadKho: function (fnSauKhiLoad) {
-    //    var me = this;
-    //    var filter = []
-    //    var recordTK = me.getViewModel().data.recordTK;
-    //    if (recordTK.get('tenkho')) {
-    //        filter.push({ name: "filter", value: recordTK.get('tenkho') });
-    //    }
-    //    var store = me.storeinfo.storeKho;
-    //    var query = abp.utils.buildQueryString(filter);
-    //    var url = abp.appPath + "api/services/app/CMMSKho/GetAll" + query;
-    //    store.proxy.api.read = url;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            if (records == null) {
-    //                store.removeAll();
-    //            }
-    //        }
-    //    });
-    //},
+    loadKho: function (fnSauKhiLoad) {
+        var me = this;
+        var filter = []
+        var recordTK = me.getViewModel().data.recordTK;
+        if (recordTK.get('tenkho')) {
+            filter.push({ name: "filter", value: recordTK.get('tenkho') });
+        }
+        var store = me.storeinfo.storeKho;
+        var url = "api/Storeroom/";
+        store.proxy.api.read = url;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.load({
+            params: {
+                page:1,
+                start: 0,
+                limit: store.pageSize
+            },
+            scope: this,
+            callback: function (records, operation, success) {
+                console.log(records);
+                if (records == null) {
+                    store.removeAll();
+                }
+            }
+        });
+    },
 
     //onPhanQuyen: function () {
     //    var me = this;
@@ -319,8 +320,7 @@ Ext.define('Admin.view.danhmuckho.dsKhoController', {
         var me = this;
         var record = Ext.create('Admin.model.mKho');
         record.set('id', 0);
-        record.set('phanLoai', 'Kho vật tư');
-        record.set('trangthaikho', 'active');
+        record.set('status', true);
         var wnd = Ext.create('Admin.view.danhmuckho.cnKho', {
             title: 'Thêm mới kho',
             viewModel: {

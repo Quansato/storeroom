@@ -10,3 +10,15 @@ E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\s
 E:\Đồ án\storeroom\storeroom\storeroom.Application\bin\Debug\netcoreapp3.1\storeroom.Data.dll
 E:\Đồ án\storeroom\storeroom\storeroom.Application\bin\Debug\netcoreapp3.1\storeroom.Data.pdb
 E:\Đồ án\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.csproj.CopyComplete
+E:\G\storeroom\storeroom\storeroom.Application\bin\Debug\netcoreapp3.1\storeroom.Application.deps.json
+E:\G\storeroom\storeroom\storeroom.Application\bin\Debug\netcoreapp3.1\storeroom.Application.dll
+E:\G\storeroom\storeroom\storeroom.Application\bin\Debug\netcoreapp3.1\storeroom.Application.pdb
+E:\G\storeroom\storeroom\storeroom.Application\bin\Debug\netcoreapp3.1\storeroom.Data.dll
+E:\G\storeroom\storeroom\storeroom.Application\bin\Debug\netcoreapp3.1\storeroom.Data.pdb
+E:\G\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.csprojAssemblyReference.cache
+E:\G\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.AssemblyInfoInputs.cache
+E:\G\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.AssemblyInfo.cs
+E:\G\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.csproj.CoreCompileInputs.cache
+E:\G\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.csproj.CopyComplete
+E:\G\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.dll
+E:\G\storeroom\storeroom\storeroom.Application\obj\Debug\netcoreapp3.1\storeroom.Application.pdb

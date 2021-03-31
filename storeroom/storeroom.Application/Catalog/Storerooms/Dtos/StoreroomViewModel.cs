@@ -13,5 +13,6 @@ namespace storeroom.Application.Catalog.Storerooms.Dtos
         public string Address { get; set; }
         public bool Status { get; set; }
         public Guid UserId { get; set; }
+        public string UserName { get; set; }
     }
 }

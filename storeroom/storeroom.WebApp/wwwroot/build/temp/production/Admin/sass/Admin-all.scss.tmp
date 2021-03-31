@@ -52,6 +52,7 @@ $include-admin-view-chondulieu-wdchonvattumodel: dynamic(true);;
 $include-admin-view-danhmuckho-dstonkho: dynamic(true);;
 $include-admin-view-danhmuckho-dstonkhocontroller: dynamic(true);;
 $include-admin-view-danhmuckho-dstonkhomodel: dynamic(true);;
+$include-admin-view-danhmuckho-cnbandokho: dynamic(true);;
 $include-admin-view-danhmuckho-cnkho: dynamic(true);;
 $include-admin-view-danhmuckho-cnkhocontroller: dynamic(true);;
 $include-admin-view-danhmuckho-cnkhomodel: dynamic(true);;

@@ -62,7 +62,8 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
                 handler: 'onLayNguoiDung',
                 text: '...'
             }]
-        }, {
+        },
+        {
             xtype: 'textfield',
             reference: 'textmako',
             labelWidth: 110,
@@ -76,7 +77,8 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
             listeners: {
                 blur: "blurMa"
             }
-        }, {
+        },
+        {
             xtype: 'textfield',
             labelSeparator: '',
             labelWidth: 110,
@@ -84,7 +86,8 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
             allowBlank: false,
             fieldLabel: 'Tên kho'/* + app.gplatformconsts.var_required*/,
             blankText: 'Tên kho không được để trống'
-        }, {
+        },
+            /* {
             xtype: 'combo',
             fieldLabel: 'Phân loại',
             queryMode: 'local',
@@ -117,7 +120,7 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
             valueField: 'id',
             forceSelection: true,
             editable: false
-        }, {
+        },*/ {
             labelWidth: 110,
             bind: '{record.dienTich}',
             fieldLabel: 'Diện tích',
@@ -128,38 +131,43 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
             labelWidth: 110,
             bind: '{record.diaChi}',
             fieldLabel: 'Địa chỉ'
+        },
+        {
+            xtype: 'button',
+            text: 'Chọn vị trí',
+            handler:'onOpenMap'
         }, {
-            //xtype: 'fieldcontainer',
-            //layout: 'hbox',
-            //items: [{
-            //    xtype: 'combo',
-            //    labelWidth: 110,
-            //    fieldLabel: app.localize('Status'),
-            //    name: 'trangthaikho',
-            //    queryMode: 'local',
-            //    bind: '{record.trangThaiKho}',
-            //    displayField: 'value',
-            //    valueField: 'key',
-            //    hidden: true,
-            //    editable: false,
-            //    value: 'active',
-            //    store: Ext.create('Ext.data.Store', {
-            //        fields: ['key', 'value'],
-            //        data: [
-            //            { key: 'active', value: app.localize('CMMSKhoHoatDong') },
-            //            { key: 'pending', value: app.localize('CMMSKhoNoAction') }
-            //        ]
-            //    })
-            //}, {
-            //    flex: 1,
-            //    xtype: 'textfield',
-            //    labelWidth: 110,
-            //    bind: '{record.soDoKho}',
-            //    margin: '0 0 0 10',
-            //    hidden: true,
-            //    name: 'sodokho',
-            //    fieldLabel: app.localize('CMMSKhoSoDoKho')
-            //}]
+            xtype: 'fieldcontainer',
+            layout: 'hbox',
+            items: [{
+                xtype: 'combo',
+                labelWidth: 110,
+                fieldLabel: 'Trạng thái kho',
+                name: 'trangthaikho',
+                queryMode: 'local',
+                bind: '{record.trangThaiKho}',
+                displayField: 'value',
+                valueField: 'key',
+                hidden: true,
+                editable: false,
+                value: 'active',
+                store: Ext.create('Ext.data.Store', {
+                    fields: ['key', 'value'],
+                    data: [
+                        //{ key: 'active', value: app.localize('CMMSKhoHoatDong') },
+                        //{ key: 'pending', value: app.localize('CMMSKhoNoAction') }
+                    ]
+                })
+            }, {
+                flex: 1,
+                xtype: 'textfield',
+                labelWidth: 110,
+                bind: '{record.soDoKho}',
+                margin: '0 0 0 10',
+                hidden: true,
+                name: 'sodokho',
+                fieldLabel: 'Sơ đồ kho'
+            }]
         }, {
             xtype: "panel",
             ui: 'light',
@@ -265,6 +273,17 @@ Ext.define('Admin.view.danhmuckho.cnKhoController', {
         //    me.ref.btnDinhKem.setDisabled(false);
         //}
         //me.onLoadFile();
+    },  
+
+    onOpenMap: function () {
+        this.getView().close()
+        Ext.create("Admin.view.danhmuckho.cnBanDoKho", {
+            //viewModel: {
+            //    data: {
+                    
+            //    }
+            //}
+        }).show();
     },
 
     //onLayNguoiDung: function () {

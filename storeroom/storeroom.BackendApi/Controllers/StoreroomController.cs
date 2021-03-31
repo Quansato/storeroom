@@ -25,7 +25,7 @@ namespace storeroom.BackendApi.Controllers
             var materialgroups = await _storeroomService.GetAllPaging(request);
             return Ok(materialgroups);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{storeroomId}")]
         public async Task<IActionResult> GetDetail(int storeroomId)
         {
             var storeroom = await _storeroomService.GetDetail(storeroomId);
