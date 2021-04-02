@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.Identity.Owin;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using storeroom.Application.Catalog.Users.Dtos;

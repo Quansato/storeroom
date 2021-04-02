@@ -1,6 +1,8 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +12,10 @@ using storeroom.Application.Catalog.Brands;
 using storeroom.Application.Catalog.MaterialGroups;
 using storeroom.Application.Catalog.Materials;
 using storeroom.Application.Catalog.Storerooms;
+using storeroom.Application.Catalog.Users;
+using storeroom.Application.Catalog.Users.Dtos;
 using storeroom.Data.EF;
+using storeroom.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,11 +37,18 @@ namespace storeroom.WebApp
         {
             services.AddDbContext<storeroomDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("storeroomDBTest")));
+            services.AddIdentity<AppUser, AppRole>()
+                .AddEntityFrameworkStores<storeroomDbContext>()
+                .AddDefaultTokenProviders();
             services.AddTransient<IMaterialService, MaterialService>();
             services.AddTransient<IBrandService, BrandService>();
             services.AddTransient<IMaterialGroupService, MaterialGroupService>();
             services.AddTransient<IStoreroomService, StoreroomService>();
-            services.AddControllersWithViews();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+            services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
+            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+            services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
             services.AddSwaggerGen(options =>
             {
@@ -59,6 +71,7 @@ namespace storeroom.WebApp
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseStaticFiles();
 
             app.UseRouting();
