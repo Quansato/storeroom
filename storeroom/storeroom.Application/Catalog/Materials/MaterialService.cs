@@ -105,6 +105,11 @@ namespace storeroom.Application.Catalog.Materials
             return pagedResult;
         }
 
+        public Task<MaterialViewModel> GetDetail(int MaterialId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<int> Update(MaterialUpdateRequest request)
         {
             var materialId = _context.Materials.FindAsync(request.Id);

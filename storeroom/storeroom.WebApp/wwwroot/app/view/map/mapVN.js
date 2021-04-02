@@ -25,6 +25,9 @@ Ext.define("Admin.view.map.mapVN", {
             width: 1600,
             html: '<div style="width: 100%;">' +
                 '<div id="divMapId" class= "map" ></div>' +
+                '<div id="selectedFeatures" class="leaflet-bar map-text">' +
+                '<div id="geocoder"></div>' +
+                '</div>' +
                 '<pre id="coordinates" class="coordinates"></pre>' +
                 '</div>',
             //'<div id="geocoder" class="geocoder"></div>',
@@ -69,16 +72,6 @@ Ext.define("Admin.view.map.mapVNController", {
 
     onMap: function () {
         var me = this;
-        var obj = [{
-            x: '105.42577357457799',
-            y: '20.766890032968846'
-        }, {
-            x: '105.63080535317425',
-            y: '20.755689459622573'
-        }, {
-            x: '106.01286933530952',
-            y: '20.857007602846537'
-        }]
         var map = new mapboxgl.Map({
             container: 'divMapId',
             center: [105.82397460937636, 21.03589385426021], // starting position
@@ -115,26 +108,32 @@ Ext.define("Admin.view.map.mapVNController", {
         var el = document.createElement('div');
         el.id = 'marker';
         //
-        for (var i = 0; i < obj.length; i++) {
-            var marker = new mapboxgl.Marker({
-                draggable: true
-            })
-                .setLngLat([obj[i].x, obj[i].y])
-                .setPopup(popup)
-                .addTo(map);
-        }
+        //for (var i = 0; i < obj.length; i++) {
+        //    var marker = new mapboxgl.Marker({
+        //        draggable: true
+        //    })
+        //        .setLngLat([obj[i].x, obj[i].y])
+        //        .setPopup(popup)
+        //        .addTo(map);
+        //}
         map.addControl(new mapboxgl.NavigationControl(), "top-left");
-        map.addControl(
-            new mapboxgl.GeolocateControl({
-                positionOptions: {
-                    enableHighAccuracy: true
-                },
-                trackUserLocation: true
-            })
-        );
+        map.addControl(new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }), 'top-left');
+        var geocoder = new MapboxGeocoder({
+            origin: 'https://api.mapbox.com',
+            accessToken: me.accessToken,
+            target: 'geocoder'
+        })
+
+        map.addControl(geocoder);
+
         //var geocoder = new MapboxGeocoder({
         //    accessToken: me.accessToken,
-        //    //origin: me.settingbasemap.geoname.url,
+        //    origin: 'https://api.mapbox.com',
         //    target: 'geocoder',
         //    placeholder: 'Tìm kiếm...'
         //});

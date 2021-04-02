@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +11,9 @@ using storeroom.Application.Catalog.Brands;
 using storeroom.Application.Catalog.MaterialGroups;
 using storeroom.Application.Catalog.Materials;
 using storeroom.Application.Catalog.Storerooms;
+using storeroom.Application.Catalog.Users;
 using storeroom.Data.EF;
+using storeroom.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,10 +35,17 @@ namespace storeroom.BackendApi
         {
             services.AddDbContext<storeroomDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("storeroomDBTest")));
+            services.AddIdentity<AppUser, AppRole>()
+                .AddEntityFrameworkStores<storeroomDbContext>()
+                .AddDefaultTokenProviders();
             services.AddTransient<IMaterialService, MaterialService>();
             services.AddTransient<IBrandService, BrandService>();
             services.AddTransient<IMaterialGroupService, MaterialGroupService>();
             services.AddTransient<IStoreroomService, StoreroomService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+            services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
+            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddControllersWithViews();
 
             services.AddSwaggerGen(options =>

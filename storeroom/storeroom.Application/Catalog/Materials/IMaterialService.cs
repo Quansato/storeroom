@@ -12,7 +12,8 @@ namespace storeroom.Application.Catalog.Materials
         Task<int> Create(MaterialCreateRequest request);
         Task<int> Update(MaterialUpdateRequest request);
         Task<int> Delete(int MaterialId);
-        Task<List<MaterialViewModel>> GetAll();
+        Task<MaterialViewModel> GetDetail(int MaterialId);
+
         Task<PagedResult<MaterialViewModel>> GetAllPaging(GetMaterialPagingRequest request);
     }
 }

@@ -14,7 +14,7 @@ namespace storeroom.Data.Entities
         public int MaterialGroupId { get; set; }
         public int CountryId { get; set; }
         public int BrandId { get; set; }
-        public int Quantity { get; set; }
+        //public int Quantity { get; set; }
         public decimal Price { get; set; }
         public Boolean Status { get; set; }
         public string Img { get; set; }

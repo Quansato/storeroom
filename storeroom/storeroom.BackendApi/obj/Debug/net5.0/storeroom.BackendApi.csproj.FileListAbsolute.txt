@@ -165,3 +165,10 @@ E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.Backend
 E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\ref\storeroom.BackendApi.dll
 E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.pdb
 E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.genruntimeconfig.cache
+E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Microsoft.AspNet.Identity.Core.dll
+E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Microsoft.AspNet.Identity.Owin.dll
+E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Microsoft.Owin.dll
+E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Microsoft.Owin.Security.dll
+E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Microsoft.Owin.Security.Cookies.dll
+E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Microsoft.Owin.Security.OAuth.dll
+E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Owin.dll

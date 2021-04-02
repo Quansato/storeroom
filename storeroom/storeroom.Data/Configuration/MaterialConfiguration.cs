@@ -21,7 +21,7 @@ namespace storeroom.Data.Configuration
 
             builder.Property(x => x.MaterialCode).IsRequired().IsUnicode(true).HasMaxLength(50);
 
-            builder.Property(x => x.Quantity).IsRequired().HasDefaultValue(0);
+            //builder.Property(x => x.Quantity).IsRequired().HasDefaultValue(0);
 
             builder.Property(x => x.Price).IsRequired().HasDefaultValue(0);
 
