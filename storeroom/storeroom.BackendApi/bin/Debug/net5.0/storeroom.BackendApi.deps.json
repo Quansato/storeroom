@@ -1641,6 +1641,7 @@
       },
       "storeroom.Data/1.0.0": {
         "dependencies": {
+          "FluentValidation.AspNetCore": "9.5.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.4",
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.4",
           "Microsoft.Extensions.Configuration.FileExtensions": "5.0.0",

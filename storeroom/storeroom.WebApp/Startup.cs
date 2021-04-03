@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -16,6 +17,7 @@ using storeroom.Application.Catalog.Users;
 using storeroom.Application.Catalog.Users.Dtos;
 using storeroom.Data.EF;
 using storeroom.Data.Entities;
+using storeroom.WebApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +37,13 @@ namespace storeroom.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Login/login";
+                    options.AccessDeniedPath = "/User/Forbidden/";
+                });
             services.AddDbContext<storeroomDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("storeroomDBTest")));
             services.AddIdentity<AppUser, AppRole>()
@@ -48,13 +57,9 @@ namespace storeroom.WebApp
             services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+            services.AddTransient<IUserApiClient,UserApiClient>();
             services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
-                options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,20 +76,14 @@ namespace storeroom.WebApp
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-            app.UseAuthentication();
+
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.UseSwagger();
-
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1");
-                options.RoutePrefix = string.Empty;
-            });
 
             app.UseEndpoints(endpoints =>
             {

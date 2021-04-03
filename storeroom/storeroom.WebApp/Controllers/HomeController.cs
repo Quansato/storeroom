@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using storeroom.WebApp.Models;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace storeroom.WebApp.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,6 +22,7 @@ namespace storeroom.WebApp.Controllers
 
         public IActionResult Index()
         {
+            var user = User.Identity.Name;
             return View();
         }
 

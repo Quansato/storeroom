@@ -169,4 +169,4 @@ E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.genr
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\FluentValidation.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll
-E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\Razor\Views\Login\Index.cshtml.g.cs
+E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\Razor\Views\Login\Login.cshtml.g.cs
