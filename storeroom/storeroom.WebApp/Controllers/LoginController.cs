@@ -55,15 +55,16 @@ namespace storeroom.WebApp.Controllers
             var authProperties = new AuthenticationProperties
             {
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                IsPersistent = false
+                IsPersistent = true
             };
             //HttpContext.Session.SetString("Token", result.ResultObj);
             await HttpContext.SignInAsync(
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,
                         authProperties);
+            return Ok();
 
-            return RedirectToAction("Index", "Home");
+            //return RedirectToAction("Index", "Home");
         }
         private ClaimsPrincipal ValidateToken(string jwtToken)
         {
