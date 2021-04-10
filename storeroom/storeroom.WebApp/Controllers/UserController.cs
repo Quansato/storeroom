@@ -32,6 +32,7 @@ namespace storeroom.WebApp.Controllers
             {
                 return BadRequest("UserName or password is incorrect");
             }
+
             return Ok(resultToken);
         }
         [HttpPost("register")]

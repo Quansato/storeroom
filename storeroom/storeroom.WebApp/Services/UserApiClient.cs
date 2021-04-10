@@ -22,7 +22,7 @@ namespace storeroom.WebApp.Services
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri("https://localhost:44356/");
-            var response = await client.PostAsync("/api/user/authenticate",httpContent);
+            var response = await client.PostAsync("/api/User/authenticate", httpContent);
             var token = await response.Content.ReadAsStringAsync();
             return token;
         }

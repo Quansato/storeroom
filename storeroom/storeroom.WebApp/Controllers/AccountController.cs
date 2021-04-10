@@ -37,7 +37,7 @@ namespace storeroom.WebApp.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequest request)
-        {
+        { 
             if (!ModelState.IsValid)
             {
                 return View(ModelState);
@@ -61,9 +61,7 @@ namespace storeroom.WebApp.Controllers
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,
                         authProperties);
-            return Ok();
-
-            //return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
         private ClaimsPrincipal ValidateToken(string jwtToken)
         {

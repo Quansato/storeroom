@@ -34,18 +34,21 @@ namespace storeroom.WebApp.Controllers
             }
             return Ok(materialGroup);
         }
+
         [HttpPost()]
         public async Task<IActionResult> Create(MaterialGroupCreateRequest request)
         {
             var result = await _materialGroupService.Create(request);
             return Ok(result);
         }
+
         [HttpPut()]
         public async Task<IActionResult> Update(MaterialGroupUpdateRequest request)
         {
             var result = await _materialGroupService.Update(request);
             return Ok(result);
         }
+
         [HttpDelete("{ma}")]
         public async Task<IActionResult> Delete(int ma)
         {

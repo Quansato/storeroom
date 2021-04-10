@@ -54,13 +54,6 @@
             }
 
             Ext.manifest = profile; // this name must match a build profile name
-
-            // This function is called once the manifest is available but before
-            // any data is pulled from it.
-            //
-            //return function (manifest) {
-            // peek at / modify the manifest object
-            //};
         };
     </script>
 
@@ -70,10 +63,10 @@
     <script src="lastest/mapbox-gl.js"></script>
     <script src="lastest/ekmap-mapboxgl.js"></script>
     <script src="lastest/common.js"></script>
+    <script src="~/js/jquery.js"></script>
     <script src="resources/js/mapbox-gl-geocoder.min.js"></script>
     <script src="~/js/daterangepicker.js"></script>
     <script src="~/js/moment.min.js"></script>
-    <script src="~/js/jquery.js"></script>
     <script src="~/js/date.js"></script>
     @RenderSection("Scripts", required: false)
 </body>

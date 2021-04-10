@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace storeroom.WebApp.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -19,10 +18,9 @@ namespace storeroom.WebApp.Controllers
         {
             _logger = logger;
         }
-
+        [Authorize]
         public IActionResult Index()
         {
-            var user = User.Identity.Name;
             return View();
         }
 

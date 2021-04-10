@@ -21,6 +21,7 @@ using storeroom.WebApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace storeroom.WebApp
@@ -38,12 +39,25 @@ namespace storeroom.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
+            services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/Login/login";
+                    options.LoginPath = "/Account/Login";
                     options.AccessDeniedPath = "/User/Forbidden/";
+                    options.Cookie.IsEssential = true;
+                    options.Cookie.Name = "Microsoft.Authentication";
+                    options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+                    options.SlidingExpiration = true;
+
                 });
+            //services.AddAuthorization(options=>
+            //{
+            //    options.AddPolicy("UserPolicy", policyBuilder =>
+            //    {
+            //        policyBuilder.RequireUserName(ClaimTypes.Name);
+            //    });
+            //});
             services.AddDbContext<storeroomDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("storeroomDBTest")));
             services.AddIdentity<AppUser, AppRole>()
@@ -58,7 +72,6 @@ namespace storeroom.WebApp
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserApiClient,UserApiClient>();
-            services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
         }
 
@@ -75,15 +88,17 @@ namespace storeroom.WebApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 
-            app.UseAuthentication();
-
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
+
+            app.UseCookiePolicy();
 
             app.UseEndpoints(endpoints =>
             {
