@@ -38,17 +38,18 @@ namespace storeroom.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddHttpClient();
             services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
-                    options.LoginPath = "/Account/Login";
+                    options.LoginPath = "/Login/Login/";
                     options.AccessDeniedPath = "/User/Forbidden/";
-                    options.Cookie.IsEssential = true;
-                    options.Cookie.Name = "Microsoft.Authentication";
-                    options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
-                    options.SlidingExpiration = true;
+                    //options.Cookie.IsEssential = true;
+                    //options.Cookie.Name = "Microsoft.Authentication";
+                    //options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+                    //options.SlidingExpiration = true;
 
                 });
             //services.AddAuthorization(options=>
@@ -60,17 +61,17 @@ namespace storeroom.WebApp
             //});
             services.AddDbContext<storeroomDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("storeroomDBTest")));
-            services.AddIdentity<AppUser, AppRole>()
-                .AddEntityFrameworkStores<storeroomDbContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<AppUser, AppRole>()
+            //    .AddEntityFrameworkStores<storeroomDbContext>()
+            //    .AddDefaultTokenProviders();
             services.AddTransient<IMaterialService, MaterialService>();
             services.AddTransient<IBrandService, BrandService>();
             services.AddTransient<IMaterialGroupService, MaterialGroupService>();
             services.AddTransient<IStoreroomService, StoreroomService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
-            services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
-            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+            //services.AddTransient<IUserService, UserService>();
+            //services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+            //services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
+            //services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserApiClient,UserApiClient>();
 
         }

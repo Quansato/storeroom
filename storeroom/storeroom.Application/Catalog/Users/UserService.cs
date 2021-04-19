@@ -2,10 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using storeroom.Application.Catalog.Users.Dtos;
+using storeroom.Application.Dtos;
 using storeroom.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,6 +58,16 @@ namespace storeroom.Application.Catalog.Users
 
             return new JwtSecurityTokenHandler().WriteToken(token);
 
+        }
+
+        public Task<PagedResult<UserViewModel>> GetUserPaging(GetUserPagingRequest request)
+        {
+            var query = _userManager.Users;
+            if (!string.IsNullOrEmpty(request.keyword))
+            {
+                query = query.Where(x => x.UserName.Contains(request.keyword) || x.PhoneNumber.Contains(request.keyword));
+            }
+            return []
         }
 
         public async Task<bool> Register(RegisterRequest request)

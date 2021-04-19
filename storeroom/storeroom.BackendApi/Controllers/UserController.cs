@@ -32,10 +32,11 @@ namespace storeroom.BackendApi.Controllers
             {
                 return BadRequest("UserName or password is incorrect");
             }
-            return Ok(new { token = resultToken });
+
+            return Ok(resultToken);
         }
         [HttpPost("register")]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             if (!ModelState.IsValid)

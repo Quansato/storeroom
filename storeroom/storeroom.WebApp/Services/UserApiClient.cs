@@ -21,7 +21,7 @@ namespace storeroom.WebApp.Services
             var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
             var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri("https://localhost:44356/");
+            client.BaseAddress = new Uri("https://localhost:44390/");
             var response = await client.PostAsync("/api/User/authenticate", httpContent);
             var token = await response.Content.ReadAsStringAsync();
             return token;

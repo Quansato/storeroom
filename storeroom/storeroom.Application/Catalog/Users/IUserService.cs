@@ -1,4 +1,5 @@
 ﻿using storeroom.Application.Catalog.Users.Dtos;
+using storeroom.Application.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,5 +11,6 @@ namespace storeroom.Application.Catalog.Users
     {
         Task<string> Authencate(LoginRequest request);
         Task<bool> Register(RegisterRequest request);
+        Task<PagedResult<UserViewModel>> GetUserPaging(GetUserPagingRequest request);
     }
 }

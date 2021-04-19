@@ -21,6 +21,7 @@ namespace storeroom.WebApp.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            var user = User.Identity.Name;
             return View();
         }
 

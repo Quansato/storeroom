@@ -77,7 +77,7 @@
                         }, '-', {
                             text: 'Đăng xuất',
                             iconCls: 'icon-m-t fa fa-power-off',
-                            href: '/Account/Logout'
+                            href: '/Login/Login'
                         }]
                     }
                 }
