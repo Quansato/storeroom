@@ -53,7 +53,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                 },
                 {
                     xtype: "gridcolumn",
-                    dataIndex: "ma",
+                    dataIndex: "qrCode",
                     header: 'Mã',
                     width: 120
                 },
@@ -61,7 +61,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                     xtype: "gridcolumn",
                     header: 'Tên',
                     flex: 1,
-                    dataIndex: "moTa"
+                    dataIndex: "displayName"
                 }],
             dockedItems: [{
                 xtype: "toolbar",
@@ -166,12 +166,12 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
             }, {
                 xtype: "gridcolumn",
                 header: 'Mã',
-                dataIndex: "ma",
+                dataIndex: "materialCode",
                 width: 120
             }, {
                 xtype: "gridcolumn",
                 header: 'Tên',
-                dataIndex: "moTa",
+                dataIndex: "description",
                 minWidth: 180,
                 flex: 1
             },
@@ -179,12 +179,12 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
             {
                 xtype: "gridcolumn",
                 header: 'Nhóm vật tư',
-                dataIndex: "tenNhom",
+                dataIndex: "materialGroupName",
                 minWidth: 160
             },
             {
-                text: 'Nhóm vật tư',
-                dataIndex: 'donViPhatHanh',
+                text: 'Đơn vị tính',
+                dataIndex: 'unitName',
                 align: 'left',
                 border: 1,
                 style: 'text-align:center',
@@ -192,26 +192,26 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
             }, {
                 xtype: 'numbercolumn',
                 text: 'Đơn giá',
-                dataIndex: 'giaTri',
+                dataIndex: 'price',
                 style: 'text-align:center',
                 align: 'right',
                 border: 1,
                 width: 125,
-                renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                    if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                    }
-                }
+                //renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
+                //    if (value != undefined && value != null) {
+                //        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                //    }
+                //}   
             }, {
                 xtype: "gridcolumn",
                 header: 'Trạng thái',
-                dataIndex: "trangThai",
+                dataIndex: "status",
                 width: 110,
                 renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
                     var text = value;
-                    if (value == "active") {
+                    if (value == "true") {
                         text = 'Hoạt động';
-                    } else if (value == "pending") {
+                    } else if (value == "false") {
                         text = 'Không hoạt động';
                     }
                     return text;
@@ -220,7 +220,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                 xtype: "gridcolumn",
                 hidden: true,
                 header: 'Năm sản xuất',
-                dataIndex: "namSanXuat",
+                dataIndex: "yearManufacture",
                 width: 110
             }, {
                 xtype: "gridcolumn",
@@ -398,8 +398,8 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
         var me = this;
         me.refs = me.getReferences();
         me.storeInfo = me.getViewModel().storeInfo;
-        //me.onSearchNhom();
-        //me.onSearch();
+        me.onSearchNhom();
+        me.onSearch();
     },
     // #region param
     //fnGetTxtSearch: function () {
@@ -423,33 +423,33 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
     //    }
     //},
 
-    //onSearch: function () {
-    //    var me = this;
-    //    var id = me.fnGetNhomId();
-    //    var txt = me.fnGetTxtSearch();
-    //    var query = abp.utils.buildQueryString([
-    //        { name: "filter", value: txt },
-    //        { name: "maNhomVatTu", value: id == 0 ? null : id }
-    //    ]);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoVatTu/GetAll" + query;
-    //    var store = me.storeInfo.sVatTu;
-    //    store.proxy.api.read = url;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            if (records == null) {
-    //                store.removeAll();
-    //            }
-    //        }
-    //    });
-    //},
+    onSearch: function () {
+        var me = this;
+        //var id = me.fnGetNhomId();
+        //var txt = me.fnGetTxtSearch();
+        //var query = abp.utils.buildQueryString([
+        //    { name: "filter", value: txt },
+        //    { name: "maNhomVatTu", value: id == 0 ? null : id }
+        //]);
+        var url ="api/Material?page=1&start=0&limit=5";
+        var store = me.storeInfo.sVatTu;
+        store.proxy.api.read = url;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.load({
+            //params: {
+            //    skipCount: 0,
+            //    maxResultCount: store.pageSize
+            //},
+            scope: this,
+            callback: function (records, operation, success) {
+                if (records == null) {
+                    store.removeAll();
+                }
+            }
+        });
+    },
 
     onAdd: function () {
         var me = this;
@@ -557,38 +557,38 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
     //    }
     //},
 
-    //onSearchNhom: function () {
-    //    var me = this;
-    //    var sNhomVatTu = me.storeInfo.sNhomVatTu;
-    //    var txtSearch = me.refs.txtFilter.getValue();
-    //    var query = abp.utils.buildQueryString([{ name: "filter", value: txtSearch }]);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoNhomVatTu/GetAll" + query;
-    //    sNhomVatTu.proxy.api.read = url;
-    //    sNhomVatTu.proxy.pageParam = undefined;
-    //    sNhomVatTu.proxy.limitParam = undefined;
-    //    sNhomVatTu.proxy.startParam = undefined;
-    //    sNhomVatTu.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: sNhomVatTu.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            if (records == null) {
-    //                sNhomVatTu.removeAll();
-    //            }
-    //            if (_.isEmpty(txtSearch)) {
-    //                var rTatCa = Ext.create("Admin.model.mKhoNhomVatTu", {
-    //                    id: 0,
-    //                    ma: app.localize("DanhMuc_TatCa"),
-    //                    moTa: app.localize("DanhMuc_TatCa")
-    //                });
-    //                sNhomVatTu.insert(0, rTatCa);
-    //            }
-    //            if (records.length > 0) me.refs.gridNhomVatTu.getSelectionModel().select(0);
-    //        }
-    //    });
-    //},
+    onSearchNhom: function () {
+        var me = this;
+        var sNhomVatTu = me.storeInfo.sNhomVatTu;
+        //var txtSearch = me.refs.txtFilter.getValue();
+        //var query = abp.utils.buildQueryString([{ name: "filter", value: txtSearch }]);
+        var url = "api/MaterialGroup?page=1&start=0&limit=5";
+        sNhomVatTu.proxy.api.read = url;
+        sNhomVatTu.proxy.pageParam = undefined;
+        sNhomVatTu.proxy.limitParam = undefined;
+        sNhomVatTu.proxy.startParam = undefined;
+        sNhomVatTu.load({
+            params: {
+                skipCount: 0,
+                maxResultCount: sNhomVatTu.pageSize
+            },
+            scope: this,
+            callback: function (records, operation, success) {
+                if (records == null) {
+                    sNhomVatTu.removeAll();
+                }
+                if (isEmpty(txtSearch)) {
+                    var rTatCa = Ext.create("Admin.model.mKhoNhomVatTu", {
+                        id: 0,
+                        qrCode: "Tất cả",
+                        displayName: "Tất cả"
+                    });
+                    sNhomVatTu.insert(0, rTatCa);
+                }
+                if (records.length > 0) me.refs.gridNhomVatTu.getSelectionModel().select(0);
+            }
+        });
+    },
 
     //onSelectNhomVatTu: function (grid, record) {
     //    var me = this;

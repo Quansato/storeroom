@@ -45,31 +45,14 @@
                 '->',
                 {
                     ui: 'header',
-                    //html: '<div style="padding-top: 10px;"><i class="' + abp.localization.currentLanguage.icon + '" title="' + abp.localization.currentLanguage.displayName + '"></i></div>',
-                    menuAlign: 'tr-br?',
-                    menu: {
-                        xtype: 'menu',
-                        items: [{
-                            text: 'English',
-                            iconCls: 'famfamfam-flags us',
-                            href: '/AbpLocalization/ChangeCulture?cultureName=en&returnUrl=/manager'
-                        }, {
-                            text: 'Tiếng Việt',
-                            iconCls: 'famfamfam-flags vn',
-                            href: '/AbpLocalization/ChangeCulture?cultureName=vi&returnUrl=/manager'
-                        }]
-                    }
-                },
-                {
-                    ui: 'header',
-                    html: '<div style="padding-top: 10px;"><img style="width:35px;height:35px;margin-right:10px;float: left;margin-top: -5px;" src="/editor/resources/images/profile-icon.png"><span style="font-weight: bold;line-height: 25px;margin: 0px;font-size:14px;">Người dùng</span></div>',
+                    html: '<div style="padding-top: 10px;"><img style="width:35px;height:35px;margin-right:10px;float: left;margin-top: -5px;" src="/resources/images/user-profile/avatar.jpg"><span style="font-weight: bold;line-height: 25px;margin: 0px;font-size:14px;">Người dùng</span></div>',
                     menuAlign: 'tr-br?',
                     menu: {
                         xtype: 'menu',
                         items: [{
                             text: 'Hồ sơ của tôi',
                             iconCls: 'icon-m-t fa fa-user',
-                            href: '/Manage/UserProfile'
+                            href: '/resources/images/user-profile/avatar.jpg'
                         }, {
                             text: 'Đổi mật khẩu',
                             iconCls: 'icon-m-t fa fa-key',

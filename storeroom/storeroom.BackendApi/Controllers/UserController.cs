@@ -28,11 +28,16 @@ namespace storeroom.BackendApi.Controllers
                 return BadRequest(ModelState);
             }
             var resultToken = await _userService.Authencate(request);
+
             if (string.IsNullOrEmpty(resultToken))
             {
                 return BadRequest("UserName or password is incorrect");
             }
-
+            else
+            {
+                //HttpContext.Session.SetString("Token", resultToken);
+            }
+            
             return Ok(resultToken);
         }
         [HttpPost("register")]
@@ -49,6 +54,18 @@ namespace storeroom.BackendApi.Controllers
                 return BadRequest("Register is unsuccesful");
             }
             return Ok();
+        }
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetAllPaging([FromQuery]GetUserPagingRequest request)
+        {
+            var users = await _userService.GetUserPaging(request);
+            return Ok(users);
+        }
+        [HttpGet()]
+        public async Task<IActionResult> GetAll()
+        {
+            var users = await _userService.GetAll();
+            return Ok(users);
         }
     }
 }

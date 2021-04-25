@@ -25,5 +25,23 @@ namespace storeroom.BackendApi.Controllers
             var materials = await _materialService.GetAllPaging(request);
             return Ok(materials);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(MaterialUpdateRequest request)
+        {
+            var result = await _materialService.Update(request);
+            return Ok(result);
+        }
+        [HttpPost()]
+        public async Task<IActionResult> Create(MaterialCreateRequest request)
+        {
+            var result = await _materialService.Create(request);
+            return Ok(result);
+        }
+        [HttpDelete("{MaterialId}")]
+        public async Task<IActionResult> Delete(int MaterialId)
+        {
+            var result = await _materialService.Delete(MaterialId);
+            return Ok(result);
+        }
     }
 }

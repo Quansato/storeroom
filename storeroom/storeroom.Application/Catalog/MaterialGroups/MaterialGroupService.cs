@@ -53,7 +53,8 @@ namespace storeroom.Application.Catalog.MaterialGroups
                        .Select(x => new MaterialGroupViewModel()
                        {
                            Id = x.a.Id,
-                           DisplayName = x.a.DisplayName
+                           DisplayName = x.a.DisplayName,
+                           QRCode=x.a.QRCode
                        }).ToListAsync();
             //4. Select and projection
             var pagedResult = new PagedResult<MaterialGroupViewModel>()
@@ -81,7 +82,7 @@ namespace storeroom.Application.Catalog.MaterialGroups
             var materialGroupId = await _context.MaterialGroups.FindAsync(request.Id);
             var materialGroup = await _context.MaterialGroups.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (materialGroup == null) throw new StoreroomException($"Cannot find materialgroup:{request.Id}");
-            materialGroup.Id = request.Id;
+            //materialGroup.Id = request.Id;
             materialGroup.DisplayName = request.DisplayName;
             materialGroup.QRCode = request.QRCode;
             return await _context.SaveChangesAsync();

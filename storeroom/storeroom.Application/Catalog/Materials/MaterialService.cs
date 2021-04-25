@@ -20,10 +20,16 @@ namespace storeroom.Application.Catalog.Materials
         }
         public async Task<int> Create(MaterialCreateRequest request)
         {
+            var isExist=checkExistMaterialCode(request.MaterialCode);
+            if(isExist != null)
+            {
+                throw new StoreroomException("MaterialCode is already exist");
+            }
             var material = new Material()
             {
                 MaterialCode = request.MaterialCode,
                 Description = request.Description,
+                DisplayName=request.DisplayName,
                 Price = request.Price,
                 YearManufacture = request.YearManufacture,
                 UnitId = request.UnitId,
@@ -34,12 +40,27 @@ namespace storeroom.Application.Catalog.Materials
                 ExperyDate = request.ExperyDate,
                 Status = request.Status,
                 Img = request.Img,
+                QRCode =request.QRCode,
                 Specification = request.Specification,
             };
             _context.Materials.Add(material);
             return await _context.SaveChangesAsync();
         }
-
+        public ApiResult<Object> checkExistMaterialCode(string MaterialCode)
+        {
+            var existMaterial = _context.Materials.FirstOrDefault(x => x.MaterialCode == MaterialCode);
+            
+            if (existMaterial != null)
+            {
+                var result = new ApiResult<Object>()
+                {
+                    IsSuccessed = false,
+                    Message = "MaterialCode is exist"
+                };
+                return result;
+            }
+            return null;
+        }
         public async Task<int> Delete(int MaterialId)
         {
             var material = await _context.Materials.FindAsync(MaterialId);

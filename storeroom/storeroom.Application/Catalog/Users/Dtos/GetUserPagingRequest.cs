@@ -8,5 +8,6 @@ namespace storeroom.Application.Catalog.Users.Dtos
     public class GetUserPagingRequest:PagingRequestBase
     {
         public string keyword { get; set; }
+
     }
 }

@@ -35,3 +35,26 @@
     color: #170085 !important;
 }
 
+/*tabbar*/
+.x-tab-bar-default {
+    background-color: #ebedf2 !important;
+}
+
+.x-tab.x-tab-active.x-tab-default .x-tab-inner-default {
+    color: #1d3dd8 !important;
+}
+
+.x-tab.x-tab-active.x-tab-default .x-tab-icon-el {
+    color: #170085 !important;
+}
+.x-tab-inner-default {
+    color: #000 !important;
+}
+
+.x-tab-text.x-tab-icon-left > .x-tab-icon-el-default {
+    color: #000 !important;
+}
+
+.x-panel-header-title-light > .x-title-icon-wrap-light > .x-title-icon-light {
+    color: #170085 !important;
+}

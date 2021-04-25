@@ -41,6 +41,9 @@ namespace storeroom.WebApp
             
             services.AddHttpClient();
             services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
+            services.AddSession(option=> {
+                option.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -98,6 +101,8 @@ namespace storeroom.WebApp
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseCookiePolicy();
 

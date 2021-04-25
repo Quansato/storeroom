@@ -25,5 +25,11 @@ namespace storeroom.WebApp.Controllers
             var materials = await _materialService.GetAllPaging(request);
             return Ok(materials);
         }
+        [HttpPut()]
+        public async Task<IActionResult> Update(MaterialUpdateRequest request)
+        {
+            var result = await _materialService.Update(request);
+            return Ok(result);
+        }
     }
 }

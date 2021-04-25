@@ -12,5 +12,6 @@ namespace storeroom.Application.Catalog.Users
         Task<string> Authencate(LoginRequest request);
         Task<bool> Register(RegisterRequest request);
         Task<PagedResult<UserViewModel>> GetUserPaging(GetUserPagingRequest request);
+        Task<List<UserViewModel>> GetAll();
     }
 }
