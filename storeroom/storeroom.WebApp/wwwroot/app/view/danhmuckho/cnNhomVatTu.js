@@ -37,7 +37,7 @@ Ext.define("Admin.view.danhmuckho.cnNhomVatTu", {
             fieldLabel: 'Mã' /*+ app.gplatformconsts.var_required*/,
             allowBlank: false,
             bind: {
-                value: "{record.ma}",
+                value: "{record.qrCode}",
                 disabled: "{record.id != 0}"
             },
             listeners: {
@@ -48,7 +48,7 @@ Ext.define("Admin.view.danhmuckho.cnNhomVatTu", {
             name: "moTa",
             fieldLabel: 'Tên' /*+ app.gplatformconsts.var_required*/,
             allowBlank: false,
-            bind: "{record.moTa}"
+            bind: "{record.displayName}"
         }, {
             xtype: "textfield",
             name: "ma",
@@ -106,49 +106,39 @@ Ext.define("Admin.view.danhmuckho.cnNhomVatTuController", {
     //    record.set("ma", ma);
     //},
 
-    //onSave: function () {
-    //    this.fnSave();
-    //},
+    onSave: function () {
+        this.fnSave();
+    },
 
-    //onSaveAndNew: function () {
-    //    var me = this;
-    //    me.fnSave();
-    //    var newRecord = Ext.create("Admin.model.mKhoNhomVatTu", { id: 0 });
-    //    me.getViewModel().set("record", newRecord);
-    //},
+    onSaveAndNew: function () {
+        var me = this;
+        me.fnSave();
+        var newRecord = Ext.create("Admin.model.mKhoNhomVatTu", { id: 0 });
+        me.getViewModel().set("record", newRecord);
+    },
 
-    //fnSave: function () {
-    //    var me = this;
-    //    var frm = me.refs.frmKhoNhomVatTu;
-    //    if (!frm.getForm().isValid()) {
-    //        abp.notify.warn(app.localize("TaiSan_isValid"));
-    //        return;
-    //    }
-    //    var view = me.getView();
-    //    var fnSauKhiSave = me.getViewModel().get("fnSauKhiSave");
-    //    var record = me.getViewModel().get("record");
-    //    view.setLoading(true);
-    //    if (record.data.id != 0) {
-    //        _nhomVatTuServices
-    //            .update(record.data)
-    //            .done(function () {
-    //                abp.notify.success(app.localize("SavedSuccessfully"));
-    //                if (fnSauKhiSave) fnSauKhiSave();
-    //            })
-    //            .always(function () {
-    //                view.setLoading(false);
-    //            });
-    //    } else {
-    //        _nhomVatTuServices
-    //            .create(record.data)
-    //            .done(function (data) {
-    //                record.set("id", data.id);
-    //                abp.notify.success(app.localize("SavedSuccessfully"));
-    //                if (fnSauKhiSave) fnSauKhiSave();
-    //            })
-    //            .always(function () {
-    //                view.setLoading(false);
-    //            });
-    //    }
-    //}
+    fnSave: function () {
+        var me = this;
+        var frm = me.refs.frmKhoNhomVatTu;
+        if (!frm.getForm().isValid()) {
+            abp.notify.warn(app.localize("TaiSan_isValid"));
+            return;
+        }
+        var view = me.getView();
+        var fnSauKhiSave = me.getViewModel().get("fnSauKhiSave");
+        var record = me.getViewModel().get("record");
+        console.log(record)
+        view.setLoading(true);
+        if (record.data.id != 0) {
+            var url = "api/MaterialGroup"
+            app.mUtils.fnPUTAjax(url, record.data, function (response) {
+                console.log(response)
+            })
+        } else {
+            var url="api/MaterialGroup"
+            app.mUtils.fnPOSTAjax(url, record.data, function (response) {
+                console.log(response)
+            })
+        }
+    }
 });

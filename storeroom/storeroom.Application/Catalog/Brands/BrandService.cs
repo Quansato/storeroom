@@ -37,6 +37,16 @@ namespace storeroom.Application.Catalog.Brands
             return await _context.SaveChangesAsync();
         }
 
+        public async Task<List<BrandViewModel>> GetAll()
+        {
+            var brands = await _context.Brands.Select(x => new BrandViewModel()
+            {
+                Id = x.Id,
+                DisplayName = x.DisplayName
+            }).ToListAsync();
+            return brands;
+        }
+
         public async Task<PagedResult<BrandViewModel>> GetAllPaging(GetBrandPagingRequest request)
         {
             var query = from a in _context.Brands select new { a };

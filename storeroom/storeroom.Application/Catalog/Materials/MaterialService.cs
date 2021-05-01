@@ -74,7 +74,7 @@ namespace storeroom.Application.Catalog.Materials
             throw new NotImplementedException();
         }
 
-        public async Task<PagedResult<MaterialViewModel>> GetAllPaging(GetMaterialPagingRequest request)
+        public async Task<PagedResult<MaterialViewModel>> GetAllPaging(SearchRequest request)
         {
             //1. Select join
             var query = from a in _context.Materials
@@ -88,6 +88,10 @@ namespace storeroom.Application.Catalog.Materials
             if (!string.IsNullOrEmpty(request.keyword))
             {
                 query = query.Where(x => x.a.DisplayName.Contains(request.keyword));
+            }
+            if (request.MaterialGroupId.HasValue)
+            {
+                query = query.Where(x => x.a.MaterialGroupId >= request.MaterialGroupId);
             }
             //3. Paging
             int totalRow = await query.CountAsync();
@@ -126,9 +130,49 @@ namespace storeroom.Application.Catalog.Materials
             return pagedResult;
         }
 
-        public Task<MaterialViewModel> GetDetail(int MaterialId)
+        public async Task<PagedResult<MaterialViewModel>> GetDetail(int MaterialId)
         {
-            throw new NotImplementedException();
+            var query = from a in _context.Materials
+                        join b in _context.Units on a.UnitId equals b.Id
+                        join c in _context.Units on a.UnitOrderId equals c.Id
+                        join d in _context.MaterialGroups on a.MaterialGroupId equals d.Id
+                        join e in _context.Countries on a.CountryId equals e.Id
+                        join f in _context.Brands on a.BrandId equals f.Id
+                        select new { a, b, c, d, e, f };
+            //2. filter
+                query = query.Where(x => x.a.Id == MaterialId);
+            var data = await query
+                       .Select(x => new MaterialViewModel()
+                       {
+                           Id = x.a.Id,
+                           MaterialCode = x.a.MaterialCode,
+                           Description = x.a.Description,
+                           Price = x.a.Price,
+                           YearManufacture = x.a.YearManufacture,
+                           UnitId = x.b.Id,
+                           UnitName = x.b.DisplayName,
+                           UnitOrderId = x.c.Id,
+                           UnitOrderName = x.c.DisplayName,
+                           MaterialGroupId = x.d.Id,
+                           MaterialGroupName = x.d.DisplayName,
+                           CountryId = x.e.Id,
+                           CountryName = x.e.DisplayName,
+                           BrandId = x.f.Id,
+                           BrandName = x.f.DisplayName,
+                           ExperyDate = x.a.ExperyDate,
+                           Status = x.a.Status,
+                           Img = x.a.Img,
+                           Specification = x.a.Specification,
+                           QRCode = x.a.QRCode
+                       }).ToListAsync();
+            //4. Select and projection
+            var pagedResult = new PagedResult<MaterialViewModel>()
+            {
+                TotalRecord = 1,
+                Items = data
+            };
+            return pagedResult;
+
         }
 
         public async Task<int> Update(MaterialUpdateRequest request)

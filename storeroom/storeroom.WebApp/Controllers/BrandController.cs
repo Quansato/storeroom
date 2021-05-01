@@ -43,5 +43,11 @@ namespace storeroom.WebApp.Controllers
             var result = await _brandService.Delete(ma);
             return Ok(result);
         }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            var brands = await _brandService.GetAll();
+            return Ok(brands);
+        }
     }
 }

@@ -6,27 +6,26 @@
         { name: "CreationTime", type: "date" },
         { name: "LastModificationTime", type: "date" },
 
-        { name: "ma", type: "string" },
+        { name: "materialCode", type: "string" },
         { name: "qrCode", type: "string" }, //
-        { name: "maNhomVatTu", type: "int", defaultValue: null, allowNull: true },
+        { name: "materialGroupId", type: "int", defaultValue: null, allowNull: true },
         { name: "maNhom", type: "string" },
-        { name: "tenNhom", type: "string" },
-        { name: "giaTri", type: "float", defaultValue: null, allowNull: true },
+        { name: "materialGroupName", type: "string" },
+        { name: "price", type: "float", defaultValue: null, allowNull: true },
         { name: "donViDatHang", type: "string" }, //
         { name: "donViPhatHanh", type: "string" }, //
-        { name: "nuocSanXuat", type: "int", defaultValue: null, allowNull: true },
-        { name: "tenNuocSanXuat", type: "string" },
-        { name: "hangSanXuat", type: "int", defaultValue: null, allowNull: true },
-        { name: "tenHangSanXuat", type: "string" },
+        { name: "countryId", type: "int", defaultValue: null, allowNull: true },
+        { name: "countryName", type: "string" },
+        { name: "brandId", type: "int", defaultValue: null, allowNull: true },
+        { name: "brandName", type: "string" },
         { name: "soLuongTrongKho", type: "float", defaultValue: null, allowNull: true },
-        { name: "hanSuDung", type: "string" },
-        { name: "trangThai", type: "string" }, //
+        { name: "expryDate", type: "string" },
+        { name: "status", type: "string" }, //
         { name: "rotating", type: "bool", defaultValue: null, allowNull: true },
         { name: "taiLieu", type: "string" },
-        { name: "thongSoKyThuat", type: "string" },
+        { name: "specification", type: "string" },
 
-        { name: "moTa", type: "string" },
-        { name: "phuTung", type: "bool", defaultValue: null, allowNull: true },
-        { name: "namSanXuat", type: "string" }
+        { name: "description", type: "string" },
+        { name: "yearManufature", type: "string" }
     ]
 });

@@ -1,8 +1,9 @@
 /*logo*/
-.main-logo{
-    background-color:white
+.main-logo {
+    background-color: white
 }
-    .main-logo img{
+
+    .main-logo img {
         top: 0 !important
     }
 
@@ -10,9 +11,11 @@
 .x-treelist-navigation .x-treelist-item-icon, .x-treelist-navigation .x-treelist-item-tool {
     color: #FFC900 !important;
 }
+
 .x-treelist-navigation .x-treelist-item-text {
     color: #fff !important;
 }
+
 .x-treelist-navigation .x-treelist-item-selected > .x-treelist-row:before {
     background-color: #FFC900 !important;
 }
@@ -26,13 +29,28 @@
     /* border-radius: 0.2rem !important; */
     background-color: #6512c2 !important;
 }
+
 .x-btn-soft-blue-small {
     border-color: #6512c2 !important;
+}
+
+.x-btn-soft-red-small {
+    -webkit-border-radius: 0.2rem !important;
+    -moz-border-radius: 0.2rem !important;
+    -ms-border-radius: 0.2rem !important;
+    border-radius: 0.2rem !important;
+    /* border-radius: 0.2rem !important; */
+    /*background-color: #6512c2 !important;*/
 }
 
 /*header*/
 .x-panel-header-title-light {
     color: #170085 !important;
+}
+
+.x-window-header-default {
+    border-width: 2px !important;
+    background-color: #170085 !important;
 }
 
 /*tabbar*/
@@ -47,6 +65,7 @@
 .x-tab.x-tab-active.x-tab-default .x-tab-icon-el {
     color: #170085 !important;
 }
+
 .x-tab-inner-default {
     color: #000 !important;
 }
@@ -57,4 +76,9 @@
 
 .x-panel-header-title-light > .x-title-icon-wrap-light > .x-title-icon-light {
     color: #170085 !important;
+}
+
+/*SweetAlert*/
+.swal2-container {
+    z-index: 99999 !important;
 }

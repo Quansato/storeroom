@@ -20,7 +20,7 @@ namespace storeroom.BackendApi.Controllers
         }
 
         [HttpGet()]
-        public async Task<IActionResult> Get([FromQuery] GetMaterialPagingRequest request)
+        public async Task<IActionResult> Get([FromQuery] SearchRequest request)
         {
             var materials = await _materialService.GetAllPaging(request);
             return Ok(materials);
@@ -42,6 +42,12 @@ namespace storeroom.BackendApi.Controllers
         {
             var result = await _materialService.Delete(MaterialId);
             return Ok(result);
+        }
+        [HttpGet("GetDetail")]
+        public async Task<IActionResult> GetDetail([FromQuery] int MaterialId)
+        {
+            var material = await _materialService.GetDetail(MaterialId);
+            return Ok(material);
         }
     }
 }

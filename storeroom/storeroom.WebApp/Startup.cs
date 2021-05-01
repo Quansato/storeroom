@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using storeroom.Application.Catalog.Brands;
+using storeroom.Application.Catalog.Countries;
 using storeroom.Application.Catalog.MaterialGroups;
 using storeroom.Application.Catalog.Materials;
 using storeroom.Application.Catalog.Storerooms;
@@ -76,6 +77,7 @@ namespace storeroom.WebApp
             //services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             //services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserApiClient,UserApiClient>();
+            services.AddTransient<ICountryService, CountryService>();
 
         }
 

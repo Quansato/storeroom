@@ -6,8 +6,8 @@
         { name: 'CreationTime', type: 'date' },
         { name: 'LastModificationTime', type: 'date' },
 
-        { name: "ma", type: "string" },
-        { name: "moTa", type: "string" }
+        { name: "id", type: "string" },
+        { name: "displayName", type: "string" }
 
     ]
 });

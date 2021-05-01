@@ -13,5 +13,7 @@ namespace storeroom.Application.Catalog.Brands
         Task<int> Update(BrandUpdateRequest request);
         Task<int> Delete(int BrandId);
         Task<PagedResult<BrandViewModel>> GetAllPaging(GetBrandPagingRequest request);
+        Task<List<BrandViewModel>> GetAll();
+
     }
 }

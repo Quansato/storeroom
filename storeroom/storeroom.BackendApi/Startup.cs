@@ -9,8 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using storeroom.Application.Catalog.Brands;
+using storeroom.Application.Catalog.Countries;
 using storeroom.Application.Catalog.MaterialGroups;
 using storeroom.Application.Catalog.Materials;
+using storeroom.Application.Catalog.PurchaseOrders;
 using storeroom.Application.Catalog.Storerooms;
 using storeroom.Application.Catalog.Users;
 using storeroom.Application.Catalog.Users.Dtos;
@@ -48,6 +50,8 @@ namespace storeroom.BackendApi
             services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+            services.AddTransient<ICountryService, CountryService>();
+            services.AddTransient<IPurchaseOrderService, PurchaseOrderService>();
             services.AddControllersWithViews().AddFluentValidation(fv=>fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
             services.AddSwaggerGen(options =>

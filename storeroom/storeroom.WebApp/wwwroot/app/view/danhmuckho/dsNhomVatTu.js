@@ -96,6 +96,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                         iconCls: "x-fa fa-search",
                         text: 'Tìm',
                         tabIndex: 12,
+                        ui: "soft-blue",
                         cls: "EnterToTab",
                         handler: "onSearchNhom"
                     }, {
@@ -283,6 +284,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                         text: 'Tìm',
                         tabIndex: 12,
                         cls: "EnterToTab",
+                        ui: 'soft-blue',
                         handler: "onSearch"
                     }]
                 }]
@@ -304,7 +306,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                     reference: "btnUpdate",
                     bind: { disabled: "{!rSelectVatTu}" },
                     text: 'Sửa',
-                    ui: "blue",
+                    ui: "soft-blue",
                     //hidden: !(abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Edit') || abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Manager')),
                     tooltip: 'Sửa',
                     handler: "onUpdate"
@@ -323,7 +325,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                     iconCls: 'fa fa-file-excel-o',
                     text: 'Xuất Excel',
                     //hidden: !(abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Edit') || abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Manager')),
-                    ui: 'blue',
+                    ui: 'soft-blue',
                     tooltip: 'Xuất Excel',
                     menu: new Ext.menu.Menu({
                         items: [{
@@ -354,29 +356,11 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                         store: "{sVatTu}"
                     },
                     style: "padding: 0px !important",
-                    //lastText: app.localize("ExtLastText"),
-                    //prevText: app.localize("ExtPrevText"),
-                    //firstText: app.localize("ExtFirstText"),
-                    //nextText: app.localize("ExtNextText"),
-                    //refreshText: app.localize("ExtRefreshText"),
-                    //beforePageText: app.localize("ExtBeforePageText"),
-                    //afterPageText: app.localize("ExtAfterPageText"),
-                    //displayMsg: app.localize("ExtDisplayMsg"),
+                    beforePageText: "Trang",
+                    //afterPageText: "của {0}",
+                    displayMsg: "{0} - {1} của {2}",
                     //emptyMsg: app.localize("ExtEmptyMsg"),
-                    listeners: {
-                        beforechange: function (page, currentPage) {
-                            //--- Get Proxy ------//
-                            var myProxy = this.store.getProxy();
-                            //--- Define Your Parameter for send to server ----//
-                            myProxy.params = {
-                                skipCount: 0,
-                                maxResultCount: 0
-                            };
-                            //--- Set value to your parameter  ----//
-                            myProxy.setExtraParam("skipCount", (currentPage - 1) * this.store.pageSize);
-                            myProxy.setExtraParam("maxResultCount", this.store.pageSize);
-                        }
-                    }
+                    
                 }]
             }]
         }],
@@ -402,46 +386,42 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
         me.onSearch();
     },
     // #region param
-    //fnGetTxtSearch: function () {
-    //    var me = this;
-    //    return me.refs.txtSearch.getValue();
-    //},
+    fnGetTxtSearch: function () {
+        var me = this;
+        return me.refs.txtSearch.getValue();
+    },
 
-    //fnGetNhomId: function () {
-    //    var me = this;
-    //    var gridNhomVatTu = me.refs.gridNhomVatTu;
-    //    var records = gridNhomVatTu.getSelectionModel().getSelection();
-    //    var record = records && records.length > 0 ? records[0] : null;
-    //    if (record) return record.get("id");
-    //},
+    fnGetNhomId: function () {
+        var me = this;
+        var gridNhomVatTu = me.refs.gridNhomVatTu;
+        var records = gridNhomVatTu.getSelectionModel().getSelection();
+        var record = records && records.length > 0 ? records[0] : null;
+        if (record) return record.get("id");
+    },
     //// #region VatTu
 
-    //specialkeyVT: function (field, e) {
-    //    var me = this;
-    //    if (e.getKey() == e.ENTER) {
-    //        me.onSearch();
-    //    }
-    //},
+    specialkeyVT: function (field, e) {
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.onSearch();
+        }
+    },
 
     onSearch: function () {
         var me = this;
-        //var id = me.fnGetNhomId();
-        //var txt = me.fnGetTxtSearch();
+        var id = me.fnGetNhomId();
+        var txt = me.fnGetTxtSearch();
         //var query = abp.utils.buildQueryString([
         //    { name: "filter", value: txt },
         //    { name: "maNhomVatTu", value: id == 0 ? null : id }
         //]);
-        var url ="api/Material?page=1&start=0&limit=5";
+        var url = "api/Material?page=1&start=0&limit=25&keyword=" + txt + "&MaterialGroupId=" + id;
         var store = me.storeInfo.sVatTu;
         store.proxy.api.read = url;
         store.proxy.pageParam = undefined;
         store.proxy.limitParam = undefined;
         store.proxy.startParam = undefined;
         store.load({
-            //params: {
-            //    skipCount: 0,
-            //    maxResultCount: store.pageSize
-            //},
             scope: this,
             callback: function (records, operation, success) {
                 if (records == null) {
@@ -453,6 +433,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
 
     onAdd: function () {
         var me = this;
+        //swal("Good job!", "You clicked the button!", "success");
         var rSelectNhomVatTu = me.getViewModel().get("rSelectNhomVatTu");
         //if (!rSelectNhomVatTu) return;
         //if (rSelectNhomVatTu.get("ma") == app.localize("DanhMuc_TatCa")) {
@@ -482,21 +463,22 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
         }).show();
     },
 
-    //onUpdate: function () {
-    //    var me = this;
-    //    var record = me.getViewModel().get("rSelectVatTu");
-    //    Ext.create("Admin.view.danhmuckho.cnKhoVatTu", {
-    //        title: app.localize("DanhMuc_CapNhat", app.localize("KhoVatTu_VatTu").toLowerCase()),
-    //        viewModel: {
-    //            data: {
-    //                record: record,
-    //                fnSauKhiSave: function () {
-    //                    me.onSearch();
-    //                }
-    //            }
-    //        }
-    //    }).show();
-    //},
+    onUpdate: function () {
+        var me = this;
+        var record = me.getViewModel().get("rSelectVatTu");
+        console.log(record)
+        Ext.create("Admin.view.danhmuckho.cnKhoVatTu", {
+            title: "Cập nhật vật tư",
+            viewModel: {
+                data: {
+                    record: record,
+                    fnSauKhiSave: function () {
+                        me.onSearch();
+                    }
+                }
+            }
+        }).show();
+    },
 
     //onDelete: function () {
     //    var me = this;
@@ -550,19 +532,19 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
         }).show();
     },
 
-    //specialkey: function (field, e) {
-    //    var me = this;
-    //    if (e.getKey() == e.ENTER) {
-    //        me.onSearchNhom();
-    //    }
-    //},
+    specialkey: function (field, e) {
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.onSearchNhom();
+        }
+    },
 
     onSearchNhom: function () {
         var me = this;
         var sNhomVatTu = me.storeInfo.sNhomVatTu;
-        //var txtSearch = me.refs.txtFilter.getValue();
+        var txtSearch = me.refs.txtFilter.getValue();
         //var query = abp.utils.buildQueryString([{ name: "filter", value: txtSearch }]);
-        var url = "api/MaterialGroup?page=1&start=0&limit=5";
+        var url = "api/MaterialGroup?page=1&start=0&limit=25&keyword=" + txtSearch;
         sNhomVatTu.proxy.api.read = url;
         sNhomVatTu.proxy.pageParam = undefined;
         sNhomVatTu.proxy.limitParam = undefined;
@@ -577,7 +559,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
                 if (records == null) {
                     sNhomVatTu.removeAll();
                 }
-                if (isEmpty(txtSearch)) {
+                if (me.refs.txtSearch.getValue() == "") {
                     var rTatCa = Ext.create("Admin.model.mKhoNhomVatTu", {
                         id: 0,
                         qrCode: "Tất cả",
@@ -590,14 +572,14 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
         });
     },
 
-    //onSelectNhomVatTu: function (grid, record) {
-    //    var me = this;
-    //    //me.refs.btnAdd.setDisabled(false)
-    //    //if (record.get('ma') == "Tất cả") {
-    //    //    me.refs.btnAdd.setDisabled(true)
-    //    //}
-    //    me.onSearch();
-    //},
+    onSelectNhomVatTu: function (grid, record) {
+        var me = this;
+        //me.refs.btnAdd.setDisabled(false)
+        //if (record.get('ma') == "Tất cả") {
+        //    me.refs.btnAdd.setDisabled(true)
+        //}
+        me.onSearch();
+    },
 
     //onXuatExcel: function () {
     //    var me = this;

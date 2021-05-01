@@ -42,14 +42,14 @@ Ext.define("Admin.view.danhmuckho.wdKhoNhomVatTu", {
                 xtype: "gridcolumn",
                 header: 'Mã',
                 width: 120,
-                dataIndex: "ma"
+                dataIndex: "qrCode"
             },
             {
                 xtype: "gridcolumn",
                 header: 'Tên',
                 minWidth: 120,
                 flex: 1,
-                dataIndex: "moTa"
+                dataIndex: "displayName"
             },
             {
                 xtype: "gridcolumn",
@@ -103,6 +103,7 @@ Ext.define("Admin.view.danhmuckho.wdKhoNhomVatTu", {
                         text: 'Tìm',
                         tabIndex: 12,
                         cls: "EnterToTab",
+                        ui: "soft-blue",
                         handler: "onSearch"
                     }]
                 }]
@@ -213,7 +214,7 @@ Ext.define("Admin.view.danhmuckho.wdKhoNhomVatTuController", {
         var me = this;
         me.refs = me.getReferences();
         me.storeInfo = me.getViewModel().storeInfo;
-        //me.onSearch();
+        me.onSearch();
     },
 
     specialkey: function (field, e) {
@@ -223,32 +224,32 @@ Ext.define("Admin.view.danhmuckho.wdKhoNhomVatTuController", {
         }
     },
 
-    //onSearch: function () {
-    //    var me = this;
-    //    var txt = me.refs.txtSearch.getValue();
-    //    var query = abp.utils.buildQueryString([{ name: "filter", value: txt }]);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoNhomVatTu/GetAll" + query;
-    //    var store = me.getViewModel().get("store");
-    //    var view = me.getView();
-    //    view.setLoading(true);
-    //    store.proxy.api.read = url;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            view.setLoading(false);
-    //            if (records == null) {
-    //                store.removeAll();
-    //            }
-    //        }
-    //    });
-    //},
+    onSearch: function () {
+        var me = this;
+        var txt = me.refs.txtSearch.getValue();
+        //var query = abp.utils.buildQueryString([{ name: "filter", value: txt }]);
+        var url = "api/MaterialGroup?page=1&start=0&limit=25&keyword=" + txt;
+        var store = me.getViewModel().get("store");
+        var view = me.getView();
+        view.setLoading(true);
+        store.proxy.api.read = url;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.load({
+            params: {
+                skipCount: 0,
+                maxResultCount: store.pageSize
+            },
+            scope: this,
+            callback: function (records, operation, success) {
+                view.setLoading(false);
+                if (records == null) {
+                    store.removeAll();
+                }
+            }
+        });
+    },
 
     onAdd: function () {
         var me = this;
@@ -266,36 +267,60 @@ Ext.define("Admin.view.danhmuckho.wdKhoNhomVatTuController", {
         }).show();
     },
 
-    //onUpdate: function () {
-    //    var me = this;
-    //    var record = me.getViewModel().get("rSelected");
-    //    Ext.create("Admin.view.danhmuckho.cnNhomVatTu", {
-    //        title: app.localize("DanhMuc_CapNhat", app.localize("CMMSKhoNhomVatTu").toLowerCase()),
-    //        viewModel: {
-    //            data: {
-    //                record: record,
-    //                fnSauKhiSave: function () {
-    //                    me.onSearch();
-    //                }
-    //            }
-    //        }
-    //    }).show();
-    //},
+    onUpdate: function () {
+        var me = this;
+        var record = me.getViewModel().get("rSelected");
+        Ext.create("Admin.view.danhmuckho.cnNhomVatTu", {
+            title: "Cập nhật nhóm vật tư",
+            viewModel: {
+                data: {
+                    record: record,
+                    fnSauKhiSave: function () {
+                        me.onSearch();
+                    }
+                }
+            }
+        }).show();
+    },
 
-    //onDelete: function () {
-    //    var me = this;
-    //    var record = this.getViewModel().get("rSelected");
-    //    if (record != undefined && record != null) {
-    //        abp.message.confirm(app.localize("DanhMuc_DeleteMessage", app.localize("Kho_NhomVatTu_HeaderTitle").toLowerCase(), record.data.ma), app.localize("AreYouSure"), function (isConfirmed) {
-    //            if (isConfirmed) {
-    //                _nhomVatTuServices.delete({ id: record.data.id }).done(function () {
-    //                    me.onSearch();
-    //                    abp.notify.success(app.localize("SuccessfullyDeleted"));
-    //                });
-    //            }
-    //        });
-    //    }
-    //},
+    onDelete: function () {
+        var me = this;
+        var record = this.getViewModel().get("rSelected");
+        console.log(record)
+        if (record != undefined && record != null) {
+            Swal.fire({
+                title: 'Bạn có chắc chắn?',
+                text: "Bạn có muốn xoá dữ liệu này?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText:'Huỷ bỏ',
+                confirmButtonText: 'Đồng ý'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var url = "api/MaterialGroup/" + record.data.id
+                    app.mUtils.fnDELETEAjax(url, function (response) {
+                        if (response == 1) {
+                            Swal.fire(
+                                'Deleted!',
+                                '"Xoá dữ liệu thành công',
+                                'success'
+                            )
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Xoá dữ liệu thất bại!',
+                            })
+                        }
+                        me.onSearch()
+                    })
+                }
+            })
+
+        }
+    },
 
     //onXuatExcel: function () {
     //    var me = this;

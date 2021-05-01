@@ -69,7 +69,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                             items: [{
                                 xtype: "textfield",
                                 fieldLabel: 'Nhóm vật tư' /*+ app.gplatformconsts.var_required*/,
-                                bind: "{record.tenNhom}",
+                                bind: "{record.materialGroupName}",
                                 readOnly: true,
                                 allowBlank: false,
                                 flex: 1
@@ -95,7 +95,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                                     reference: "maNhom",
                                     flex: 0.5,
                                     bind: {
-                                        value: "{record.maNhom}",
+                                        value: "{record.materialCode}",
                                         hidden: "{record.id != 0}"
                                     }
                                 },
@@ -115,7 +115,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                                 {
                                     fieldLabel: 'Mã vật tư' /*+ app.gplatformconsts.var_required*/,
                                     bind: {
-                                        value: "{record.ma}",
+                                        value: "{record.materialCode}",
                                         hidden: "{record.id == 0}"
                                     }
                                 }]
@@ -136,7 +136,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                             fieldLabel: 'Mô tả' /*+ app.gplatformconsts.var_required*/,
                             allowBlank: false,
                             name: "moTa",
-                            bind: "{record.moTa}"
+                            bind: "{record.description}"
                         }]
                 }, {
                     xtype: "fieldcontainer",
@@ -148,14 +148,14 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                     },
                     items: [{
                         xtype: "currencyfield",
-                        name: "giaTri",
+                        name: "price",
                         fieldLabel: 'Đơn giá',
-                        bind: "{record.giaTri}"
+                        bind: "{record.price}"
                     }, {
                         xtype: "textfield",
                         fieldLabel: 'Năm sản xuất',
-                        name: "namSanXuat",
-                        bind: "{record.namSanXuat}"
+                        name: "yearManufacture",
+                        bind: "{record.yearManufacture}"
                     }]
                 }, {
                     xtype: "fieldcontainer",
@@ -168,12 +168,12 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                     },
                     items: [{
                         fieldLabel: 'Đơn vị tính',
-                        name: "donViXuatKho",
-                        bind: "{record.donViPhatHanh}"
+                        name: "unitName",
+                        bind: "{record.unitName}"
                     }, {
                         fieldLabel: 'Đơn vị đặt hàng',
-                        name: "donViDatHang",
-                        bind: "{record.donViDatHang}"
+                        name: "unitOrderName",
+                        bind: "{record.unitOrderName}"
                     }]
                 }, {
                     xtype: "fieldcontainer",
@@ -186,23 +186,24 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                     },
                     items: [{
                         name: "nuocSanXuat",
-                        fieldLabel:'Nước sản xuất',
+                        fieldLabel: 'Nước sản xuất',
                         queryMode: "local",
-                        displayField: "moTa",
+                        displayField: "displayName",
                         valueField: "id",
                         bind: {
                             store: "{sNuocSanXuat}",
-                            value: "{record.nuocSanXuat}"
+
+                            value: "{record.countryId}"
                         }
                     }, {
                         name: "hangSanXuat",
                         fieldLabel: 'Hãng sản xuất',
                         queryMode: "local",
-                        displayField: "moTa",
+                        displayField: "displayName",
                         valueField: "id",
                         bind: {
                             store: "{sHangSanXuat}",
-                            value: "{record.hangSanXuat}"
+                            value: "{record.brandId}"
                         }
                     }]
                 }, {
@@ -215,8 +216,8 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                     },
                     items: [{
                         xtype: "textfield",
-                        name: "hanSuDung",
-                        bind: "{record.hanSuDung}",
+                        name: "experyDate",
+                        bind: "{record.experyDate}",
                         fieldLabel: 'Hạn sử dụng'
                     }, {
                         xtype: "combo",
@@ -227,13 +228,13 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                         valueField: "ma",
                         editable: false,
                         bind: {
-                            value: "{record.trangThai}"
+                            value: "{record.status}"
                         },
                         store: Ext.create("Ext.data.Store", {
                             fields: ["ma", "ten"],
                             data: [
-                                { ma: "active", ten: 'Hoạt động' },
-                                { ma: "pending", ten: 'Không hoạt động' }
+                                { ma: true, ten: 'Hoạt động' },
+                                { ma: true, ten: 'Không hoạt động' }
                             ]
                         })
                     }]
@@ -280,7 +281,8 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                         fieldLabel: 'Thiết bị',
                         name: "rotating"
                     }]
-                }, {
+                },
+                {
                     xtype: "grid",
                     ui: 'light',
                     iconCls: "x-fa fa-retweet",
@@ -305,7 +307,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                         }]
                     },
                     reference: "gridThayThe",
-                    height: 300 ,
+                    height: 300,
                     layout: "fit",
                     bind: {
                         store: "{sVatTu}",
@@ -397,7 +399,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                     padding: "0 5 0 0",
                     reference: "txtTSKT",
                     bind: {
-                        value: "{record.thongSoKyThuat}"
+                        value: "{record.specification}"
                     },
                     enableColors: false,
                     enableAlignments: false
@@ -633,8 +635,8 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
         var me = this;
         me.refs = me.getReferences();
         me.storeInfo = me.getViewModel().storeInfo;
-        //me.fnLoadHangSanXuat();
-        //me.fnLoadNuocSanXuat();
+        me.fnLoadHangSanXuat();
+        me.fnLoadNuocSanXuat();
         //me.fnLoadVatTuTT();
         //me.refs.dtvHinhAnh.getStore().loadData([]);
         //me.onLoadFile();
@@ -655,51 +657,51 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
         //me.onTimKiemKho();
     },
 
-    //fnLoadHangSanXuat: function () {
-    //    var me = this;
-    //    var store = me.storeInfo.sHangSanXuat;
-    //    var url = abp.appPath + "api/services/app/CMMSDMHangSanXuat/GetAll";
-    //    store.proxy.api.read = url;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.pageSize = 1000;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            if (records == null) {
-    //                store.removeAll();
-    //            }
-    //        }
-    //    });
-    //},
+    fnLoadHangSanXuat: function () {
+        var me = this;
+        var store = me.storeInfo.sHangSanXuat;
+        var url = "api/Brand/GetAll";
+        store.proxy.api.read = url;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.pageSize = 1000;
+        store.load({
+            params: {
+                skipCount: 0,
+                maxResultCount: store.pageSize
+            },
+            scope: this,
+            callback: function (records, operation, success) {
+                if (records == null) {
+                    store.removeAll();
+                }
+            }
+        });
+    },
 
-    //fnLoadNuocSanXuat: function () {
-    //    var me = this;
-    //    var store = me.storeInfo.sNuocSanXuat;
-    //    var url = abp.appPath + "api/services/app/CMMSDMNuocSanXuat/GetAll";
-    //    store.proxy.api.read = url;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.pageSize = 1000;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            if (records == null) {
-    //                store.removeAll();
-    //            }
-    //        }
-    //    });
-    //},
+    fnLoadNuocSanXuat: function () {
+        var me = this;
+        var store = me.storeInfo.sNuocSanXuat;
+        var url = "api/Country/GetAll";
+        store.proxy.api.read = url;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.pageSize = 1000;
+        store.load({
+            params: {
+                skipCount: 0,
+                maxResultCount: store.pageSize
+            },
+            scope: this,
+            callback: function (records, operation, success) {
+                if (records == null) {
+                    store.removeAll();
+                }
+            }
+        });
+    },
 
     //blurMa: function () {
     //    var me = this;
@@ -873,73 +875,76 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
     //    me.onLoadFile();
     //},
 
-    //onSave: function () {
-    //    this.fnSave();
-    //},
+    onSave: function () {
+        this.fnSave();
+    },
 
-    //fnSave: function (callback) {
-    //    var me = this;
-    //    var form = me.refs.frmKhoVatTu;
-    //    if (!form.getForm().isValid()) {
-    //        abp.notify.warn(app.localize("TaiSan_isValid"));
-    //        return;
-    //    }
-    //    var record = me.getViewModel().get("record");
-    //    var ma = record.get("ma");
-    //    var maNhom = record.get("maNhom");
-    //    //Ko cần xử lý
-    //    //if (maNhom != undefined && !ma.includes(maNhom)) {
-    //    //    record.set("ma", maNhom + "." + ma);
-    //    //}
-    //    var tsKyThuat = me.refs.txtTSKT.getValue();
-    //    record.set("thongSoKyThuat", tsKyThuat);
+    fnSave: function (callback) {
+        var me = this;
+        var form = me.refs.frmKhoVatTu;
+        //if (!form.getForm().isValid()) {
+        //    abp.notify.warn(app.localize("TaiSan_isValid"));
+        //    return;
+        //}
 
-    //    var fnSauKhiSave = me.getViewModel().get("fnSauKhiSave");
-    //    var view = me.getView();
-    //    view.setLoading(true);
-    //    if (record.data.id == 0) {
-    //        _vatTuServices
-    //            .create(record.data)
-    //            .done(function (data) {
-    //                abp.notify.success(app.localize('SavedSuccessfully'));
-    //                record.set("id", data.id);
-    //                if (fnSauKhiSave) fnSauKhiSave();
-    //                if (callback) callback(me);
-    //            })
-    //            .always(function () {
-    //                view.setLoading(false);
-    //            });
-    //    } else {
-    //        _vatTuServices
-    //            .update(record.data)
-    //            .done(function () {
-    //                abp.notify.success(app.localize('SavedSuccessfully'));
-    //                if (fnSauKhiSave) fnSauKhiSave();
-    //                if (callback) callback(me);
-    //            })
-    //            .always(function () {
-    //                view.setLoading(false);
-    //            });
-    //    }
-    //},
+        var record = me.getViewModel().get("record");
+        console.log(record)
+        return
+        var ma = record.get("ma");
+        var maNhom = record.get("maNhom");
+        //Ko cần xử lý
+        //if (maNhom != undefined && !ma.includes(maNhom)) {
+        //    record.set("ma", maNhom + "." + ma);
+        //}
+        var tsKyThuat = me.refs.txtTSKT.getValue();
+        record.set("thongSoKyThuat", tsKyThuat);
 
-    //onClickTaiLieu: function () {
-    //    var me = this;
-    //    var record = me.getViewModel().get("record");
-    //    var pathDinhKem = 'khodata/CMMSKhoVatTu/' + record.get('id') + '/tailieu';
-    //    Ext.create("Admin.view.utils.cnFileManager", {
-    //        title: app.localize("FileManager_ListFile"),
-    //        viewModel: {
-    //            data: {
-    //                pathFolder: pathDinhKem,
-    //                isEdit: (abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Edit') || abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Manager')),
-    //                fnCallBack: function (records) {
-    //                    me.onLoadFile();
-    //                }
-    //            }
-    //        }
-    //    }).show();
-    //},
+        var fnSauKhiSave = me.getViewModel().get("fnSauKhiSave");
+        var view = me.getView();
+        view.setLoading(true);
+        if (record.data.id == 0) {
+            _vatTuServices
+                .create(record.data)
+                .done(function (data) {
+                    abp.notify.success(app.localize('SavedSuccessfully'));
+                    record.set("id", data.id);
+                    if (fnSauKhiSave) fnSauKhiSave();
+                    if (callback) callback(me);
+                })
+                .always(function () {
+                    view.setLoading(false);
+                });
+        } else {
+            _vatTuServices
+                .update(record.data)
+                .done(function () {
+                    abp.notify.success(app.localize('SavedSuccessfully'));
+                    if (fnSauKhiSave) fnSauKhiSave();
+                    if (callback) callback(me);
+                })
+                .always(function () {
+                    view.setLoading(false);
+                });
+        }
+    },
+
+    onClickTaiLieu: function () {
+        var me = this;
+        var record = me.getViewModel().get("record");
+        var pathDinhKem = 'khodata/CMMSKhoVatTu/' + record.get('id') + '/tailieu';
+        Ext.create("Admin.view.utils.cnFileManager", {
+            title: app.localize("FileManager_ListFile"),
+            viewModel: {
+                data: {
+                    pathFolder: pathDinhKem,
+                    isEdit: (abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Edit') || abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Manager')),
+                    fnCallBack: function (records) {
+                        me.onLoadFile();
+                    }
+                }
+            }
+        }).show();
+    },
 
     //onSelectTaiLieu: function () {
     //    var me = this;
