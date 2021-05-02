@@ -12,6 +12,7 @@ using storeroom.Application.Catalog.Brands;
 using storeroom.Application.Catalog.Countries;
 using storeroom.Application.Catalog.MaterialGroups;
 using storeroom.Application.Catalog.Materials;
+using storeroom.Application.Catalog.Outputs;
 using storeroom.Application.Catalog.PurchaseOrders;
 using storeroom.Application.Catalog.Storerooms;
 using storeroom.Application.Catalog.Users;
@@ -52,6 +53,7 @@ namespace storeroom.BackendApi
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<IPurchaseOrderService, PurchaseOrderService>();
+            services.AddTransient<IOutputService, OutputService>();
             services.AddControllersWithViews().AddFluentValidation(fv=>fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
             services.AddSwaggerGen(options =>

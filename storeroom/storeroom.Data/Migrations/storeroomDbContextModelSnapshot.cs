@@ -266,6 +266,9 @@ namespace storeroom.Data.Migrations
                     b.Property<DateTime>("DateInput")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DateStatus")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("DeliveryUnit")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -604,6 +607,9 @@ namespace storeroom.Data.Migrations
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DateDocument")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DateOutput")
                         .HasColumnType("datetime2");
 
@@ -625,12 +631,12 @@ namespace storeroom.Data.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Recipient")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StoreroomId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StoreroomReceiveId")
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
@@ -638,7 +644,7 @@ namespace storeroom.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StoreroomId");
+                    b.HasIndex("StoreroomReceiveId");
 
                     b.HasIndex("UserId");
 
@@ -1090,9 +1096,7 @@ namespace storeroom.Data.Migrations
                 {
                     b.HasOne("storeroom.Data.Entities.Storeroom", "Storeroom")
                         .WithMany("Outputs")
-                        .HasForeignKey("StoreroomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StoreroomReceiveId");
 
                     b.HasOne("storeroom.Data.Entities.AppUser", "AppUser")
                         .WithMany("Outputs")

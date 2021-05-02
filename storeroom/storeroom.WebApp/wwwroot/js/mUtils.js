@@ -88,6 +88,22 @@
             });
         },
         /**
+         * 
+         * @param {any} source
+         */
+        deepCloneStore: function (source) {
+            source = Ext.isString(source) ? Ext.data.StoreManager.lookup(source) : source;
+
+            var target = Ext.create(source.$className, {
+                model: source.model,
+            });
+
+            target.add(Ext.Array.map(source.getRange(), function (record) {
+                return record.clone();
+            }));
+            return target;
+        },
+        /**
          * Format tiền tệ
          *
          */

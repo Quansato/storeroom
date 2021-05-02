@@ -16,6 +16,6 @@ namespace storeroom.Application.Catalog.PurchaseOrders.Dtos
         public int SuplierId { get; set; }
         public int Priority { get; set; }
         public Guid UserId { get; set; }
-        public List<MaterialPurchaseOrderCreateRequest> MaterialPuchaseOrder { get; set; }
+        public List<MaterialPurchaseOrder> MaterialPuchaseOrder { get; set; }
     }
 }

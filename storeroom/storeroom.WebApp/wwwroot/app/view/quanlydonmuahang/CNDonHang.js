@@ -103,7 +103,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                         margin: '0 0 0 5',
                         bind: {
                             readOnly: '{!recordPhieu.id==0}',
-                            value: '{recordPhieu.soDonHang}'
+                            value: '{recordPhieu.code}'
                         },
                         labelWidth: 140,
                         reference: 'txtSoPhieu',
@@ -130,7 +130,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                     labelAlign: 'right',
                     labelWidth: 118,
                     fieldLabel: 'Tên đơn hàng'/* + app.gplatformconsts.var_required*/,
-                    bind: '{recordPhieu.moTa}',
+                    bind: '{recordPhieu.nameOfOrder}',
                     allowBlank: false,
                     flex: 1,
                     blankText: 'Tên đơn hàng không được để trống'
@@ -149,7 +149,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                     labelWidth: 140,
                     margin: '0 5 0 5',
                     fieldLabel: 'Ngày lên đơn' /*+ " " + app.gplatformconsts.var_required*/,
-                    bind: '{recordPhieu.thoiGian}',
+                    bind: '{recordPhieu.date}',
                     allowBlank: false,
                     blankText: 'Ngày lên đơn không được để trống',
                     format: 'd/m/Y',
@@ -162,7 +162,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                     editable: false,
                     //readOnly: !abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager'),
                     displayField: 'name',
-                    bind: '{recordPhieu.tinhTrangDon}',
+                    bind: '{recordPhieu.status}',
                     valueField: 'value',
                     store: Ext.create('Ext.data.Store',
                         {
@@ -198,13 +198,13 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                         labelWidth: 140,
                         flex: 1,
                         bind: {
-                            value: '{recordPhieu.tenNguoiMua}'
+                            value: '{recordPhieu.userName}'
                         }
                     }, {
                         margin: '0 0 0 0',
                         xtype: 'button',
                         bind: {
-                            disabled: '{recordPhieu.tinhTrangDon==1}'
+                            disabled: '{recordPhieu.status==1}'
                         },
                         tooltip: 'Chọn người mua',
                         //hidden: !(abp.auth.hasPermission('CMMS.Inventory.MuaHang.Edit') || abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager')),
@@ -252,7 +252,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                     displayField: 'moTa',
                     valueField: 'id',
                     bind: {
-                        value: '{recordPhieu.nhaCungCap}',
+                        value: '{recordPhieu.suplierId}',
                         store: '{storeNhaCungCap}'
                     },
                     triggerAction: 'all',
@@ -264,14 +264,14 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                     editable: false,
                     labelWidth: 115,
                     displayField: 'name',
-                    bind: '{recordPhieu.mucDoKhanCap}',
+                    bind: '{recordPhieu.priority}',
                     valueField: 'value',
                     store: Ext.create('Ext.data.Store',
                         {
                             fields: ['name', 'value'],
-                            data: [{ value: 'uutienthap', name: 'Ưu tiên thấp' },
-                            { value: 'uutientrungbinh', name: 'Ưu tiên trung bình' },
-                            { value: 'uutiencao', name: 'Ưu tiên cao' }]
+                            data: [{ value: '0', name: 'Ưu tiên thấp' },
+                            { value: '1', name: 'Ưu tiên trung bình' },
+                            { value: '2', name: 'Ưu tiên cao' }]
                         }),
                     triggerAction: 'all',
                     queryMode: 'local'
@@ -384,6 +384,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                 //hidden: !(abp.auth.hasPermission('CMMS.Inventory.MuaHang.Edit') || abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager')),
                 handler: 'onLichSuThayDoiTrangThai',
                 iconCls: 'x-fa fa-exchange',
+                hidden: true,
                 bind: {
                     disabled: '{!recordPhieu.id>0}'
                 }
@@ -392,9 +393,10 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                 margin: '0 0 0 10',
                 //hidden: !(abp.auth.hasPermission('CMMS.Inventory.MuaHang.Edit') || abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager')),
                 text: 'Thêm vật tư',
-                //bind: {
-                //    hidden: '{recordPhieu.tinhTrangDon==1}'
-                //},
+                bind: {
+                    hidden: '{recordPhieu.status==1}'
+                },
+                ui: 'soft-blue',
                 handler: 'onTimKiemvatTuNangCao',
                 iconCls: 'x-fa fa-plus'
             }]
@@ -439,7 +441,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                 }
             }, {
                 text: 'Đơn vị tính',
-                dataIndex: 'donViTinhThuc',
+                dataIndex: 'unit',
                 border: 1,
                 style: 'text-align:center',
                 align: 'left',
@@ -448,14 +450,14 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                 text: 'Số lượng',
                 columns: [{
                     text: 'Chứng từ',
-                    dataIndex: 'soLuong',
+                    dataIndex: 'quantity',
                     border: 1,
                     style: 'text-align:center',
                     align: 'right',
                     width: 100,
                     renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
                         if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                            return app.mUtils.fnFormatCurrency(value, 2);
                         }
                     },
                     editor: {
@@ -495,14 +497,14 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
             }, {
                 xtype: 'numbercolumn',
                 text: 'Đơn giá',
-                dataIndex: 'donGia',
+                dataIndex: 'price',
                 style: 'text-align:center',
                 align: 'right',
                 border: 1,
                 width: 125,
                 renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
                     if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                        return app.mUtils.fnFormatcurrency(value, 2);
                     }
                 },
                 editor: {
@@ -514,20 +516,20 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
             {
                 xtype: 'numbercolumn',
                 text: 'Thành tiền',
-                dataIndex: 'thanhTien',
+                dataIndex: 'total',
                 border: 1,
                 style: 'text-align:center',
                 align: 'right',
                 width: 145,
                 renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
                     if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
                 },
                 summaryType: 'sum',
                 summaryRenderer: function (value, summaryData, dataIndex) {
                     if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
                 }
             }, {
@@ -703,11 +705,11 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHangController', {
         //    }
         //};
         //abp.event.on('abp.notifications.receivedEKGISData', me.pubSub);
-        //me.ref = me.getReferences();
-        //me.storeinfo = me.getViewModel().storeInfo;
-        //me.loadKho();
+        me.ref = me.getReferences();
+        me.storeinfo = me.getViewModel().storeInfo;
+        me.loadKho();
         //me.onNhaCungCap();
-        //var record = me.getViewModel().data.recordPhieu;
+        var record = me.getViewModel().data.recordPhieu;
         //if (record.get('id') == 0) {
         //    record.set("tenNguoiMua", app.session.user.surname + " " + app.session.user.name);
         //    record.set("nguoiMua", app.session.user.id);

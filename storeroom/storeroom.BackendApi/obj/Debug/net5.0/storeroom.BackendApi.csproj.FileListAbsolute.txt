@@ -81,6 +81,14 @@ E:\Đồ án\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Microsoft
 E:\Đồ án\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 E:\Đồ án\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 E:\Đồ án\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.csprojAssemblyReference.cache
+E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.GeneratedMSBuildEditorConfig.editorconfig
+E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.AssemblyInfoInputs.cache
+E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.AssemblyInfo.cs
+E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.csproj.CoreCompileInputs.cache
+E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.MvcApplicationPartsAssemblyInfo.cache
+E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.RazorAssemblyInfo.cache
+E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.RazorAssemblyInfo.cs
 E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\appsettings.Development.json
 E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\appsettings.json
 E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\storeroom.BackendApi.exe
@@ -92,6 +100,9 @@ E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\ref\storeroom.Bac
 E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\storeroom.BackendApi.pdb
 E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\storeroom.BackendApi.Views.dll
 E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\storeroom.BackendApi.Views.pdb
+E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\FluentValidation.dll
+E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
+E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll
 E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
@@ -135,15 +146,6 @@ E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\storeroom.Applica
 E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\storeroom.Data.dll
 E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\storeroom.Application.pdb
 E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\storeroom.Data.pdb
-E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.csprojAssemblyReference.cache
-E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.GeneratedMSBuildEditorConfig.editorconfig
-E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.AssemblyInfoInputs.cache
-E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.AssemblyInfo.cs
-E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.csproj.CoreCompileInputs.cache
-E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.MvcApplicationPartsAssemblyInfo.cs
-E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.MvcApplicationPartsAssemblyInfo.cache
-E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.RazorAssemblyInfo.cache
-E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.RazorAssemblyInfo.cs
 E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\staticwebassets\storeroom.BackendApi.StaticWebAssets.Manifest.cache
 E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\staticwebassets\storeroom.BackendApi.StaticWebAssets.xml
 E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\scopedcss\bundle\storeroom.BackendApi.styles.css
@@ -165,6 +167,3 @@ E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.Backend
 E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\ref\storeroom.BackendApi.dll
 E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.pdb
 E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.genruntimeconfig.cache
-E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\FluentValidation.dll
-E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
-E:\G\storeroom\storeroom\storeroom.BackendApi\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll

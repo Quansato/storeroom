@@ -12,6 +12,7 @@ namespace storeroom.Data.Entities
         public int StoreroomId { get; set; }
         public string Shipper { get; set; }
         public DateTime DateInput { get; set; }
+        public DateTime? DateStatus { get; set; }
         public DateTime CreationTime { get; set; }
         public string Description { get; set; }
         public Guid UserId { get; set; }

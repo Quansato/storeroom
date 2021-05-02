@@ -18,12 +18,46 @@ namespace storeroom.BackendApi.Controllers
         {
             _purchaseOrderService = purchaseOrderService;
         }
+        [HttpGet()]
+        public async Task<IActionResult> Get([FromQuery] PurchaseOrderSearchRequest request)
+        {
+            var materials = await _purchaseOrderService.GetAllPaging(request);
+            return Ok(materials);
+        }
+        [HttpGet("PurchaseId")]
+        public async Task<IActionResult> GetMaterialByPurchaseId(int PurchaseId)
+        {
+            var materials = await _purchaseOrderService.GetMaterialByPurchaseId(PurchaseId);
+            return Ok(materials);
+        }
         [HttpPost()]
         public async Task<IActionResult> Create(PurchaseOrderCreateRequest request)
         {
             var result = await _purchaseOrderService.Create(request);
             return Ok(result);
         }
-
+        [HttpDelete("{PurchaseOrderId}")]
+        public async Task<IActionResult> Delete(int PurchaseOrderId)
+        {
+            var result = await _purchaseOrderService.Delete(PurchaseOrderId);
+            return Ok(result);
+        }
+        /// <summary>
+        /// update purchaseOrder
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut()]
+        public async Task<IActionResult> Update(PurchaseOrderUpdateRequest request)
+        {
+            var result = await _purchaseOrderService.Update(request);
+            return Ok(result);
+        }
+        [HttpPut("detail")]
+        public async Task<IActionResult> UpdateDetail(MaterialPurchaseOrderCreateRequest request)
+        {
+            var result = await _purchaseOrderService.UpdateDetail(request);
+            return Ok(result);
+        }
     }
 }

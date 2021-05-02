@@ -7,6 +7,8 @@ namespace storeroom.Application.Catalog.PurchaseOrders.Dtos
     public class MaterialPurchaseOrderCreateRequest
     {
         public int PurchaseOrderId { get; set; }
+        //public string Unit { get; set; }
+        public int Unit { get; set; }
         public int MaterialId { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }

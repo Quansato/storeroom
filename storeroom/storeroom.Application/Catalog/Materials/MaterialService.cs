@@ -20,8 +20,8 @@ namespace storeroom.Application.Catalog.Materials
         }
         public async Task<int> Create(MaterialCreateRequest request)
         {
-            var isExist=checkExistMaterialCode(request.MaterialCode);
-            if(isExist != null)
+            var isExist = checkExistMaterialCode(request.MaterialCode);
+            if (isExist != null)
             {
                 throw new StoreroomException("MaterialCode is already exist");
             }
@@ -29,7 +29,7 @@ namespace storeroom.Application.Catalog.Materials
             {
                 MaterialCode = request.MaterialCode,
                 Description = request.Description,
-                DisplayName=request.DisplayName,
+                DisplayName = request.DisplayName,
                 Price = request.Price,
                 YearManufacture = request.YearManufacture,
                 UnitId = request.UnitId,
@@ -40,7 +40,7 @@ namespace storeroom.Application.Catalog.Materials
                 ExperyDate = request.ExperyDate,
                 Status = request.Status,
                 Img = request.Img,
-                QRCode =request.QRCode,
+                QRCode = request.QRCode,
                 Specification = request.Specification,
             };
             _context.Materials.Add(material);
@@ -49,7 +49,7 @@ namespace storeroom.Application.Catalog.Materials
         public ApiResult<Object> checkExistMaterialCode(string MaterialCode)
         {
             var existMaterial = _context.Materials.FirstOrDefault(x => x.MaterialCode == MaterialCode);
-            
+
             if (existMaterial != null)
             {
                 var result = new ApiResult<Object>()
@@ -89,9 +89,10 @@ namespace storeroom.Application.Catalog.Materials
             {
                 query = query.Where(x => x.a.DisplayName.Contains(request.keyword));
             }
+            //err
             if (request.MaterialGroupId.HasValue)
             {
-                query = query.Where(x => x.a.MaterialGroupId >= request.MaterialGroupId);
+                query = query.Where(x => x.a.MaterialGroupId == request.MaterialGroupId);
             }
             //3. Paging
             int totalRow = await query.CountAsync();
@@ -139,8 +140,9 @@ namespace storeroom.Application.Catalog.Materials
                         join e in _context.Countries on a.CountryId equals e.Id
                         join f in _context.Brands on a.BrandId equals f.Id
                         select new { a, b, c, d, e, f };
-            //2. filter
-                query = query.Where(x => x.a.Id == MaterialId);
+
+            query = query.Where(x => x.a.Id == MaterialId);
+
             var data = await query
                        .Select(x => new MaterialViewModel()
                        {
@@ -165,7 +167,7 @@ namespace storeroom.Application.Catalog.Materials
                            Specification = x.a.Specification,
                            QRCode = x.a.QRCode
                        }).ToListAsync();
-            //4. Select and projection
+
             var pagedResult = new PagedResult<MaterialViewModel>()
             {
                 TotalRecord = 1,
@@ -177,7 +179,7 @@ namespace storeroom.Application.Catalog.Materials
 
         public async Task<int> Update(MaterialUpdateRequest request)
         {
-            var materialId = _context.Materials.FindAsync(request.Id);
+            var materialId = await _context.Materials.FindAsync(request.Id);
             var material = await _context.Materials.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (material == null) throw new StoreroomException($"Cannot find a material: {request.Id}");
             material.MaterialCode = request.MaterialCode;
