@@ -25,6 +25,8 @@ namespace storeroom.Data.Configuration
 
             builder.Property(x => x.Description).IsUnicode(true).HasMaxLength(200);
 
+            builder.Property(x => x.Status).HasDefaultValue(0);
+
             builder.HasOne(x => x.AppUser).WithMany(y => y.PurchaseProposals).HasForeignKey(y => y.UserId);
 
             builder.HasOne(x => x.AppUser).WithMany(y => y.PurchaseProposals).HasForeignKey(y => y.ApproverId);

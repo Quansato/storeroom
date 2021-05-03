@@ -297,7 +297,7 @@ Ext.define("Admin.view.danhmuckho.wdKhoNhomVatTuController", {
                 cancelButtonColor: '#d33',
                 cancelButtonText:'Huỷ bỏ',
                 confirmButtonText: 'Đồng ý'
-            }).then((result) => {
+            }).then(function(result) {
                 if (result.isConfirmed) {
                     var url = "api/MaterialGroup/" + record.data.id
                     app.mUtils.fnDELETEAjax(url, function (response) {

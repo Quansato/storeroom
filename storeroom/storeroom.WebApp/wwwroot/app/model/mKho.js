@@ -6,6 +6,7 @@
         {name:'displayName',type:'string'},
         {name:'storeroomCode',type:'string'},
         { name: 'userId', type: 'string' },
+        { name: 'area', type: 'float' },
         {name:'userName',type:'string'}
         //{ name: 'tenantId', type: 'int', defaultValue: null, allowNull: true },
         //{ name: 'creationTime', type: 'string' },

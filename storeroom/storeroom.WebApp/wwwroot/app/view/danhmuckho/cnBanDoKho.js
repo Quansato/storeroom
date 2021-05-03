@@ -12,31 +12,96 @@
 
 Ext.define("Admin.view.danhmuckho.cnBanDoKho", {
     extend: "Ext.panel.Panel",
-    alias: "widget.cnBanDoKho",
+    //alias: "widget.cnBanDoKho",
     controller: "cnBanDoKho",
-    layout: 'vbox',
+    //layout: 'vbox',
     width: 500,
     height: '100%',
     title:'kho',
     //layout: 'fit',
+    //items: [{
+    //    //xtype: 'panel',
+    //    //padding: '5 5 5 5',
+    //    //width: '100%',
+    //    //items: [{
+    //    //    xtype: 'component',
+    //    //    height: '80%',
+    //    //    width: 1600,
+    //    //    html: '<div style="width: 100%;">' +
+    //    //        '<div id="divMapId" class= "map" ></div>' +
+    //    //        '<pre id="coordinates" class="coordinates"></pre>' +
+    //    //        '</div>',
+    //    //    //'<div id="geocoder" class="geocoder"></div>',
+    //    //    listeners: {
+    //    //        afterRender: 'onMap'
+    //    //    }
+    //    //}]
+    //}]
+    iconCls: 'x-fa fa-list',
+    modal: true,
     items: [{
-        //xtype: 'panel',
-        //padding: '5 5 5 5',
-        //width: '100%',
-        //items: [{
-        //    xtype: 'component',
-        //    height: '80%',
-        //    width: 1600,
-        //    html: '<div style="width: 100%;">' +
-        //        '<div id="divMapId" class= "map" ></div>' +
-        //        '<pre id="coordinates" class="coordinates"></pre>' +
-        //        '</div>',
-        //    //'<div id="geocoder" class="geocoder"></div>',
-        //    listeners: {
-        //        afterRender: 'onMap'
-        //    }
-        //}]
-    }]
+        xtype: "form",
+        padding: 5,
+        reference: "frmKhoNhomVatTu",
+        layout: {
+            type: "vbox",
+            align: "stretch"
+        },
+        defaults: {
+            flex: 1,
+            labelAlign: "right",
+            labelWidth: 70
+        },
+        items: [{
+            xtype: "textfield",
+            name: "ma",
+            fieldLabel: 'Mã' /*+ app.gplatformconsts.var_required*/,
+            allowBlank: false,
+            bind: {
+                value: "{record.qrCode}",
+                disabled: "{record.id != 0}"
+            },
+            listeners: {
+                blur: "blurMa"
+            }
+        }, {
+            xtype: "textarea",
+            name: "moTa",
+            fieldLabel: 'Tên' /*+ app.gplatformconsts.var_required*/,
+            allowBlank: false,
+            bind: "{record.displayName}"
+        }, {
+            xtype: "textfield",
+            name: "ma",
+            fieldLabel: 'QRCode',
+            bind: "{record.qrCode}"
+        }]
+    }],
+    buttons: [{
+        text: 'Lưu và thêm mới',
+        iconCls: "fa fa-floppy-o",
+        ui: "soft-green",
+        reference: "btnSaveAndNew",
+        //hidden: !(abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Edit') || abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Manager')),
+        handler: "onSaveAndNew"
+    }, {
+        text: 'Lưu thông tin',
+        iconCls: "fa fa-floppy-o",
+        ui: "soft-blue",
+        reference: "btnSave",
+        //hidden: !(abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Edit') || abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Manager')),
+        handler: "onSave"
+    }, {
+        text: 'Huỷ bỏ',
+        ui: "soft-red",
+        handler: function () {
+            this.up("window").close();
+        },
+        iconCls: "fa fa-times"
+    }],
+    listeners: {
+        afterRender: "onAfterrender"
+    }
 });
 
 Ext.define("Admin.view.danhmuckho.cnBanDoKhoController", {

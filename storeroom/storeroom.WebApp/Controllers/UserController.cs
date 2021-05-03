@@ -32,6 +32,10 @@ namespace storeroom.WebApp.Controllers
             {
                 return BadRequest("UserName or password is incorrect");
             }
+            else
+            {
+                HttpContext.Session.SetString("Token",resultToken);
+            }
 
             return Ok(resultToken);
         }

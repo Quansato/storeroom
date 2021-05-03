@@ -28,7 +28,7 @@ namespace storeroom.WebApp.Services
             var token = await response.Content.ReadAsStringAsync();
             return token;
         }
-        /*public async Task<PagedResult<UserViewModel>> GetUserPaging(GetUserPagingRequest request)
+        public async Task<PagedResult<UserViewModel>> GetUserPaging(GetUserPagingRequest request)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri("https://localhost:44390/");
@@ -38,6 +38,6 @@ namespace storeroom.WebApp.Services
             var body = await response.Content.ReadAsStringAsync();
             var users = JsonConvert.DeserializeObject<PagedResult<UserViewModel>>(body);
             return users;
-        }*/
+        }
     }
 }

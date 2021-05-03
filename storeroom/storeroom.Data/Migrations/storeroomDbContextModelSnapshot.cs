@@ -710,7 +710,7 @@ namespace storeroom.Data.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<Guid>("ApproverId")
+                    b.Property<Guid?>("ApproverId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Code")
@@ -737,7 +737,9 @@ namespace storeroom.Data.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<int>("StoreroomId")
                         .HasColumnType("int");
@@ -1140,9 +1142,7 @@ namespace storeroom.Data.Migrations
                 {
                     b.HasOne("storeroom.Data.Entities.AppUser", "AppUser")
                         .WithMany("PurchaseProposals")
-                        .HasForeignKey("ApproverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApproverId");
 
                     b.HasOne("storeroom.Data.Entities.Storeroom", "Storeroom")
                         .WithMany("PurchaseProposals")

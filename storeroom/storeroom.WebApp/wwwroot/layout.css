@@ -53,6 +53,10 @@
     background-color: #170085 !important;
 }
 
+    .x-window-header-default .x-tool-img {
+        background-color: #170085 !important;
+    }
+
 /*tabbar*/
 .x-tab-bar-default {
     background-color: #ebedf2 !important;

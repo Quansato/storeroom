@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -73,7 +75,6 @@
     @*<script src="~/js/sweetalert.js"></script>*@
     <script src="~/js/sweetalert2@10.js"></script>
     <script src="~/js/toastr.min.js"></script>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -12,6 +12,7 @@ namespace storeroom.Application.Catalog.PurchaseProposals
         Task<int> Create(PurchaseProposalCreateRequest request);
         Task<int> Update(PurchaseProposalUpdateRequest request);
         Task<int> UpdateDetail(MaterialPurchaseProposalCreateRequest request);
+        Task<int> UpdateStatus(PurchaseProposalUpdateRequest request);
         Task<int> Delete(int PurchaseProposalId);
         Task<PagedResult<PurchaseProposalViewModel>> GetDetail(int PurchaseProposalId);
 

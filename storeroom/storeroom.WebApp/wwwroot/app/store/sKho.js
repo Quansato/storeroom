@@ -15,7 +15,7 @@
         reader: {
             type: 'json',
             rootProperty: 'items',
-            totalProperty: 'result.totalCount'
+            totalProperty: 'totalRecord'
         },
         appendId: true,
         writer: {

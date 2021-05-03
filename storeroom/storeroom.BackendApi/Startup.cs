@@ -15,6 +15,7 @@ using storeroom.Application.Catalog.MaterialGroups;
 using storeroom.Application.Catalog.Materials;
 using storeroom.Application.Catalog.Outputs;
 using storeroom.Application.Catalog.PurchaseOrders;
+using storeroom.Application.Catalog.PurchaseProposals;
 using storeroom.Application.Catalog.Storerooms;
 using storeroom.Application.Catalog.Users;
 using storeroom.Application.Catalog.Users.Dtos;
@@ -41,6 +42,11 @@ namespace storeroom.BackendApi
         {
             services.AddDbContext<storeroomDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("storeroomDBTest")));
+            services.AddSession(option =>
+            {
+                option.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
+            services.AddCors();
             services.AddIdentity<AppUser, AppRole>()
                 .AddEntityFrameworkStores<storeroomDbContext>()
                 .AddDefaultTokenProviders();
@@ -56,7 +62,8 @@ namespace storeroom.BackendApi
             services.AddTransient<IPurchaseOrderService, PurchaseOrderService>();
             services.AddTransient<IOutputService, OutputService>();
             services.AddTransient<IInputService, InputService>();
-            services.AddControllersWithViews().AddFluentValidation(fv=>fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
+            services.AddTransient<IPurchaseProposalService, PurchaseProposalService>();
+            services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
             services.AddSwaggerGen(options =>
             {
@@ -93,6 +100,11 @@ namespace storeroom.BackendApi
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1");
                 options.RoutePrefix = string.Empty;
             });
+
+            app.UseSession();
+            app.UseCors(
+                    options => options.WithOrigins("https://localhost:44356").AllowAnyMethod()
+                );
 
             app.UseEndpoints(endpoints =>
             {

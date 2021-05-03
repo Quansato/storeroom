@@ -59,6 +59,7 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
                 xtype: 'button',
                 tooltip: 'Chọn người địa diện kho',
                 //hidden: !(abp.auth.hasPermission('CMMS.Inventory.Kho.Edit') || abp.auth.hasPermission('CMMS.Inventory.Kho.Manager')),
+                ui:'soft-blue',
                 handler: 'onLayNguoiDung',
                 text: '...'
             }]
@@ -71,7 +72,7 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
             blankText: 'Mã kho không được để trống',
             fieldLabel: 'Mã kho' /*+ " " + app.gplatformconsts.var_required*/,
             bind: {
-                value: '{record.ma}',
+                value: '{record.storeroomCode}',
                 disabled: '{record.id!=0}'
             },
             listeners: {
@@ -82,7 +83,7 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
             xtype: 'textfield',
             labelSeparator: '',
             labelWidth: 110,
-            bind: '{record.moTa}',
+            bind: '{record.displayName}',
             allowBlank: false,
             fieldLabel: 'Tên kho'/* + app.gplatformconsts.var_required*/,
             blankText: 'Tên kho không được để trống'
@@ -122,14 +123,14 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
             editable: false
         },*/ {
             labelWidth: 110,
-            bind: '{record.dienTich}',
+            bind: '{record.area}',
             fieldLabel: 'Diện tích',
             xtype: 'currencyfield',
             fieldStyle: 'text-align: right;'
         }, {
             xtype: 'textfield',
             labelWidth: 110,
-            bind: '{record.diaChi}',
+            bind: '{record.address}',
             fieldLabel: 'Địa chỉ'
         },
         {
@@ -145,7 +146,7 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
                 fieldLabel: 'Trạng thái kho',
                 name: 'trangthaikho',
                 queryMode: 'local',
-                bind: '{record.trangThaiKho}',
+                bind: '{record.status}',
                 displayField: 'value',
                 valueField: 'key',
                 hidden: true,
@@ -267,39 +268,38 @@ Ext.define('Admin.view.danhmuckho.cnKhoController', {
         var me = this;
         me.ref = me.getReferences();
         me.storeinfo = me.getViewModel().storeInfo;
-        //me.loadKho();
-        //var record = me.getViewModel().data.record;
-        //if (record.get('id') > 0) {
-        //    me.ref.btnDinhKem.setDisabled(false);
-        //}
+        me.loadKho();
+        var record = me.getViewModel().data.record;
+        if (record.get('id') > 0) {
+            me.ref.btnDinhKem.setDisabled(false);
+        }
         //me.onLoadFile();
     },  
 
     onOpenMap: function () {
-        this.getView().close()
-        Ext.create("Admin.view.danhmuckho.cnBanDoKho", {
-            //viewModel: {
-            //    data: {
+        Ext.create("Admin.view.danhmuckho.cnBanDoKhoV2", {
+            viewModel: {
+                data: {
                     
-            //    }
-            //}
+                }
+            }
         }).show();
     },
 
-    //onLayNguoiDung: function () {
-    //    var me = this;
-    //    var record = me.getViewModel().data.record;
-    //    Ext.create("Admin.view.chondulieu.wdChonNguoiDung", {
-    //        viewModel: {
-    //            data: {
-    //                fnSauKhiChon: function (result) {
-    //                    record.set("tenNguoiDaiDien", result.get("surname") + " " + result.get("name"));
-    //                    record.set("nguoiDaiDien", result.get("id"));
-    //                }
-    //            }
-    //        }
-    //    }).show();
-    //},
+    onLayNguoiDung: function () {
+        var me = this;
+        var record = me.getViewModel().data.record;
+        Ext.create("Admin.view.chondulieu.wdChonNguoiDung", {
+            viewModel: {
+                data: {
+                    fnSauKhiChon: function (result) {
+                        record.set("tenNguoiDaiDien", result.get("firstName") + " " + result.get("lastName"));
+                        record.set("userId", result.get("userId"));
+                    }
+                }
+            }
+        }).show();
+    },
 
     //blurMa: function () {
     //    var me = this;
@@ -308,29 +308,28 @@ Ext.define('Admin.view.danhmuckho.cnKhoController', {
     //    record.set("ma", ma);
     //},
 
-    //loadKho: function () {
-    //    var me = this;
-    //    var store = me.storeinfo.storeKhoNhap;
-    //    var query = abp.utils.buildQueryString([]);
-    //    var url = abp.appPath + "api/services/app/CMMSKho/GetAll" + query;
-    //    store.proxy.api.read = url;
-    //    store.pageSize = 500;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            if (records == null) {
-    //                store.removeAll();
-    //            }
-    //        }
-    //    });
-    //},
+    loadKho: function () {
+        var me = this;
+        var store = me.storeinfo.storeKhoNhap;
+        var url = "api/Storeroom?page=1&start=0";
+        store.proxy.api.read = url;
+        store.pageSize = 500;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.load({
+            params: {
+                skipCount: 0,
+                limit: store.pageSize
+            },
+            scope: this,
+            callback: function (records, operation, success) {
+                if (records == null) {
+                    store.removeAll();
+                }
+            }
+        });
+    },
 
     //onClickHinhAnh: function () {
     //    var me = this;
@@ -448,49 +447,47 @@ Ext.define('Admin.view.danhmuckho.cnKhoController', {
     //    });;
     //},
 
-    //onSave: function () {
-    //    this.fnSave();
-    //},
+    onSave: function () {
+        this.fnSave();
+    },
 
-    //onSaveAndNew: function () {
-    //    var me = this;
-    //    me.fnSave();
-    //    var newRecord = Ext.create("Admin.model.mKho", { id: 0 });
-    //    me.getViewModel().set("record", newRecord);
-    //},
+    onSaveAndNew: function () {
+        var me = this;
+        me.fnSave();
+        var newRecord = Ext.create("Admin.model.mKho", { id: 0 });
+        me.getViewModel().set("record", newRecord);
+    },
 
-    //fnSave: function () {
-    //    var me = this;
-    //    var frm = me.ref.frmKho;
-    //    if (!frm.getForm().isValid()) {
-    //        abp.notify.warn(app.localize("TaiSan_isValid"));
-    //        return;
-    //    }
-    //    var view = me.getView();
-    //    var fnSauKhiSave = me.getViewModel().get("fnSauKhiSave");
-    //    var record = me.getViewModel().get("record");
-    //    view.setLoading(true);
-    //    if (record.data.id != 0) {
-    //        _cMMSKho.update(record.data)
-    //            .done(function () {
-    //                abp.notify.success(app.localize("SavedSuccessfully"));
-    //                if (fnSauKhiSave) fnSauKhiSave();
-    //            })
-    //            .always(function () {
-    //                view.setLoading(false);
-    //            });
-    //    } else {
-    //        _cMMSKho.create(record.data)
-    //            .done(function (data) {
-    //                record.set("id", data.id);
-    //                abp.notify.success(app.localize("SavedSuccessfully"));
-    //                if (fnSauKhiSave) fnSauKhiSave();
-    //            })
-    //            .always(function () {
-    //                view.setLoading(false);
-    //            });
-    //    }
-    //},
+    fnSave: function () {
+        var me = this;
+        var frm = me.ref.frmKho;
+        if (!frm.getForm().isValid()) {
+            toastr.warning("Nhaapj ddaayf ddur thoong tin");
+            return;
+        }
+        var view = me.getView();
+        var fnSauKhiSave = me.getViewModel().get("fnSauKhiSave");
+        var record = me.getViewModel().get("record");
+        console.log(record);
+        view.setLoading(true);
+        if (record.data.id != 0) {
+            var url = "api/Storeroom"
+            app.mUtils.fnPUTAjax(url, record.data, function () {
+                //record.set("id", data.id);
+                toastr.success("Thêm mới dữ liệu thành công")
+                if (fnSauKhiSave) fnSauKhiSave();
+                view.setLoading(false);
+            })
+        } else {
+            var url = "api/Storeroom"
+            app.mUtils.fnPOSTAjax(url, record.data, function () {
+                //record.set("id", data.id);
+                toastr.success("Thêm mới dữ liệu thành công")
+                if (fnSauKhiSave) fnSauKhiSave();
+                view.setLoading(false);
+            })
+        }
+    },
 
     onDongWinDow: function () {
         var me = this;

@@ -218,6 +218,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonDeXuatHang', {
                         xtype: 'fieldcontainer',
                         layout: 'hbox',
                         margin: '5 5 0 5',
+                        hidden: true,
                         items: [{
                             xtype: 'textfield',
                             fieldLabel: 'Người phê duyệt' /*+ app.gplatformconsts.var_required*/,

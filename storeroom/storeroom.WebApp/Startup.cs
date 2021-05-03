@@ -16,6 +16,7 @@ using storeroom.Application.Catalog.MaterialGroups;
 using storeroom.Application.Catalog.Materials;
 using storeroom.Application.Catalog.Outputs;
 using storeroom.Application.Catalog.PurchaseOrders;
+using storeroom.Application.Catalog.PurchaseProposals;
 using storeroom.Application.Catalog.Storerooms;
 using storeroom.Application.Catalog.Users;
 using storeroom.Application.Catalog.Users.Dtos;
@@ -84,6 +85,7 @@ namespace storeroom.WebApp
             services.AddTransient<IPurchaseOrderService, PurchaseOrderService>();
             services.AddTransient<IOutputService, OutputService>();
             services.AddTransient<IInputService, InputService>();
+            services.AddTransient<IPurchaseProposalService, PurchaseProposalService>();
 
         }
 

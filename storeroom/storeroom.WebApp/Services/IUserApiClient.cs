@@ -10,6 +10,6 @@ namespace storeroom.WebApp.Services
     public interface IUserApiClient
     {
         Task<string> Authenticate(LoginRequest request);
-        /*Task<PagedResult<UserViewModel>> GetUserPaging(GetUserPagingRequest request);*/
+        Task<PagedResult<UserViewModel>> GetUserPaging(GetUserPagingRequest request);
     }
 }

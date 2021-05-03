@@ -26,9 +26,9 @@ namespace storeroom.WebApp.Controllers
             _userApiClient = userApiClient;
             _configuration = configuration;
         }
-        public IActionResult Index()
+        public IActionResult Index(string keyword,int pageIndex,int pageSize)
         {
-            /*var sessions = HttpContext.Session.GetString("Token");
+            var sessions = HttpContext.Session.GetString("Token");
             var request = new GetUserPagingRequest()
             {
                 Token = sessions,
@@ -36,8 +36,8 @@ namespace storeroom.WebApp.Controllers
                 PageIndex = pageIndex,
                 PageSize = pageSize
             };
-            var data = _userApiClient.GetUserPaging(request);*/
-            return View();
+            var data = _userApiClient.GetUserPaging(request);
+            return View(data);
         }
         [HttpGet]
         public async Task<IActionResult> Login()

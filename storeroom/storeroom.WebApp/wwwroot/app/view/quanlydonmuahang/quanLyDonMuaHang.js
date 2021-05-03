@@ -1537,8 +1537,8 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         record.set('ngayDeXuat', new Date());
         record.set('trangThai', '0');
         record.set('maKho', nodesSelect.data.id);
-        var title = app.localize('CMMSDMKhoThemDonDeXuatMuaHang');
-        var storeKho = app.gplatformutils.deepCloneStore(me.storeinfo.storeKhoNhap);
+        var title = 'Thêm đơn đề xuất mua hàng';
+        var storeKho = app.mUtils.deepCloneStore(me.storeinfo.storeKhoNhap);
         var wnd = Ext.create('Admin.view.quanlydonmuahang.CNDonDeXuatHang', {
             title: title,
             viewModel: {

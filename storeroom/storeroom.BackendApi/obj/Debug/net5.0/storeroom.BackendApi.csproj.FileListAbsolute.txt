@@ -167,3 +167,4 @@ E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.Backend
 E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\ref\storeroom.BackendApi.dll
 E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.pdb
 E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.genruntimeconfig.cache
+E:\G\storeroom\storeroom\storeroom.BackendApi\obj\Debug\net5.0\storeroom.BackendApi.MvcApplicationPartsAssemblyInfo.cs

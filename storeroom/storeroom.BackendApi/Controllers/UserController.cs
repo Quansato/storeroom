@@ -35,9 +35,9 @@ namespace storeroom.BackendApi.Controllers
             }
             else
             {
-                //HttpContext.Session.SetString("Token", resultToken);
+                HttpContext.Session.SetString("Token", resultToken);
             }
-            
+
             return Ok(resultToken);
         }
         [HttpPost("register")]
