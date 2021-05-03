@@ -18,10 +18,34 @@ namespace storeroom.BackendApi.Controllers
         {
             _outputService = outputService;
         }
+        [HttpGet()]
+        public async Task<IActionResult> Get([FromQuery] OutputSearchRequest request)
+        {
+            var materials = await _outputService.GetAllPaging(request);
+            return Ok(materials);
+        }
+        [HttpGet("OutputId")]
+        public async Task<IActionResult> GetMaterialByOutputId(int OutputId)
+        {
+            var materials = await _outputService.GetMaterialByOutputId(OutputId);
+            return Ok(materials);
+        }
         [HttpPost()]
         public async Task<IActionResult> Create(OutputCreateRequest request)
         {
             var result = await _outputService.Create(request);
+            return Ok(result);
+        }
+        [HttpPut()]
+        public async Task<IActionResult> Update(OutputUpdateRequest request)
+        {
+            var result = await _outputService.Update(request);
+            return Ok(result);
+        }
+        [HttpPut("detail")]
+        public async Task<IActionResult> UpdateDetail(MaterialOutputCreateRequest request)
+        {
+            var result = await _outputService.UpdateDetail(request);
             return Ok(result);
         }
     }

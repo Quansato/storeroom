@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using storeroom.Application.Catalog.Outputs.Dtos;
 using storeroom.Application.Catalog.PurchaseOrders.Dtos;
 using storeroom.Application.Dtos;
 using storeroom.Data.EF;

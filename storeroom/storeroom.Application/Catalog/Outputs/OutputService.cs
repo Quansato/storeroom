@@ -1,9 +1,11 @@
-﻿using storeroom.Application.Catalog.Outputs.Dtos;
+﻿using Microsoft.EntityFrameworkCore;
+using storeroom.Application.Catalog.Outputs.Dtos;
 using storeroom.Application.Dtos;
 using storeroom.Data.EF;
 using storeroom.Data.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,9 +28,10 @@ namespace storeroom.Application.Catalog.Outputs
                     OutputCode = request.OutputCode,
                     StoreroomId = request.StoreroomId,
                     StoreroomReceiveId = request.StoreroomReceiveId,
-                    NameRecipient=request.UserRecipient,
-                    DateOutput=request.Date,
-                    DateDocument=request.DateDocument,
+                    NameRecipient = request.UserRecipient,
+                    DateOutput = request.Date,
+                    DateDocument = request.DateDocument,
+                    CreationTime = DateTime.Now,
                     UserId=request.UserId,
                     MaterialOutputs=request.MaterialOutput                   
                     //Date = request.Date,
@@ -62,7 +65,7 @@ namespace storeroom.Application.Catalog.Outputs
         public async Task<int> Delete(int OutputId)
         {
             var output = await _context.Outputs.FindAsync(OutputId);
-            if (output == null) throw new StoreroomException($"Cannot find a purchaseOrder: {OutputId}");
+            if (output == null) throw new StoreroomException($"Cannot find a output: {OutputId}");
             _context.Outputs.Remove(output);
             return await _context.SaveChangesAsync();
         }
@@ -72,9 +75,60 @@ namespace storeroom.Application.Catalog.Outputs
             throw new NotImplementedException();
         }
 
-        public Task<PagedResult<OutputViewModel>> GetAllPaging(OutputSearchRequest request)
+        public async Task<PagedResult<OutputViewModel>> GetAllPaging(OutputSearchRequest request)
         {
-            throw new NotImplementedException();
+            //1. Select join
+            var query = from a in _context.Outputs
+                        join b in _context.Storerooms on a.StoreroomId equals b.Id
+                        join c in _context.Users on a.UserId equals c.Id
+                        select new { a, b, c };
+            //2. filter
+            //if (!string.IsNullOrEmpty(request.keyword))
+            //{
+            //    query = query.Where(x => x.a.DisplayName.Contains(request.keyword));
+            //}
+            if (request.StoreroomId.HasValue)
+            {
+                query = query.Where(x => x.a.StoreroomId == request.StoreroomId);
+            }
+            if (!string.IsNullOrEmpty(request.OutputCode))
+            {
+                query = query.Where(x => x.a.OutputCode == request.OutputCode);
+            }
+            if (request.Status.HasValue)
+            {
+                query = query.Where(x => x.a.StoreroomId == request.StoreroomId);
+            }
+            if (request.Date.HasValue)
+            {
+                query = query.Where(x => x.a.DateOutput == request.Date);
+            }
+            //3. Paging
+            int totalRow = await query.CountAsync();
+
+            var data = await query.Skip((request.page - 1) * request.limit)
+                       .Take(request.limit)
+                       .Select(x => new OutputViewModel()
+                       {
+                           Id = x.a.Id,
+                           OutputCode = x.a.OutputCode,
+                           StoreroomId = x.a.StoreroomId,
+                           StoreroomReceiveId = x.a.StoreroomReceiveId,
+                           Recipient = x.a.Recipient,
+                           UserRecipient = x.a.NameRecipient,
+                           Date = x.a.DateOutput,
+                           DateDocument = x.a.DateDocument,
+                           UserId = x.a.UserId,
+                           UserName=x.c.UserName,
+                           //MaterialOutputs = request.MaterialOutput
+                       }).ToListAsync();
+            //4. Select and projection
+            var pagedResult = new PagedResult<OutputViewModel>()
+            {
+                TotalRecord = totalRow,
+                Items = data
+            };
+            return pagedResult;
         }
 
         public Task<PagedResult<OutputViewModel>> GetDetail(int OutputId)
@@ -82,19 +136,73 @@ namespace storeroom.Application.Catalog.Outputs
             throw new NotImplementedException();
         }
 
-        public Task<PagedResult<MaterialOutputViewModel>> GetMaterialByPurchaseId(int OutputId)
+        public async Task<PagedResult<MaterialOutputViewModel>> GetMaterialByOutputId(int OutputId)
         {
-            throw new NotImplementedException();
+            var query = from a in _context.MaterialOutputs
+                        join b in _context.Materials on a.MaterialId equals b.Id
+                        join c in _context.Units on b.UnitId equals c.Id
+                        select new { a, b, c };
+            query = query.Where(x => x.a.OutputId == OutputId);
+            int totalRow = await query.CountAsync();
+            var materials = await query.Select(x => new MaterialOutputViewModel()
+            {
+                OutputId = OutputId,
+                Unit = x.c.DisplayName,
+                MaterialId = x.a.MaterialId,
+                MaterialName = x.b.Description,
+                MaterialCode = x.b.MaterialCode,
+                Quantity = x.a.Quantity,
+                Price = x.a.Price,
+                Description = x.a.Description
+
+            }).ToListAsync();
+            var pagedResult = new PagedResult<MaterialOutputViewModel>()
+            {
+                TotalRecord = totalRow,
+                Items = materials
+            };
+            return pagedResult;
         }
 
-        public Task<int> Update(OutputUpdateRequest request)
+        public async Task<int> Update(OutputUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var output = await _context.Outputs.FirstOrDefaultAsync(x=>x.Id ==request.Id);
+            if(output ==null) throw new StoreroomException($"Cannot find a output: {request.Id}");
+            output.Id = request.Id;
+            output.OutputCode = request.OutputCode;
+            output.StoreroomId = request.StoreroomId;
+            output.StoreroomReceiveId = request.StoreroomReceiveId;
+            output.Recipient = request.Recipient;
+            output.NameRecipient = request.UserRecipient;
+            output.DateOutput = request.Date;
+            output.DateDocument = request.DateDocument;
+            output.UserId = request.UserId;
+            output.Description = request.Description;
+            return await _context.SaveChangesAsync();
         }
 
-        public Task<int> UpdateDetail(MaterialOutputCreateRequest request)
+        public async Task<int> UpdateDetail(MaterialOutputCreateRequest request)
         {
-            throw new NotImplementedException();
+            var materialDetail = await _context.MaterialOutputs
+                .FirstOrDefaultAsync(x => x.OutputId == request.OutputId && x.MaterialId == request.MaterialId);
+            if (materialDetail == null)
+            {
+                var materialOutput = new MaterialOutput()
+                {
+                    OutputId = request.OutputId,
+                    MaterialId = request.MaterialId,
+                    Quantity = request.Quantity,
+                    Price = request.Price,
+                    Description = request.Description
+                };
+                _context.MaterialOutputs.Add(materialOutput);
+                return await _context.SaveChangesAsync();
+            }
+
+            materialDetail.Quantity = request.Quantity;
+            materialDetail.Price = request.Price;
+            materialDetail.Description = request.Description;
+            return await _context.SaveChangesAsync();
         }
     }
 }

@@ -14,9 +14,8 @@ namespace storeroom.Application.Catalog.Outputs
         Task<int> UpdateDetail(MaterialOutputCreateRequest request);
         Task<int> Delete(int OutputId);
         Task<PagedResult<OutputViewModel>> GetDetail(int OutputId);
-
         Task<PagedResult<OutputViewModel>> GetAllPaging(OutputSearchRequest request);
         Task<PagedResult<OutputViewModel>> GetAll();
-        Task<PagedResult<MaterialOutputViewModel>> GetMaterialByPurchaseId(int OutputId);
+        Task<PagedResult<MaterialOutputViewModel>> GetMaterialByOutputId(int OutputId);
     }
 }

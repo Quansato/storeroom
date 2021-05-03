@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using storeroom.Application.Catalog.Brands;
 using storeroom.Application.Catalog.Countries;
+using storeroom.Application.Catalog.Inputs;
 using storeroom.Application.Catalog.MaterialGroups;
 using storeroom.Application.Catalog.Materials;
 using storeroom.Application.Catalog.Outputs;
@@ -54,6 +55,7 @@ namespace storeroom.BackendApi
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<IPurchaseOrderService, PurchaseOrderService>();
             services.AddTransient<IOutputService, OutputService>();
+            services.AddTransient<IInputService, InputService>();
             services.AddControllersWithViews().AddFluentValidation(fv=>fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
             services.AddSwaggerGen(options =>

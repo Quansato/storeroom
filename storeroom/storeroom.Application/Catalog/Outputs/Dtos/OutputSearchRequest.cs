@@ -10,7 +10,7 @@ namespace storeroom.Application.Catalog.Outputs.Dtos
         public int start { set; get; }
         public int limit { set; get; }
         public int? StoreroomId { set; get; }
-        public string Code { get; set; }
+        public string OutputCode { get; set; }
         public int? Status { get; set; }
         public DateTime? Date { get; set; }
     }
