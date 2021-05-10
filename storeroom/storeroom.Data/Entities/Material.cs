@@ -9,8 +9,8 @@ namespace storeroom.Data.Entities
         public int Id { get; set; }
         public string DisplayName { get; set; }
         public string MaterialCode { get; set; }
-        public int UnitId { get; set; }
-        public int UnitOrderId { get; set; }
+        public int? UnitId { get; set; }
+        public int? UnitOrderId { get; set; }
         public int MaterialGroupId { get; set; }
         public int CountryId { get; set; }
         public int BrandId { get; set; }

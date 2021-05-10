@@ -87,9 +87,9 @@ Ext.define("Admin.view.map.mapVNController", {
             .setLngLat([105.82397460937636, 21.03589385426021])
             .addTo(map);
 
-        var marker1 = new mapboxgl.Marker()
-            .setLngLat([105.82397460937636, 21.03589385426021])
-            .addTo(map);
+        //var marker1 = new mapboxgl.Marker()
+        //    .setLngLat([105.82397460937636, 21.03589385426021])
+        //    .addTo(map);
 
         function onDragEnd() {
             var lngLat = marker.getLngLat();
@@ -123,20 +123,22 @@ Ext.define("Admin.view.map.mapVNController", {
             },
             trackUserLocation: true
         }), 'top-left');
-        var geocoder = new MapboxGeocoder({
-            origin: 'https://api.mapbox.com',
-            accessToken: me.accessToken,
-            target: 'geocoder'
-        })
-
-        map.addControl(geocoder);
-
         //var geocoder = new MapboxGeocoder({
-        //    accessToken: me.accessToken,
         //    origin: 'https://api.mapbox.com',
-        //    target: 'geocoder',
-        //    placeholder: 'Tìm kiếm...'
-        //});
-        //document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+        //    accessToken: me.accessToken,
+        //    target: 'geocoder'
+        //})
+
+        //map.addControl(geocoder);
+
+        var geocoder = new MapboxGeocoder({
+            accessToken: me.accessToken,
+            origin: 'https://api.mapbox.com',
+            target: 'geocoder',
+            placeholder: 'Tìm kiếm...'
+        });
+        console.log(document.getElementById('geocoder'))
+
+        document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
     }
 });

@@ -1,6 +1,9 @@
 ﻿.map {
     width: 100%;
     height: calc(100vh - 15px);
+    position: absolute;
+    top: 0;
+    bottom: 0;
 }
 
 .coordinates {
@@ -32,7 +35,7 @@
     top: 15px;
     left: 60px;
     z-index: 1000;
-    background: white;
+    background: transparent;
     padding: 1em;
 }
 
@@ -79,7 +82,7 @@
     }
 }
 
-/*
+
 .geocoder {
     position: absolute;
     z-index: 1;
@@ -91,4 +94,5 @@
 
 .mapboxgl-ctrl-geocoder {
     min-width: 30%;
-}*/
+    width:500px
+}

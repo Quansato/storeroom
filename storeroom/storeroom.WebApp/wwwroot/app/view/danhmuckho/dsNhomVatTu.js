@@ -172,7 +172,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
             }, {
                 xtype: "gridcolumn",
                 header: 'Tên',
-                dataIndex: "description",
+                dataIndex: "displayName",
                 minWidth: 180,
                 flex: 1
             },
@@ -360,7 +360,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                     //afterPageText: "của {0}",
                     displayMsg: "{0} - {1} của {2}",
                     //emptyMsg: app.localize("ExtEmptyMsg"),
-                    
+
                 }]
             }]
         }],
@@ -396,7 +396,12 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
         var gridNhomVatTu = me.refs.gridNhomVatTu;
         var records = gridNhomVatTu.getSelectionModel().getSelection();
         var record = records && records.length > 0 ? records[0] : null;
-        if (record) return record.get("id");
+        if (record) {
+            if (record.get("id") == 0)
+                return ""
+            else
+                return record.get("id");
+        }
     },
     //// #region VatTu
 
@@ -409,7 +414,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
 
     onSearch: function () {
         var me = this;
-        var id = me.fnGetNhomId();
+        var id = "" || me.fnGetNhomId();
         var txt = me.fnGetTxtSearch();
         //var query = abp.utils.buildQueryString([
         //    { name: "filter", value: txt },
@@ -480,20 +485,42 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
         }).show();
     },
 
-    //onDelete: function () {
-    //    var me = this;
-    //    var record = this.getViewModel().get("rSelectVatTu");
-    //    if (record != undefined && record != null) {
-    //        abp.message.confirm(app.localize("DanhMuc_DeleteMessage", app.localize("Kho_VatTu_HeaderTitle"), record.data.ma), app.localize("AreYouSure"), function (isConfirmed) {
-    //            if (isConfirmed) {
-    //                _vatTuServices.delete({ id: record.data.id }).done(function () {
-    //                    me.onSearch();
-    //                    abp.notify.success(app.localize("SuccessfullyDeleted"));
-    //                });
-    //            }
-    //        });
-    //    }
-    //},
+    onDelete: function () {
+        var me = this;
+        var record = this.getViewModel().get("rSelectVatTu");
+        if (record != undefined && record != null) {
+            Swal.fire({
+                title: 'Bạn có chắc chắn?',
+                text: "Bạn có muốn xoá dữ liệu này?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Huỷ bỏ',
+                confirmButtonText: 'Đồng ý'
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    var url = "api/Material/" + record.data.id
+                    app.mUtils.fnDELETEAjax(url, function (response) {
+                        if (response == 1) {
+                            Swal.fire(
+                                'Deleted!',
+                                '"Xoá dữ liệu thành công',
+                                'success'
+                            )
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Xoá dữ liệu thất bại!',
+                            })
+                        }
+                        me.onSearch()
+                    })
+                }
+            })
+        }
+    },
 
     //cellVatTu: function (obj, td, cellIndex, record, tr, rowIndex, e, eOpts) {
     //    var me = this;
@@ -574,10 +601,10 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
 
     onSelectNhomVatTu: function (grid, record) {
         var me = this;
-        //me.refs.btnAdd.setDisabled(false)
-        //if (record.get('ma') == "Tất cả") {
-        //    me.refs.btnAdd.setDisabled(true)
-        //}
+        me.refs.btnAdd.setDisabled(false)
+        if (record.get('ma') == "Tất cả") {
+            me.refs.btnAdd.setDisabled(true)
+        }
         me.onSearch();
     },
 

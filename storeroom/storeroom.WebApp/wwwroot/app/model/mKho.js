@@ -7,7 +7,18 @@
         {name:'storeroomCode',type:'string'},
         { name: 'userId', type: 'string' },
         { name: 'area', type: 'float' },
-        {name:'userName',type:'string'}
+        {name:'userName',type:'string'},
+        {
+            name: 'tenNguoiDaiDien', type: 'string',
+            convert: function (value, record) {
+                var total = record.get('firstName') +' '+ record.get('lastName');
+                return total
+            }
+        },
+        {name:'firstName',type:'string'},
+        {name:'lastName',type:'string'},
+        {name:'x',type:'float'},
+        {name:'y',type:'float'},
         //{ name: 'tenantId', type: 'int', defaultValue: null, allowNull: true },
         //{ name: 'creationTime', type: 'string' },
         //{ name: 'lastModificationTime', type: 'auto', defaultValue: null, allowNull: true },

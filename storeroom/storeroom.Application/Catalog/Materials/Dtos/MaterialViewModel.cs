@@ -9,11 +9,12 @@ namespace storeroom.Application.Catalog.Materials.Dtos
         public int Id { get; set; }
         public string MaterialCode { get; set; }
         public string Description { get; set; }
+        public string DisplayName { get; set; }
         public decimal Price { get; set; }
         public int YearManufacture { get; set; }
-        public int UnitId { get; set; }
+        public int? UnitId { get; set; }
         public string UnitName { get; set; }
-        public int UnitOrderId { get; set; }
+        public int? UnitOrderId { get; set; }
         public string UnitOrderName { get; set; }
         public int MaterialGroupId { get; set; }
         public string MaterialGroupName { get; set; }

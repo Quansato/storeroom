@@ -59,7 +59,7 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
                 xtype: 'button',
                 tooltip: 'Chọn người địa diện kho',
                 //hidden: !(abp.auth.hasPermission('CMMS.Inventory.Kho.Edit') || abp.auth.hasPermission('CMMS.Inventory.Kho.Manager')),
-                ui:'soft-blue',
+                ui: 'soft-blue',
                 handler: 'onLayNguoiDung',
                 text: '...'
             }]
@@ -73,7 +73,7 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
             fieldLabel: 'Mã kho' /*+ " " + app.gplatformconsts.var_required*/,
             bind: {
                 value: '{record.storeroomCode}',
-                disabled: '{record.id!=0}'
+                readOnly: '{record.id!=0}'
             },
             listeners: {
                 blur: "blurMa"
@@ -128,16 +128,24 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
             xtype: 'currencyfield',
             fieldStyle: 'text-align: right;'
         }, {
-            xtype: 'textfield',
-            labelWidth: 110,
-            bind: '{record.address}',
-            fieldLabel: 'Địa chỉ'
+            xtype: 'fieldcontainer',
+            layout: 'hbox',
+            items: [{
+                xtype: 'textfield',
+                labelWidth: 110,
+                bind: '{record.address}',
+                fieldLabel: 'Địa chỉ',
+                labelAlign: "right",
+                flex: 1
+            }, {
+                xtype: 'button',
+                ui: 'soft-blue',
+                text: 'Chọn vị trí',
+                handler: 'onOpenMap',
+                flex: 0.5
+            }]
         },
         {
-            xtype: 'button',
-            text: 'Chọn vị trí',
-            handler:'onOpenMap'
-        }, {
             xtype: 'fieldcontainer',
             layout: 'hbox',
             items: [{
@@ -274,13 +282,19 @@ Ext.define('Admin.view.danhmuckho.cnKhoController', {
             me.ref.btnDinhKem.setDisabled(false);
         }
         //me.onLoadFile();
-    },  
+    },
 
     onOpenMap: function () {
+        var me = this;
+        var record = me.getViewModel().data.record;
         Ext.create("Admin.view.danhmuckho.cnBanDoKhoV2", {
             viewModel: {
                 data: {
-                    
+                    record: record,
+                    fnSauKhiChon: function (result) {
+                        record.set("x", result.x);
+                        record.set("y", result.y);
+                    }
                 }
             }
         }).show();
@@ -474,8 +488,9 @@ Ext.define('Admin.view.danhmuckho.cnKhoController', {
             var url = "api/Storeroom"
             app.mUtils.fnPUTAjax(url, record.data, function () {
                 //record.set("id", data.id);
-                toastr.success("Thêm mới dữ liệu thành công")
+                toastr.success("Cập nhật dữ liệu thành công")
                 if (fnSauKhiSave) fnSauKhiSave();
+                me.getView().doClose();
                 view.setLoading(false);
             })
         } else {
@@ -484,6 +499,7 @@ Ext.define('Admin.view.danhmuckho.cnKhoController', {
                 //record.set("id", data.id);
                 toastr.success("Thêm mới dữ liệu thành công")
                 if (fnSauKhiSave) fnSauKhiSave();
+                me.getView().doClose();
                 view.setLoading(false);
             })
         }

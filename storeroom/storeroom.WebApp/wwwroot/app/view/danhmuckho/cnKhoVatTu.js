@@ -75,6 +75,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                                 flex: 1
                             }, {
                                 xtype: "button",
+                                ui: "soft-blue",
                                 handler: "onChonNhom",
                                 iconCls: "fa fa-search"
                             }]
@@ -95,7 +96,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                                     reference: "maNhom",
                                     flex: 0.5,
                                     bind: {
-                                        value: "{record.materialCode}",
+                                        value: "{record.qrCode}",
                                         hidden: "{record.id != 0}"
                                     }
                                 },
@@ -105,7 +106,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                                     flex: 0.5,
                                     allowBlank: false,
                                     bind: {
-                                        value: "{record.ma}",
+                                        value: "{record.materialCode}",
                                         hidden: "{record.id != 0}"
                                     },
                                     listeners: {
@@ -136,7 +137,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                             fieldLabel: 'Mô tả' /*+ app.gplatformconsts.var_required*/,
                             allowBlank: false,
                             name: "moTa",
-                            bind: "{record.description}"
+                            bind: "{record.displayName}"
                         }]
                 }, {
                     xtype: "fieldcontainer",
@@ -161,7 +162,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                     xtype: "fieldcontainer",
                     layout: "hbox",
                     defaults: {
-                        xtype: "textfield",
+                        xtype: "combo",
                         labelWidth: 150,
                         labelAlign: "right",
                         flex: 1
@@ -169,11 +170,31 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                     items: [{
                         fieldLabel: 'Đơn vị tính',
                         name: "unitName",
-                        bind: "{record.unitName}"
+                        bind: "{record.unitId}",
+                        queryMode: "local",
+                        displayField: "ten",
+                        valueField: "ma",
+                        store: Ext.create("Ext.data.Store", {
+                            fields: ["ma", "ten"],
+                            data: [
+                                { ma: 1, ten: 'Cái' },
+                                { ma: 2, ten: 'Lô' }
+                            ]
+                        })
                     }, {
                         fieldLabel: 'Đơn vị đặt hàng',
                         name: "unitOrderName",
-                        bind: "{record.unitOrderName}"
+                        bind: "{record.unitOrderId}",
+                        queryMode: "local",
+                        displayField: "ten",
+                        valueField: "ma",
+                        store: Ext.create("Ext.data.Store", {
+                            fields: ["ma", "ten"],
+                            data: [
+                                { ma: 1, ten: 'Cái' },
+                                { ma: 2, ten: 'Lô' }
+                            ]
+                        })
                     }]
                 }, {
                     xtype: "fieldcontainer",
@@ -215,7 +236,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                         flex: 1
                     },
                     items: [{
-                        xtype: "textfield",
+                        xtype: "datefield",
                         name: "experyDate",
                         bind: "{record.experyDate}",
                         fieldLabel: 'Hạn sử dụng'
@@ -234,7 +255,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                             fields: ["ma", "ten"],
                             data: [
                                 { ma: true, ten: 'Hoạt động' },
-                                { ma: true, ten: 'Không hoạt động' }
+                                { ma: false, ten: 'Không hoạt động' }
                             ]
                         })
                     }]
@@ -354,13 +375,13 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                         }
                     }, {
                         xtype: "gridcolumn",
-                        dataIndex: "trangThai",
+                        dataIndex: "status",
                         header: 'Trạng thái',
                         readOnly: true,
                         width: 150,
                         renderer: function (value) {
-                            if (value == "active") return 'Hoạt động'
-                            if (value == "pending") return 'Không hoạt động'
+                            if (value == true) return 'Hoạt động'
+                            if (value == false) return 'Không hoạt động'
                         }
                     }, {
                         xtype: "gridcolumn",
@@ -754,21 +775,21 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
     //    });
     //},
 
-    //onChonNhom: function () {
-    //    var me = this;
-    //    var record = me.getViewModel().get("record");
-    //    Ext.create("Admin.view.chondulieu.wdChonNhomVatTu", {
-    //        viewModel: {
-    //            data: {
-    //                fnSauKhiChon: function (result) {
-    //                    record.set("maNhomVatTu", result.get("id"));
-    //                    record.set("maNhom", result.get("ma"));
-    //                    record.set("tenNhom", result.get("moTa"));
-    //                }
-    //            }
-    //        }
-    //    }).show();
-    //},
+    onChonNhom: function () {
+        var me = this;
+        var record = me.getViewModel().get("record");
+        Ext.create("Admin.view.chondulieu.wdChonNhomVatTu", {
+            viewModel: {
+                data: {
+                    fnSauKhiChon: function (result) {
+                        record.set("materialGroupId", result.get("id"));
+                        record.set("qrCode", result.get("qrCode"));
+                        record.set("materialGroupName", result.get("displayName"));
+                    }
+                }
+            }
+        }).show();
+    },
 
     //onSaveAndNew: function () {
     //    var me = this;
@@ -882,14 +903,15 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
     fnSave: function (callback) {
         var me = this;
         var form = me.refs.frmKhoVatTu;
-        //if (!form.getForm().isValid()) {
-        //    abp.notify.warn(app.localize("TaiSan_isValid"));
-        //    return;
-        //}
+        if (!form.getForm().isValid()) {
+            toastr.warning('Nhập đầy đủ thông tin yêu cầu')
+            return;
+        }
 
         var record = me.getViewModel().get("record");
+        var status = (record.get("status") == 'true')
+        record.set("status", status)
         console.log(record)
-        return
         var ma = record.get("ma");
         var maNhom = record.get("maNhom");
         //Ko cần xử lý
@@ -897,34 +919,32 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
         //    record.set("ma", maNhom + "." + ma);
         //}
         var tsKyThuat = me.refs.txtTSKT.getValue();
-        record.set("thongSoKyThuat", tsKyThuat);
-
+        record.set("specification", tsKyThuat);
+        debugger
         var fnSauKhiSave = me.getViewModel().get("fnSauKhiSave");
         var view = me.getView();
         view.setLoading(true);
         if (record.data.id == 0) {
-            _vatTuServices
-                .create(record.data)
-                .done(function (data) {
-                    abp.notify.success(app.localize('SavedSuccessfully'));
-                    record.set("id", data.id);
-                    if (fnSauKhiSave) fnSauKhiSave();
-                    if (callback) callback(me);
-                })
-                .always(function () {
+            var url = "api/Material"
+            app.mUtils.fnPOSTAjax(url, record.data, function (response) {
+                if (response == 1) {
+                    toastr.success("Thêm mới vật tư thành công")
                     view.setLoading(false);
-                });
+                } else {
+                    toastr.warning('Có lỗi xảy ra trong quá trình thêm mới')
+                    view.setLoading(false);
+                }
+            })
         } else {
-            _vatTuServices
-                .update(record.data)
-                .done(function () {
-                    abp.notify.success(app.localize('SavedSuccessfully'));
-                    if (fnSauKhiSave) fnSauKhiSave();
-                    if (callback) callback(me);
-                })
-                .always(function () {
+            var url = "api/Material/"+record.get("id")
+            app.mUtils.fnPUTAjax(url, record.data, function (response) {
+                if (response == 1) {
+                    toastr.success("Cập nhật vật tư thành công")
                     view.setLoading(false);
-                });
+                } else {
+                    toastr.warning('Cập nhật thất bại')
+                }
+            })
         }
     },
 

@@ -60,10 +60,17 @@ namespace storeroom.Application.Catalog.Storerooms
                        .Select(x => new StoreroomViewModel()
                        {
                            Id = x.a.Id,
-                           DisplayName=x.a.DisplayName,
-                           StoreroomCode=x.a.StoreroomCode,
+                           DisplayName = x.a.DisplayName,
+                           StoreroomCode = x.a.StoreroomCode,
                            UserId = x.b.Id,
-                           UserName=x.b.UserName
+                           UserName = x.b.UserName,
+                           FirstName = x.b.FirstName,
+                           LastName = x.b.LastName,
+                           Area = x.a.Area,
+                           Address = x.a.Address,
+                           Status = x.a.Status,
+                           x = x.a.x,
+                           y = x.a.y
                        }).ToListAsync();
             //4. Select and projection
             var pagedResult = new PagedResult<StoreroomViewModel>()
@@ -81,11 +88,13 @@ namespace storeroom.Application.Catalog.Storerooms
             {
                 Id = storeroom.Id,
                 DisplayName = storeroom.DisplayName,
-                Area=storeroom.Area,
-                Address=storeroom.Address,
-                Status=storeroom.Status,
-                UserId=storeroom.UserId,
-                StoreroomCode = storeroom.StoreroomCode
+                Area = storeroom.Area,
+                Address = storeroom.Address,
+                Status = storeroom.Status,
+                UserId = storeroom.UserId,
+                StoreroomCode = storeroom.StoreroomCode,
+                x = storeroom.x,
+                y=storeroom.y
             };
             return listDetail;
         }
@@ -102,6 +111,8 @@ namespace storeroom.Application.Catalog.Storerooms
             storeroom.Status = request.Status;
             storeroom.UserId = request.UserId;
             storeroom.StoreroomCode = request.StoreroomCode;
+            storeroom.x = request.x;
+            storeroom.y = request.y;
             return await _context.SaveChangesAsync();
         }
     }

@@ -95,7 +95,7 @@ Ext.define('Admin.view.danhmuckho.dsKho', {
                 emptyText: 'Chưa có dữ liệu'
             },
             listeners: {
-                cellclick: 'cellKho'
+                //cellclick: 'cellKho'
             },
             dockedItems: [{
                 xtype: 'toolbar',
@@ -335,47 +335,58 @@ Ext.define('Admin.view.danhmuckho.dsKhoController', {
         wnd.show();
     },
 
-    //onSua: function () {
-    //    var me = this;
-    //    var record = me.ref.dsKho.getSelectionModel().getSelection();
-    //    var wnd = Ext.create('Admin.view.danhmuckho.cnKho', {
-    //        title: app.localize("CMMSKhoSuaKho"),
-    //        viewModel: {
-    //            data: {
-    //                record: record[0],
-    //                fnSauKhiSave: function () {
-    //                    me.loadKho();
-    //                }
-    //            }
-    //        }
-    //    });
-    //    wnd.show();
-    //},
+    onSua: function () {
+        var me = this;
+        var record = me.ref.dsKho.getSelectionModel().getSelection();
+        var wnd = Ext.create('Admin.view.danhmuckho.cnKho', {
+            title: 'Cập nhật kho',
+            viewModel: {
+                data: {
+                    record: record[0],
+                    fnSauKhiSave: function () {
+                        me.loadKho();
+                    }
+                }
+            }
+        });
+        wnd.show();
+    },
 
-    //onXoa: function () {
-    //    var me = this;
-    //    var selectSelection = me.ref.dsKho.getSelectionModel().getSelection();
-    //    if (selectSelection.length == 0) return;
-    //    var store = me.storeinfo.storeKho;
-    //    var record = selectSelection[0];
-    //    abp.message.confirm(
-    //        app.localize('CMMSKhoVatTu') + " " + record.data.moTa,
-    //        app.localize('ExtgDataManagerAreYouSure'),
-    //        function (isConfirmed) {
-    //            if (isConfirmed) {
-    //                me.ref.dsKho.setLoading(true);
-    //                store.remove(record);
-    //                _cMMSKho.delete({
-    //                    id: record.data.id
-    //                }).done(function () {
-    //                    me.ref.dsKho.setLoading(false);
-    //                    abp.notify.success(app.localize('SuccessfullyDeleted'));
-    //                }).fail(function (err) {
-    //                    me.ref.dsKho.setLoading(false);
-    //                    setTimeout(function () { abp.message.error(err.message); }, 500);
-    //                });
-    //            }
-    //        }
-    //    );
-    //}
+    onXoa: function () {
+        var me = this;
+        var selectSelection = me.ref.dsKho.getSelectionModel().getSelection();
+        if (selectSelection.length == 0) return;
+        var store = me.storeinfo.storeKho;
+        var record = selectSelection[0];
+        Swal.fire({
+            title: 'Bạn có chắc chắn?',
+            text: "Bạn có muốn xoá " + record.data.displayName+"?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Huỷ bỏ',
+            confirmButtonText: 'Đồng ý'
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                var url = "api/Storeroom/" + record.data.id
+                app.mUtils.fnDELETEAjax(url, function (response) {
+                    if (response == 1) {
+                        Swal.fire(
+                            'Deleted!',
+                            '"Xoá dữ liệu thành công',
+                            'success'
+                        )
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Xoá dữ liệu thất bại!',
+                        })
+                    }
+                    me.onTImKiem()
+                })
+            }
+        })
+    }
 });
