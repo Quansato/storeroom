@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using storeroom.Application.Catalog.Materials;
 using storeroom.Application.Catalog.Materials.Dtos;
+using storeroom.Application.Catalog.Materials.Dtos.MStoreroom;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,31 @@ namespace storeroom.BackendApi.Controllers
         {
             var material = await _materialService.GetDetail(MaterialId);
             return Ok(material);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut("materialStoreroom")]
+        public async Task<IActionResult> UpdateMS(MaterialStoreroomVm request)
+        {
+            var result = await _materialService.UpdateStock(request);
+            return Ok(result);
+        }
+
+        [HttpPost("materialStoreroom")]
+        public async Task<IActionResult> CreateMS(MaterialStoreroomVm request)
+        {
+            var result = await _materialService.UpdateMaterialToStoreroom(request);
+            return Ok(result);
+        }
+
+        [HttpGet("materialStoreroom/paging")]
+        public async Task<IActionResult> GetMS([FromQuery] MaterialStoreroomGetPaging request)
+        {
+            var materials = await _materialService.GetAllMSPaging(request);
+            return Ok(materials);
         }
     }
 }

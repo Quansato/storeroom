@@ -897,6 +897,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
     //},
 
     onSave: function () {
+        app.mUtils.getUserName();
         this.fnSave();
     },
 

@@ -122,78 +122,78 @@ Ext.define("Admin.view.chondulieu.wdChonNguoiDung", {
         //}]
         //},
         {
-        xtype: "grid",
-        reference: "gridNhanVien",
-        bind: {
-            store: "{sNhanVien}",
-            selection: "{rSelected}"
-        },
-        flex: 2,
-        layout: "fit",
-        ui: "light",
-        iconCls: 'x-fa fa-users',
-        margin: "0 0 0 5",
-        title: "Danh sách người dùng",
-        columns: [{
-            xtype: "rownumberer",
-            text: "#",
-            width: 40,
-            align: "center",
-            sortable: false
-        }, {
-            xtype: "gridcolumn",
-            text: "Họ tên",
-            renderer: function (value, metaData, record, rowIndex, colIndex, store) {
-                return record.data.firstName + " " + record.data.lastName;
+            xtype: "grid",
+            reference: "gridNhanVien",
+            bind: {
+                store: "{sNhanVien}",
+                selection: "{rSelected}"
             },
-            flex: 1
-        }, {
-            xtype: "gridcolumn",
-            text: "UserName",
-            dataIndex: "userName",
-            flex: 1
-        }, {
-            xtype: "gridcolumn",
-            header: "Email",
-            dataIndex: "email",
-            flex: 1
-        }],
-        viewConfig: {
-            emptyText: "Chưa có dữ liệu"
-        },
-        dockedItems: [{
-            xtype: "toolbar",
-            dock: "bottom",
-            items: [{
-                xtype: "pagingtoolbar",
-                displayInfo: true,
-                bind: {
-                    store: "{sNhanVien}"
+            flex: 2,
+            layout: "fit",
+            ui: "light",
+            iconCls: 'x-fa fa-users',
+            margin: "0 0 0 5",
+            title: "Danh sách người dùng",
+            columns: [{
+                xtype: "rownumberer",
+                text: "#",
+                width: 40,
+                align: "center",
+                sortable: false
+            }, {
+                xtype: "gridcolumn",
+                text: "Họ tên",
+                renderer: function (value, metaData, record, rowIndex, colIndex, store) {
+                    return record.data.firstName + " " + record.data.lastName;
                 },
-                style: "padding: 0px !important",
-                //lastText: app.localize("ExtLastText"),
-                //prevText: app.localize("ExtPrevText"),
-                //firstText: app.localize("ExtFirstText"),
-                //nextText: app.localize("ExtNextText"),
-                //refreshText: app.localize("ExtRefreshText"),
-                //beforePageText: app.localize("ExtBeforePageText"),
-                //afterPageText: app.localize("ExtAfterPageText"),
-                //displayMsg: app.localize("ExtDisplayMsg"),
-                //emptyMsg: app.localize("ExtEmptyMsg"),
-                listeners: {
-                    beforechange: function (page, currentPage) {
-                        var myProxy = this.store.getProxy();
-                        myProxy.params = {
-                            skipCount: 0,
-                            maxResultCount: 0
-                        };
-                        myProxy.setExtraParam("skipCount", (currentPage - 1) * this.store.pageSize);
-                        myProxy.setExtraParam("maxResultCount", this.store.pageSize);
+                flex: 1
+            }, {
+                xtype: "gridcolumn",
+                text: "UserName",
+                dataIndex: "userName",
+                flex: 1
+            }, {
+                xtype: "gridcolumn",
+                header: "Email",
+                dataIndex: "email",
+                flex: 1
+            }],
+            viewConfig: {
+                emptyText: "Chưa có dữ liệu"
+            },
+            dockedItems: [{
+                xtype: "toolbar",
+                dock: "bottom",
+                items: [{
+                    xtype: "pagingtoolbar",
+                    displayInfo: true,
+                    bind: {
+                        store: "{sNhanVien}"
+                    },
+                    style: "padding: 0px !important",
+                    //lastText: app.localize("ExtLastText"),
+                    //prevText: app.localize("ExtPrevText"),
+                    //firstText: app.localize("ExtFirstText"),
+                    //nextText: app.localize("ExtNextText"),
+                    //refreshText: app.localize("ExtRefreshText"),
+                    //beforePageText: app.localize("ExtBeforePageText"),
+                    //afterPageText: app.localize("ExtAfterPageText"),
+                    //displayMsg: app.localize("ExtDisplayMsg"),
+                    //emptyMsg: app.localize("ExtEmptyMsg"),
+                    listeners: {
+                        beforechange: function (page, currentPage) {
+                            var myProxy = this.store.getProxy();
+                            myProxy.params = {
+                                skipCount: 0,
+                                maxResultCount: 0
+                            };
+                            myProxy.setExtraParam("skipCount", (currentPage - 1) * this.store.pageSize);
+                            myProxy.setExtraParam("maxResultCount", this.store.pageSize);
+                        }
                     }
-                }
+                }]
             }]
-        }]
-    }],
+        }],
     buttons: [{
         text: "Chọn người dùng",
         handler: "onSelectDown",
@@ -235,7 +235,7 @@ Ext.define("Admin.view.chondulieu.wdChonNguoiDungController", {
     fnLoadUser: function () {
         var me = this;
         var sNhanVien = me.storeInfo.sNhanVien;
-        var url ="https://localhost:44390/api/User/paging?";
+        var url = "https://localhost:44390/api/User/paging?";
         sNhanVien.proxy.api.read = url;
         sNhanVien.proxy.pageParam = undefined;
         sNhanVien.proxy.limitParam = undefined;

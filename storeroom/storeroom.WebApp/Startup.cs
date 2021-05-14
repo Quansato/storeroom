@@ -77,10 +77,11 @@ namespace storeroom.WebApp
             services.AddTransient<IMaterialGroupService, MaterialGroupService>();
             services.AddTransient<IStoreroomService, StoreroomService>();
             //services.AddTransient<IUserService, UserService>();
-            //services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
-            //services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
-            //services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+            services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+            services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
+            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserApiClient,UserApiClient>();
+            services.AddTransient<IUserService,UserService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<IPurchaseOrderService, PurchaseOrderService>();
             services.AddTransient<IOutputService, OutputService>();

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using storeroom.Application.Catalog.Users;
 using storeroom.Application.Catalog.Users.Dtos;
+using storeroom.WebApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,11 @@ namespace storeroom.WebApp.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly IUserApiClient _userApiClient;
+        public UserController(IUserService userService, IUserApiClient userApiClient)
         {
             _userService = userService;
+            _userApiClient = userApiClient;
         }
         [HttpPost("authenticate")]
         [AllowAnonymous]
@@ -34,7 +37,7 @@ namespace storeroom.WebApp.Controllers
             }
             else
             {
-                HttpContext.Session.SetString("Token",resultToken);
+                HttpContext.Session.SetString("Token", resultToken);
             }
 
             return Ok(resultToken);
@@ -53,6 +56,13 @@ namespace storeroom.WebApp.Controllers
                 return BadRequest("Register is unsuccesful");
             }
             return Ok();
+        }
+        [Authorize, HttpGet("getCurrentUserLogged")]
+        public async Task<IActionResult> GetUserLogin()
+        {
+            var userName = User.Identity.Name;
+            var user = await _userService.GetUserByName(userName);
+            return Ok(user);
         }
     }
 }

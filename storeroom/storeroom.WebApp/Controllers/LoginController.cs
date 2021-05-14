@@ -2,18 +2,22 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using storeroom.Application.Catalog.Users.Dtos;
 using storeroom.WebApp.Services;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using MemoryCache = System.Runtime.Caching.MemoryCache;
 
 namespace storeroom.WebApp.Controllers
 {
@@ -21,6 +25,7 @@ namespace storeroom.WebApp.Controllers
     {
         private readonly IUserApiClient _userApiClient;
         private readonly IConfiguration _configuration;
+        private const string CacheKey = "principal";
         public LoginController(IUserApiClient userApiClient, IConfiguration configuration)
         {
             _userApiClient = userApiClient;
@@ -71,6 +76,13 @@ namespace storeroom.WebApp.Controllers
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,
                         authProperties);
+            ObjectCache cache = MemoryCache.Default;
+
+
+                // Store data in the cache    
+                CacheItemPolicy cacheItemPolicy = new CacheItemPolicy();
+                cacheItemPolicy.AbsoluteExpiration = DateTime.Now.AddHours(1.0);
+                cache.Add(CacheKey, userPrincipal, cacheItemPolicy);
             return RedirectToAction("Index", "Home");
         }
         private ClaimsPrincipal ValidateToken(string jwtToken)

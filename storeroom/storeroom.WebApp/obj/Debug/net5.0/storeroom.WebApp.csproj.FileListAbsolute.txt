@@ -245,3 +245,4 @@ E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\ref\storeroom.WebApp.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.pdb
 E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.genruntimeconfig.cache
+E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.MvcApplicationPartsAssemblyInfo.cs

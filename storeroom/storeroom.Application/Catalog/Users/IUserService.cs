@@ -13,5 +13,6 @@ namespace storeroom.Application.Catalog.Users
         Task<bool> Register(RegisterRequest request);
         Task<PagedResult<UserViewModel>> GetUserPaging(GetUserPagingRequest request);
         Task<List<UserViewModel>> GetAll();
+        Task<List<UserViewModel>> GetUserByName(string userName); 
     }
 }

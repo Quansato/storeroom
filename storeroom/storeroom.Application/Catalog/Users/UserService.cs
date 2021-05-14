@@ -123,5 +123,29 @@ namespace storeroom.Application.Catalog.Users
             }
             return false;
         }
+
+        public async Task<List<UserViewModel>> GetUserByName(string userName)
+        {
+            var query = _userManager.Users;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                query = query.Where(x => x.UserName.Contains(userName));
+            }
+
+            //3. Paging
+            int totalRow = await query.CountAsync();
+
+            var data = await query
+                       .Select(x => new UserViewModel()
+                       {
+                           Email = x.Email,
+                           PhoneNumber = x.PhoneNumber,
+                           FirstName = x.FirstName,
+                           LastName = x.LastName,
+                           UserId = x.Id,
+                           UserName = x.UserName
+                       }).ToListAsync();
+            return data;
+        }
     }
 }

@@ -6,6 +6,8 @@ using storeroom.Application.Catalog.Users.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Caching;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace storeroom.BackendApi.Controllers
@@ -15,6 +17,7 @@ namespace storeroom.BackendApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private const string CacheKey = "principal";
         public UserController(IUserService userService)
         {
             _userService = userService;
@@ -66,6 +69,14 @@ namespace storeroom.BackendApi.Controllers
         {
             var users = await _userService.GetAll();
             return Ok(users);
+        }
+
+        [Authorize, HttpGet("getCurrentUserLogged")]
+        public async Task<IActionResult> GetUserLogin()
+        {
+            var userName = User.Identity.Name;
+            var user = await _userService.GetUserByName(userName);
+            return Ok(user);
         }
     }
 }

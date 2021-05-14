@@ -11,5 +11,6 @@ namespace storeroom.WebApp.Services
     {
         Task<string> Authenticate(LoginRequest request);
         Task<PagedResult<UserViewModel>> GetUserPaging(GetUserPagingRequest request);
+        Task<UserViewModel> GetUserLogged();
     }
 }

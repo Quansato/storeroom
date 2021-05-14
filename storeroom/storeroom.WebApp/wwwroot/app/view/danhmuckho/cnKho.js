@@ -307,8 +307,10 @@ Ext.define('Admin.view.danhmuckho.cnKhoController', {
             viewModel: {
                 data: {
                     fnSauKhiChon: function (result) {
-                        record.set("tenNguoiDaiDien", result.get("firstName") + " " + result.get("lastName"));
+                        console.log(result.get("tenNguoiDaiDien"))
+                        record.set("tenNguoiDaiDien", result.get("tenNguoiDaiDien"));
                         record.set("userId", result.get("userId"));
+                        console.log(record)
                     }
                 }
             }

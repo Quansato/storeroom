@@ -5,6 +5,13 @@
         { name: 'id', type: 'int' },
         { name: 'firstName', type: 'string' },
         { name: 'lastName', type: 'string' },
+        {
+            name: 'tenNguoiDaiDien', type: 'string',
+            convert: function (value, record) {
+                var total = record.get('firstName') + ' ' + record.get('lastName');
+                return total
+            }
+        },
         { name: 'userName', type: 'string' },
         { name: 'email', type: 'string' },
         { name: 'profilePictureId', type: 'auto', defaultValue: null, allowNull: true },
