@@ -55,12 +55,12 @@ Ext.define("Admin.view.chondulieu.wdChonVatTu", {
             }, {
                 xtype: "gridcolumn",
                 header: 'Mã',
-                dataIndex: "ma",
+                dataIndex: "qrCode",
                 flex: 1
             }, {
                 xtype: "gridcolumn",
                 header: 'Tên',
-                dataIndex: "moTa",
+                dataIndex: "displayName",
                 flex: 1.4
             }
             ],
@@ -148,13 +148,13 @@ Ext.define("Admin.view.chondulieu.wdChonVatTu", {
                 {
                     xtype: "gridcolumn",
                     header: 'Mã',
-                    dataIndex: "ma",
+                    dataIndex: "materialCode",
                     flex: 1
                 },
                 {
                     xtype: "gridcolumn",
                     header: 'Tên',
-                    dataIndex: "moTa",
+                    dataIndex: "displayName",
                     flex: 1.5
                 }
             ],
@@ -217,8 +217,8 @@ Ext.define("Admin.view.chondulieu.wdChonVatTu", {
                             store: Ext.create("Ext.data.Store", {
                                 fields: ["ma", "ten"],
                                 data: [
-                                    { ma: "active", ten: 'Hoạt động' },
-                                    { ma: "pending", ten: 'Không hoạt động' }]
+                                    { ma: 1, ten: 'Hoạt động' },
+                                    { ma: 0, ten: 'Không hoạt động' }]
                             }),
                             value: "active",
                             flex: 0.5,
@@ -277,98 +277,95 @@ Ext.define("Admin.view.chondulieu.wdChonVatTuController", {
         var me = this;
         me.refs = me.getReferences();
         me.storeInfo = me.getViewModel().storeInfo;
-        //me.onSearchNhom();
+        me.onSearchNhom();
         //me.fnSearchVatTu(me, '');
     },
 
-    //specialkey: function (field, e) {
-    //    var me = this;
-    //    if (e.getKey() == e.ENTER) {
-    //        me.onSearchNhom();
-    //    }
-    //},
+    specialkey: function (field, e) {
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.onSearchNhom();
+        }
+    },
 
-    //onSearchNhom: function () {
-    //    var me = this;
-    //    var store = me.storeInfo.sNhomVatTu;
-    //    var txtSearch = me.refs.txtFilter.getValue();
-    //    var query = abp.utils.buildQueryString([{ name: "filter", value: txtSearch }]);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoNhomVatTu/GetAll" + query;
-    //    store.proxy.api.read = url;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            var dataLCV = { id: 0, ma: app.localize('All'), moTa: app.localize('All') };
-    //            store.insert(0, dataLCV);
-    //        }
-    //    });
-    //},
+    onSearchNhom: function () {
+        var me = this;
+        var sNhomVatTu = me.storeInfo.sNhomVatTu;
+        var txtSearch = me.refs.txtFilter.getValue();
+        //var query = abp.utils.buildQueryString([{ name: "filter", value: txtSearch }]);
+        var url = "api/MaterialGroup?page=1&start=0&limit=25&keyword=" + txtSearch;
+        sNhomVatTu.proxy.api.read = url;
+        sNhomVatTu.proxy.pageParam = undefined;
+        sNhomVatTu.proxy.limitParam = undefined;
+        sNhomVatTu.proxy.startParam = undefined;
+        sNhomVatTu.load({
+            params: {
+                skipCount: 0,
+                maxResultCount: sNhomVatTu.pageSize
+            },
+            scope: this,
+            callback: function (records, operation, success) {
+                if (records == null) {
+                    sNhomVatTu.removeAll();
+                }
+                if (me.refs.txtSearch.getValue() == "") {
+                    var rTatCa = Ext.create("Admin.model.mKhoNhomVatTu", {
+                        id: 0,
+                        qrCode: "Tất cả",
+                        displayName: "Tất cả"
+                    });
+                    sNhomVatTu.insert(0, rTatCa);
+                }
+                if (records.length > 0) me.refs.gridNhomVatTu.getSelectionModel().select(0);
+            }
+        });
+    },
 
-    //fnSearchVatTu: function (me, id) {
-    //    var txt = me.refs.txtSearch.getValue();
-    //    var listNotIn = me.getViewModel().get("listNotIn");
-    //    var filter = [{ name: "laKho", value: true }];
-    //    if (txt != "") {
-    //        filter.push({ name: "filter", value: txt })
-    //    }
-    //    if (id != "") {
-    //        filter.push({ name: "maNhomVatTu", value: id })
-    //    }
-    //    var query = abp.utils.buildQueryString(filter);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoVatTu/GetAll" + query;
-    //    if (listNotIn != null && listNotIn != "")
-    //        url += "&ListIdNotIn=" + listNotIn;
-    //    var store = me.storeInfo.sVatTu;
-    //    store.proxy.api.read = url;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
+    fnSearchVatTu: function (me, id) {
+        var txt = me.refs.txtSearch.getValue();
+        var url = "api/Material?page=1&start=0&limit=25&keyword=" + txt + "&MaterialGroupId=" + id;
+        var store = me.storeInfo.sVatTu;
+        store.proxy.api.read = url;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.load({
+            scope: this,
+            callback: function (records, operation, success) {
+                if (records == null) {
+                    store.removeAll();
+                }
+            }
+        });
+    },
 
-    //        }
-    //    });
-    //},
+    onSelectNhomVatTu: function (grid, record) {
+        var me = this;
+        me.fnSearchVatTu(me, record.get("id"));
+    },
 
-    //onSelectNhomVatTu: function (grid, record) {
-    //    var me = this;
-    //    me.fnSearchVatTu(me, record.get("id"));
-    //},
+    onSearchVatTu: function () {
+        var me = this;
+        var record = me.getViewModel().get("rSelectedNhomVatTu");
+        var id = "";
+        if (record) {
+            id = record.get("id");
+        }
+        me.fnSearchVatTu(me, id);
+    },
 
-    //onSearchVatTu: function () {
-    //    var me = this;
-    //    var record = me.getViewModel().get("rSelectedNhomVatTu");
-    //    var id = "";
-    //    if (record) {
-    //        id = record.get("id");
-    //    }
-    //    me.fnSearchVatTu(me, id);
-    //},
-
-    //onChoiceDown: function () {
-    //    var me = this;
-    //    var fnSauKhiChon = me.getViewModel().get("fnSauKhiChon");
-    //    var gridVatTu = me.refs.gridVatTu;
-    //    var records = gridVatTu.getSelectionModel().getSelection();
-    //    if (records.length == 0) {
-    //        abp.notify.warn(app.localize("DanhMuc_MoiChonDoiTuong"));
-    //        return;
-    //    }
-    //    if (fnSauKhiChon) fnSauKhiChon(records);
-    //    me.getView().doClose();
-    //},
+    onChoiceDown: function () {
+        var me = this;
+        var fnSauKhiChon = me.getViewModel().get("fnSauKhiChon");
+        var gridVatTu = me.refs.gridVatTu;
+        var records = gridVatTu.getSelectionModel().getSelection();
+        if (records.length == 0) {
+            toastr.warning("Chọn vật tư");
+            return;
+        }
+        if (fnSauKhiChon) fnSauKhiChon(records);
+        me.getView().doClose();
+    },
 
     onClose: function () {
         var me = this;

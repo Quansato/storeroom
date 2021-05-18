@@ -46,6 +46,10 @@ namespace storeroom.WebApp
             
             services.AddHttpClient();
             services.AddControllersWithViews().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Storeroom.WebApp", Version = "v1" });
+            });
             services.AddSession(option=> {
                 option.IdleTimeout = TimeSpan.FromMinutes(30);
             });
@@ -77,11 +81,11 @@ namespace storeroom.WebApp
             services.AddTransient<IMaterialGroupService, MaterialGroupService>();
             services.AddTransient<IStoreroomService, StoreroomService>();
             //services.AddTransient<IUserService, UserService>();
-            services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
-            services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
-            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+            //services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+            //services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
+            //services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserApiClient,UserApiClient>();
-            services.AddTransient<IUserService,UserService>();
+            //services.AddTransient<IUserService,UserService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<IPurchaseOrderService, PurchaseOrderService>();
             services.AddTransient<IOutputService, OutputService>();
@@ -95,6 +99,8 @@ namespace storeroom.WebApp
         {
             if (env.IsDevelopment())
             {
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Storeroom.WebApp v1"));
                 app.UseDeveloperExceptionPage();
             }
             else

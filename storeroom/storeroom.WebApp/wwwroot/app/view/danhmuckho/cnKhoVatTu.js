@@ -22,7 +22,8 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
     viewModel: {
         type: "danhmuckho-cnkhovattu"
     },
-    maximized: true,
+    width: 1200,
+    height:500,
     modal: true,
     scrollable: true,
     iconCls: 'x-fa fa-th-list',
@@ -311,6 +312,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                     style: {
                         borderTop: "solid 1px #d0d0d0 !important"
                     },
+                    hidden:true,
                     header: {
                         padding: 3,
                         items: [{
@@ -791,10 +793,10 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
         }).show();
     },
 
-    //onSaveAndNew: function () {
-    //    var me = this;
-    //    me.fnSave(me.fnNewRecord);
-    //},
+    onSaveAndNew: function () {
+        var me = this;
+        me.fnSave(me.fnNewRecord);
+    },
 
     //onLoadFile: function () {
     //    var me = this;
@@ -882,19 +884,19 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
     //    });
     //},
 
-    //fnNewRecord: function (me) {
-    //    var record = me.getViewModel().get("record");
-    //    var sVatTu = me.storeInfo.sVatTu;
-    //    var newRecord = Ext.create("Admin.model.mKhoVatTu", {
-    //        id: 0,
-    //        maNhomVatTu: record.get("maNhomVatTu"),
-    //        maNhom: record.get("maNhom"),
-    //        tenNhom: record.get("tenNhom")
-    //    });
-    //    me.getViewModel().set("record", newRecord);
-    //    sVatTu.removeAll();
-    //    me.onLoadFile();
-    //},
+    fnNewRecord: function (me) {
+        var record = me.getViewModel().get("record");
+        var sVatTu = me.storeInfo.sVatTu;
+        var newRecord = Ext.create("Admin.model.mKhoVatTu", {
+            id: 0,
+            maNhomVatTu: record.get("materialGroupId"),
+            //maNhom: record.get(" materialGroupCode"),
+            tenNhom: record.get("materialGroupName")
+        });
+        me.getViewModel().set("record", newRecord);
+        sVatTu.removeAll();
+        //me.onLoadFile();
+    },
 
     onSave: function () {
         app.mUtils.getUserName();
@@ -930,6 +932,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
             app.mUtils.fnPOSTAjax(url, record.data, function (response) {
                 if (response == 1) {
                     toastr.success("Thêm mới vật tư thành công")
+                    if (fnSauKhiSave) fnSauKhiSave()
                     view.setLoading(false);
                 } else {
                     toastr.warning('Có lỗi xảy ra trong quá trình thêm mới')
@@ -941,6 +944,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
             app.mUtils.fnPUTAjax(url, record.data, function (response) {
                 if (response == 1) {
                     toastr.success("Cập nhật vật tư thành công")
+                    if (fnSauKhiSave) fnSauKhiSave()
                     view.setLoading(false);
                 } else {
                     toastr.warning('Cập nhật thất bại')

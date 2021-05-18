@@ -31,7 +31,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNThayDoiTrangThai', {
     items: [{
         xtype: 'form',
         flex: 1,
-        reference: 'frmChuyenTrangTHai',
+        reference: 'frmChuyenTrangThai',
         bodyPadding: 0,
         layout: {
             type: 'vbox',
@@ -253,7 +253,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNThayDoiTrangThaiController', {
 
     //onLuu: function (button) {
     //    var me = this;
-    //    var frm = me.ref.frmChuyenTrangTHai;
+    //    var frm = me.ref.frmChuyenTrangThai;
     //    var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
     //    if (frm.isValid()) {
     //        var record = me.getViewModel().data.record;

@@ -26,6 +26,7 @@ namespace storeroom.Application.Catalog.Inputs
                 InputCode = request.InputCode,
                 StoreroomId = request.StoreroomId,
                 DeliveryUnit = request.DeliveryUnit,
+                Shipper=request.Shipper,
                 DateInput = request.DateInput,
                 DateStatus = request.DateStatus,
                 CreationTime = DateTime.Now,

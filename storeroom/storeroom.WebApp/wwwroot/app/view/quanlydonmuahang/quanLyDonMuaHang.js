@@ -155,7 +155,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                         width: 280,
                         fieldLabel: 'Kho',
                         queryMode: 'local',
-                        displayField: 'moTa',
+                        displayField: 'displayName',
                         valueField: 'id',
                         forceSelection: true,
                         editable: false
@@ -208,7 +208,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
             }],
             listeners: {
                 selectionchange: 'onChangeGridDonHang',
-                cellclick: 'cellDonHang'
+                //cellclick: 'cellDonHang'
             }
         }, {
             xtype: 'grid',
@@ -1038,36 +1038,56 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
 
     loadKho: function (fnSauKhiLoad) {
         var me = this;
-        var recordTK = me.getViewModel().data.recordTK;
-        var recordTKDX = me.getViewModel().data.recordTKDX;
         var store = me.storeinfo.storeKhoNhap;
-        var storeKhoDeXuatMua = me.storeinfo.storeKhoDeXuatMua;
         var url = "api/Storeroom?page=1&start=0&limit=25";
-        storeKhoDeXuatMua.proxy.api.read = url;
-        storeKhoDeXuatMua.load({
+        store.proxy.api.read = url;
+        store.pageSize = 500;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.load({
+            params: {
+                skipCount: 0,
+                limit: store.pageSize
+            },
             scope: this,
             callback: function (records, operation, success) {
-                store.loadRecords(records);
-                if (records.length > 0) {
-                    recordTK.set('kho', records[0].get('id'));
-                    recordTKDX.set('kho', records[0].get('id'));
+                if (records == null) {
+                    store.removeAll();
                 }
-                recordTKDX.set('phanloai', 'tatca');
-                //recordTKDX.set('denngay', app.gplatformutils.getendDate());
-                //recordTK.set('phanloai', 'tatca');
-                //recordTK.set('denngay', app.gplatformutils.getendDate());
-                me.onTimKiemDonHang();
-                //var idUrl = app.gplatformutils.getUrlVars()["id"];
-                //if (idUrl && idUrl != "") {
-                //    var maPDX = idUrl.split("#");
-                //    if (maPDX.length > 0 && isNaN(parseInt(maPDX[0])) == false) {
-                //        me.getView().setActiveItem(1);
-                //        me.onChiTietPhieuDeXuatDonHang(maPDX[0]);
-                //    }
-                //}
-                me.getView().setLoading(false);
             }
         });
+        //var me = this;
+        //var recordTK = me.getViewModel().data.recordTK;
+        //var recordTKDX = me.getViewModel().data.recordTKDX;
+        //var store = me.storeinfo.storeKhoNhap;
+        //var storeKhoDeXuatMua = me.storeinfo.storeKhoDeXuatMua;
+        //var url = "api/Storeroom?page=1&start=0&limit=25";
+        //storeKhoDeXuatMua.proxy.api.read = url;
+        //storeKhoDeXuatMua.load({
+        //    scope: this,
+        //    callback: function (records, operation, success) {
+        //        store.loadRecords(records);
+        //        if (records.length > 0) {
+        //            recordTK.set('kho', records[0].get('id'));
+        //            recordTKDX.set('kho', records[0].get('id'));
+        //        }
+        //        recordTKDX.set('phanloai', 'tatca');
+        //        //recordTKDX.set('denngay', app.gplatformutils.getendDate());
+        //        //recordTK.set('phanloai', 'tatca');
+        //        //recordTK.set('denngay', app.gplatformutils.getendDate());
+        //        me.onTimKiemDonHang();
+        //        //var idUrl = app.gplatformutils.getUrlVars()["id"];
+        //        //if (idUrl && idUrl != "") {
+        //        //    var maPDX = idUrl.split("#");
+        //        //    if (maPDX.length > 0 && isNaN(parseInt(maPDX[0])) == false) {
+        //        //        me.getView().setActiveItem(1);
+        //        //        me.onChiTietPhieuDeXuatDonHang(maPDX[0]);
+        //        //    }
+        //        //}
+        //        me.getView().setLoading(false);
+        //    }
+        //});
     },
 
     onTimKiemDonHang: function () {
@@ -1197,7 +1217,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         }
         //var filter = [{ name: 'maPhieu', value: maPhieu }];
         //var query = abp.utils.buildQueryString(filter);
-        var url = "api/PurchaseOrder/PurchaseId?PurchaseId=4";
+        var url = "api/PurchaseOrder/PurchaseId?PurchaseId=" + maPhieu;
         store.proxy.api.read = url;
         store.proxy.pageParam = undefined;
         store.proxy.limitParam = undefined;
@@ -1220,10 +1240,10 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         record.set('id', 0);
         record.set('phanLoai', "donhang");
         record.set('thoiGian', new Date());
-        record.set('tinhTrangDon', '0');
-        record.set('maKho', nodesSelect.data.id);
-        var title = app.localize('CMMSDMKhoThemDonMuaHang');
-        var storeKho = app.gplatformutils.deepCloneStore(me.storeinfo.storeKhoNhap);
+        record.set('status', '0');
+        //record.set('storeroomId', nodesSelect.data.id);
+        var title = "Thêm mới đơn mua hàng";
+        var storeKho = app.mUtils.deepCloneStore(me.storeinfo.storeKhoNhap);
         var wnd = Ext.create('Admin.view.quanlydonmuahang.CNDonHang', {
             title: title,
             viewModel: {
@@ -1243,6 +1263,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         var me = this;
         var title = "Sửa đơn mua hàng";
         var record = me.ref.dsDonHang.getSelectionModel().getSelection();
+        console.log(record)
         var storeKho = app.mUtils.deepCloneStore(me.storeinfo.storeKhoNhap);
         var wnd = Ext.create('Admin.view.quanlydonmuahang.CNDonHang', {
             title: title,
@@ -1285,43 +1306,51 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
     //    );
     //},
 
-    //onChuyenTrangThai: function () {
-    //    var me = this;
-    //    var nodesSelect = me.ref.dsDonHang.getSelectionModel().getSelection();
-    //    var record = Ext.create('Admin.model.mKhoChuyenTrangThai');
-    //    record.set('id', 0);
-    //    record.set('maPhieu', nodesSelect[0].data.id);
-    //    record.set('phanLoai', 'donmuahang');
-    //    record.set('tenNguoiThucHien', app.session.user.name);
-    //    record.set('nguoiThucHien', app.session.user.id);
-    //    record.set('trangThaiCu', nodesSelect[0].data.tinhTrangDon == null || nodesSelect[0].data.tinhTrangDon == "" ? 0 : nodesSelect[0].data.tinhTrangDon);
-    //    var dataTT = []
-    //    if (abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager')) {
-    //        dataTT = [{ matrangthai: 0, tentrangthai: app.localize("CMMSDMKhoTrangThaiDuyetChoDuyet") },
-    //        { matrangthai: 1, tentrangthai: app.localize('CMMSDMKhoTrangThaiDuyetDaHoanThanh') },
-    //        { matrangthai: 2, tentrangthai: app.localize('CMMSDMKhoTrangThaiDuyetKhongDuyet') },
-    //        { matrangthai: 3, tentrangthai: app.localize('CMMSDMKhoTrangThaiPhieuDong') }]
-    //    }
-    //    var dataTTCu = [{ matrangthai: 1, tentrangthai: app.localize("CMMSDMKhoTrangThaiDuyetDaHoanThanh") },
-    //    { matrangthai: 2, tentrangthai: app.localize("CMMSDMKhoTrangThaiDuyetKhongDuyet") },
-    //    { matrangthai: 3, tentrangthai: app.localize("CMMSDMKhoTrangThaiPhieuDong") },
-    //    { matrangthai: 0, tentrangthai: app.localize("CMMSDMKhoTrangThaiDuyetChoDuyet") }]
-    //    var title = app.localize("CMMSDMKhoThayDoiTrangThaiPhieu") + ": " + nodesSelect[0].data.soDonHang + "";
-    //    var wnd = Ext.create('Admin.view.quanlydonmuahang.CNThayDoiTrangThai', {
-    //        title: title,
-    //        viewModel: {
-    //            data: {
-    //                record: record,
-    //                dataTT: dataTT,
-    //                dataTTCu: dataTTCu,
-    //                fnSauKhiLoad: function () {
-    //                    me.onTimKiemDonHang();
-    //                }
-    //            }
-    //        }
-    //    });
-    //    wnd.show();
-    //},
+    onChuyenTrangThai: function () {
+        var me = this;
+        var nodesSelect = me.ref.dsDonHang.getSelectionModel().getSelection();
+        var record = Ext.create('Admin.model.mKhoChuyenTrangThai');
+        record.set('id', 0);
+        record.set('maPhieu', nodesSelect[0].data.id);
+        //record.set('tenNguoiThucHien', app.session.user.name);
+        //record.set('nguoiThucHien', app.session.user.id);
+        record.set('trangThaiCu', nodesSelect[0].data.tinhTrangDon == null || nodesSelect[0].data.tinhTrangDon == "" ? 0 : nodesSelect[0].data.tinhTrangDon);
+        var dataTT = []
+        //if (abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager')) {
+        //    dataTT = [{ matrangthai: 0, tentrangthai: app.localize("CMMSDMKhoTrangThaiDuyetChoDuyet") },
+        //    { matrangthai: 1, tentrangthai: app.localize('CMMSDMKhoTrangThaiDuyetDaHoanThanh') },
+        //    { matrangthai: 2, tentrangthai: app.localize('CMMSDMKhoTrangThaiDuyetKhongDuyet') },
+        //    { matrangthai: 3, tentrangthai: app.localize('CMMSDMKhoTrangThaiPhieuDong') }]
+        //}
+        //var dataTTCu = [{ matrangthai: 1, tentrangthai: app.localize("CMMSDMKhoTrangThaiDuyetDaHoanThanh") },
+        //{ matrangthai: 2, tentrangthai: app.localize("CMMSDMKhoTrangThaiDuyetKhongDuyet") },
+        //{ matrangthai: 3, tentrangthai: app.localize("CMMSDMKhoTrangThaiPhieuDong") },
+        //{ matrangthai: 0, tentrangthai: app.localize("CMMSDMKhoTrangThaiDuyetChoDuyet") }]
+        dataTT = [{ value: "0", name: 'Chờ duyệt' },
+            { value: "1", name: 'Hoàn thành' },
+            { value: "2", name: 'Từ chối' },
+            { value: "3", name: 'Phiếu đóng' }]
+
+        var dataTTCu = [{ value: "0", name: 'Chờ duyệt' },
+        { value: "1", name: 'Hoàn thành' },
+        { value: "2", name: 'Từ chối' },
+        { value: "3", name: 'Phiếu đóng' }]
+        var title = 'Thay đổi trang thái phiếu' + ": " + nodesSelect[0].data.soDonHang + "";
+        var wnd = Ext.create('Admin.view.quanlydonmuahang.CNThayDoiTrangThai', {
+            title: title,
+            viewModel: {
+                data: {
+                    record: record,
+                    dataTT: dataTT,
+                    dataTTCu: dataTTCu,
+                    fnSauKhiLoad: function () {
+                        me.onTimKiemDonHang();
+                    }
+                }
+            }
+        });
+        wnd.show();
+    },
 
     //onInPhieuDonHang: function () {
     //    var me = this;
@@ -1535,8 +1564,8 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         var record = Ext.create('Admin.model.mDonDeXuatMuaHang');
         record.set('id', 0);
         record.set('ngayDeXuat', new Date());
-        record.set('trangThai', '0');
-        record.set('maKho', nodesSelect.data.id);
+        record.set('status', '0');
+        record.set('storeroomId', nodesSelect.data.id);
         var title = 'Thêm đơn đề xuất mua hàng';
         var storeKho = app.mUtils.deepCloneStore(me.storeinfo.storeKhoNhap);
         var wnd = Ext.create('Admin.view.quanlydonmuahang.CNDonDeXuatHang', {

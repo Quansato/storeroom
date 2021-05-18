@@ -260,8 +260,7 @@
 
         getUserName: function () {
             var userName = "";
-            debugger
-            app.mUtils.fnGETAjax("/api/User/getCurrentUserLogged", function (response) {
+            app.mUtils.fnGETAjax("/getCurrentUserLogged", function (response) {
                 console.log(response)
             })
             return

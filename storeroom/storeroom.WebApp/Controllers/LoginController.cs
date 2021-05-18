@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -21,6 +22,8 @@ using MemoryCache = System.Runtime.Caching.MemoryCache;
 
 namespace storeroom.WebApp.Controllers
 {
+    /*[Route("api/[controller]")]
+    [ApiController]*/
     public class LoginController : Controller
     {
         private readonly IUserApiClient _userApiClient;
@@ -84,6 +87,14 @@ namespace storeroom.WebApp.Controllers
                 cacheItemPolicy.AbsoluteExpiration = DateTime.Now.AddHours(1.0);
                 cache.Add(CacheKey, userPrincipal, cacheItemPolicy);
             return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize, HttpGet("getCurrentUserLogged")]
+        public async Task<IActionResult> GetUserLogin()
+        {
+            //var userName = User.Identity.Name;
+            var user = await _userApiClient.GetUserLogged();
+            return Ok(user);
         }
         private ClaimsPrincipal ValidateToken(string jwtToken)
         {

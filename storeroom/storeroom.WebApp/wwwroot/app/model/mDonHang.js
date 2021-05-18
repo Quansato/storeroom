@@ -63,7 +63,7 @@
         { name: 'suplierId', type: 'int' },
         { name: 'suplierName', type: 'string' },
         { name: 'priority', type: 'int' },
-        { name: 'userID', type: 'string' },
+        { name: 'userId', type: 'string' },
         { name: 'userName', type: 'string' },
     ]
 });

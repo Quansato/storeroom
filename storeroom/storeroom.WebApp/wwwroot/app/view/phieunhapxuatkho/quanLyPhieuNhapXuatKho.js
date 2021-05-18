@@ -581,7 +581,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                         labelWidth: 75,
                         fieldLabel: 'Kho',
                         queryMode: 'local',
-                        displayField: 'moTa',
+                        displayField: 'displayName',
                         valueField: 'id',
                         forceSelection: true,
                         editable: false,
@@ -902,7 +902,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
     }],
     listeners: {
         afterRender: 'onAfterrender',
-        tabchange: 'changeTab'
+        //tabchange: 'changeTab'
     }
 });
 
@@ -936,7 +936,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         //var dEnd = app.gplatformconsts.eDate;//moment().endOf('month');
         //app.gplatformutils.createDateRangeExtent('PhieuXuat', me, dStart, dEnd, function () { });
         //$('.daterangepicker').css('display', 'none');
-        //me.loadKho();
+        me.loadKho();
         //me.loadLoaiPhieuXuat();
         //me.loadLoaiPhieu();
         //var recordTK = me.getViewModel().data.recordTK;
@@ -1012,32 +1012,36 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
     //    });
     //},
 
-    //loadKho: function () {
-    //    var me = this;
-    //    var recordTKXK = me.getViewModel().data.recordTKXK;
-    //    var recordTK = me.getViewModel().data.recordTK;
-    //    var store = me.storeinfo.storeKho;
-    //    var storeXuat = me.storeinfo.storeKhoNhapXuat;
-    //    var url = abp.appPath + "api/services/app/CMMSKho/GetPermission";
-    //    store.proxy.api.read = url;
-    //    store.load({
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            storeXuat.loadRecords(records);
-    //            if (records.length > 0) {
-    //                recordTK.set('kho', records[0].get('id'));
-    //                //phiếu xuất
-    //                recordTKXK.set('kho', records[0].get('id'));
-    //            }
+    loadKho: function () {
+        var me = this;
+        var recordTKXK = me.getViewModel().data.recordTKXK;
+        var recordTK = me.getViewModel().data.recordTK;
+        var store = me.storeinfo.storeKho;
+        var storeXuat = me.storeinfo.storeKhoNhapXuat;
+        var url = "api/Storeroom?page=1&start=0&limit=25";
+        store.proxy.api.read = url;
+        store.pageSize = 500;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.load({
+            scope: this,
+            callback: function (records, operation, success) {
+                storeXuat.loadRecords(records);
+                if (records.length > 0) {
+                    recordTK.set('kho', records[0].get('id'));
+                    //phiếu xuất
+                    recordTKXK.set('kho', records[0].get('id'));
+                }
 
-    //            recordTK.set('loaiPhieu', '-1');
-    //            recordTK.set('denngay', app.gplatformutils.getendDate());
-    //            //Phieu xuất
-    //            recordTKXK.set('denngay', app.gplatformutils.getendDate());
-    //            me.getView().setLoading(false);
-    //        }
-    //    });
-    //},
+                recordTK.set('loaiPhieu', '-1');
+                //recordTK.set('denngay', app.gplatformutils.getendDate());
+                //Phieu xuất
+                //recordTKXK.set('denngay', app.gplatformutils.getendDate());
+                //me.getView().setLoading(false);
+            }
+        });
+    },
 
     //onChangeGridPhieuNhap: function (grid, selected, eOpts) {
     //    var me = this;
@@ -1087,65 +1091,64 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
     //    });
     //},
 
-    //onTimKiemNhapKho: function () {
-    //    var me = this;
-    //    me.storeinfo.storePhieuNhapChiTiet.loadData([]);
-    //    me.loadNhapKho();
-    //},
+    onTimKiemNhapKho: function () {
+        var me = this;
+        me.storeinfo.storePhieuNhapChiTiet.loadData([]);
+        me.loadNhapKho();
+    },
 
-    //loadNhapKho: function () {
-    //    var me = this;
-    //    me.selectPhieuNhap = false;
-    //    var filter = [{ name: 'phanLoai', value: 'nhapkho' }];
-    //    var recordTK = me.getViewModel().data.recordTK;
-    //    if (recordTK.get('sophieu')) {
-    //        filter.push({ name: "filter", value: recordTK.get('sophieu') });
-    //    }
-    //    if (recordTK.get('loaiPhieu') && recordTK.get('loaiPhieu') != '-1') {
-    //        filter.push({ name: "loaiPhieu", value: recordTK.get('loaiPhieu') });
-    //    }
-    //    if (me.ref.cbkho.getValue() != 0) {
-    //        filter.push({ name: "maKhoNhap", value: me.ref.cbkho.getValue() });
-    //    }
-    //    var dStart = Ext.Date.format(new Date(me.sDATE), 'Y/m/d 00:00:00.000');
-    //    var dEnd = Ext.Date.format(new Date(me.eDATE), 'Y/m/d 23:59:59.999');
-    //    if (me.eDATE && me.sDATE && recordTK.get('loaingay') && recordTK.get('loaingay') == 'ngayHachToan') {
-    //        filter.push({ name: "ngayHachToanStart", value: dStart });
-    //        filter.push({ name: "ngayHachToanEnd", value: dEnd });
-    //    } else if (me.eDATE && me.sDATE && recordTK.get('loaingay') && recordTK.get('loaingay') == 'ngayChungTu') {
-    //        filter.push({ name: "ngayChungTuStart", value: dStart });
-    //        filter.push({ name: "ngayChungTuEnd", value: dEnd });
-    //    }
-    //    filter.push({ name: "sorting", value: "ngayHachToan desc" });
-    //    var store = me.storeinfo.storePhieuNhapKho;
-    //    var query = abp.utils.buildQueryString(filter);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoPhieuNhapXuat/GetAll" + query;
-    //    store.proxy.api.read = url;
-    //    store.pageSize = 500;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            if (records == null) {
-    //                store.removeAll();
-    //                var storePhieuNhapChiTiet = me.storeinfo.storePhieuNhapChiTiet;
-    //                storePhieuNhapChiTiet.removeAll();
-    //            } else {
-    //                me.ref.dsPhieuNhapKho.getSelectionModel().select(0);
-    //                if (me.selectPhieuNhap == false && me.ref.dsPhieuNhapKho.getSelectionModel().getSelection().length > 0) {
-    //                    me.loadChiTietPhieu(me.ref.dsPhieuNhapKho.getSelectionModel().getSelection()[0].data.id);
-    //                }
+    loadNhapKho: function () {
+        var me = this;
+        me.selectPhieuNhap = false;
+        var filter = [{ name: 'phanLoai', value: 'nhapkho' }];
+        var recordTK = me.getViewModel().data.recordTK;
+        //if (recordTK.get('sophieu')) {
+        //    filter.push({ name: "filter", value: recordTK.get('sophieu') });
+        //}
+        //if (recordTK.get('loaiPhieu') && recordTK.get('loaiPhieu') != '-1') {
+        //    filter.push({ name: "loaiPhieu", value: recordTK.get('loaiPhieu') });
+        //}
+        //if (me.ref.cbkho.getValue() != 0) {
+        //    filter.push({ name: "maKhoNhap", value: me.ref.cbkho.getValue() });
+        //}
+        //var dStart = Ext.Date.format(new Date(me.sDATE), 'Y/m/d 00:00:00.000');
+        //var dEnd = Ext.Date.format(new Date(me.eDATE), 'Y/m/d 23:59:59.999');
+        //if (me.eDATE && me.sDATE && recordTK.get('loaingay') && recordTK.get('loaingay') == 'ngayHachToan') {
+        //    filter.push({ name: "ngayHachToanStart", value: dStart });
+        //    filter.push({ name: "ngayHachToanEnd", value: dEnd });
+        //} else if (me.eDATE && me.sDATE && recordTK.get('loaingay') && recordTK.get('loaingay') == 'ngayChungTu') {
+        //    filter.push({ name: "ngayChungTuStart", value: dStart });
+        //    filter.push({ name: "ngayChungTuEnd", value: dEnd });
+        //}
+        //filter.push({ name: "sorting", value: "ngayHachToan desc" });
+        var store = me.storeinfo.storePhieuNhapKho;
+        var url ="api/Input?page=1&start=0&limit=25";
+        store.proxy.api.read = url;
+        store.pageSize = 500;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.load({
+            params: {
+                skipCount: 0,
+                maxResultCount: store.pageSize
+            },
+            scope: this,
+            callback: function (records, operation, success) {
+                if (records == null) {
+                    store.removeAll();
+                    var storePhieuNhapChiTiet = me.storeinfo.storePhieuNhapChiTiet;
+                    storePhieuNhapChiTiet.removeAll();
+                } else {
+                    me.ref.dsPhieuNhapKho.getSelectionModel().select(0);
+                    if (me.selectPhieuNhap == false && me.ref.dsPhieuNhapKho.getSelectionModel().getSelection().length > 0) {
+                        me.loadChiTietPhieu(me.ref.dsPhieuNhapKho.getSelectionModel().getSelection()[0].data.id);
+                    }
 
-    //            }
-    //        }
-    //    });
-    //},
+                }
+            }
+        });
+    },
 
     //specialkey: function (field, e) {
     //    var me = this;
@@ -1154,43 +1157,43 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
     //    }
     //},
 
-    //onChangeKho: function (combo, newValue, oldValue, eOpts) {
-    //    var me = this;
-    //    if (abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Edit') && abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Manager')) {
-    //        if (newValue == 0) {
-    //            me.ref.btnPhieuNhapKho.setDisabled(true);
-    //        } else {
-    //            me.ref.btnPhieuNhapKho.setDisabled(false);
-    //        }
-    //    }
-    //    me.onTimKiemNhapKho();
-    //},
+    onChangeKho: function (combo, newValue, oldValue, eOpts) {
+        var me = this;
+        //if (abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Edit') && abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Manager')) {
+            if (newValue == 0) {
+                me.ref.btnPhieuNhapKho.setDisabled(true);
+            } else {
+                me.ref.btnPhieuNhapKho.setDisabled(false);
+            }
+        //}
+        me.onTimKiemNhapKho();
+    },
 
-    //onThemPhieuNhapKho: function () {
-    //    var me = this;
-    //    var record = Ext.create('Admin.model.mPhieuNhapXuat');
-    //    record.set('id', 0);
-    //    record.set('ngayHachToan', new Date());
-    //    record.set('ngayChungTu', new Date());
-    //    var nodesSelect = me.ref.cbkho.getSelection();
-    //    record.set('maKhoNhap', nodesSelect.data.id)
-    //    var storeKho = app.gplatformutils.deepCloneStore(me.storeinfo.storeKho);
-    //    me.getView().setLoading(false);
-    //    var title = app.localize("CMMSDMKhoBtnPhieuNhapKho") + ": " + nodesSelect.data.moTa;
-    //    var wnd = Ext.create('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
-    //        title: title,
-    //        viewModel: {
-    //            data: {
-    //                storeKho: storeKho,
-    //                recordPhieu: record,
-    //                fnSauKhiLoad: function () {
-    //                    me.onTimKiemNhapKho();
-    //                }
-    //            }
-    //        }
-    //    });
-    //    wnd.show();
-    //},
+    onThemPhieuNhapKho: function () {
+        var me = this;
+        var record = Ext.create('Admin.model.mPhieuNhapXuat');
+        record.set('id', 0);
+        record.set('dateInput', new Date());
+        record.set('dateStatus', new Date());
+        var nodesSelect = me.ref.cbkho.getSelection();
+        record.set('storeroomId', nodesSelect.data.id)
+        var storeKho = app.mUtils.deepCloneStore(me.storeinfo.storeKho);
+        me.getView().setLoading(false);
+        var title = "Thêm phiếu nhập kho" + ": " + nodesSelect.data.moTa;
+        var wnd = Ext.create('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
+            title: title,
+            viewModel: {
+                data: {
+                    storeKho: storeKho,
+                    recordPhieu: record,
+                    fnSauKhiLoad: function () {
+                        me.onTimKiemNhapKho();
+                    }
+                }
+            }
+        });
+        wnd.show();
+    },
 
     //onSuaPhieuNhapKho: function () {
     //    var me = this;
@@ -1254,11 +1257,11 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
     //    window.location.href = url;
     //},
 
-    //onTimKiemXuatKho: function () {
-    //    var me = this;
-    //    me.storeinfo.storePhieuXuatChiTietXuat.loadData([]);
-    //    me.loadXuatKho();
-    //},
+    onTimKiemXuatKho: function () {
+        var me = this;
+        me.storeinfo.storePhieuXuatChiTietXuat.loadData([]);
+        me.loadXuatKho();
+    },
 
     //specialkeyXuat: function (field, e) {
     //    var me = this;
@@ -1267,72 +1270,71 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
     //    }
     //},
 
-    //loadXuatKho: function () {
-    //    var me = this;
-    //    var recordTKXK = me.getViewModel().data.recordTKXK;
-    //    me.selectPhieuXuat = false;
-    //    var filter = [{ name: 'phanLoai', value: 'xuatkho,dieuchuyen' }];
-    //    if (recordTKXK.get('sophieu')) {
-    //        filter.push({ name: "filter", value: recordTKXK.get('sophieu') });
-    //    }
-    //    if (recordTKXK.get('loaiPhieu') && recordTKXK.get('loaiPhieu') != '0') {
-    //        filter.push({ name: "loaiPhieu", value: recordTKXK.get('loaiPhieu') });
-    //    }
-    //    if (me.ref.cbkhoXuat.getValue() != 0) {
-    //        filter.push({ name: "maKhoXuat", value: me.ref.cbkhoXuat.getValue() });
-    //    }
-    //    var dStart = Ext.Date.format(new Date(me.sDATECreate), 'Y/m/d 00:00:00.000');
-    //    var dEnd = Ext.Date.format(new Date(me.eDATECreate), 'Y/m/d 23:59:59.999');
-    //    if (me.sDATECreate && me.eDATECreate && recordTKXK.get('loaingay') && recordTKXK.get('loaingay') == 'ngayHachToan') {
-    //        filter.push({ name: "ngayHachToanStart", value: dStart });
-    //        filter.push({ name: "ngayHachToanEnd", value: dEnd });
-    //    } else if (me.sDATECreate && me.eDATECreate && recordTKXK.get('loaingay') && recordTKXK.get('loaingay') == 'ngayChungTu') {
-    //        filter.push({ name: "ngayChungTuStart", value: dStart });
-    //        filter.push({ name: "ngayChungTuEnd", value: dEnd });
-    //    }
-    //    filter.push({ name: "sorting", value: "ngayHachToan desc" });
-    //    var store = me.storeinfo.storePhieuXuatKho;
-    //    var query = abp.utils.buildQueryString(filter);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoPhieuNhapXuat/GetAll" + query;
-    //    store.proxy.api.read = url;
-    //    store.pageSize = 500;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            if (records == null) {
-    //                store.removeAll();
-    //                var storePhieuXuatChiTietXuat = me.storeinfo.storePhieuXuatChiTietXuat;
-    //                storePhieuXuatChiTietXuat.removeAll();
-    //            } else {
-    //                me.ref.dsPhieuXuatKho.getSelectionModel().select(0);
-    //                if (me.selectPhieuXuat == false && me.ref.dsPhieuXuatKho.getSelectionModel().getSelection().length > 0) {
-    //                    me.loadChiTietPhieuXuat(me.ref.dsPhieuXuatKho.getSelectionModel().getSelection()[0].data.id);
-    //                }
-    //            }
-    //        }
-    //    });
-    //},
+    loadXuatKho: function () {
+        var me = this;
+        var recordTKXK = me.getViewModel().data.recordTKXK;
+        me.selectPhieuXuat = false;
+        //var filter = [{ name: 'phanLoai', value: 'xuatkho,dieuchuyen' }];
+        //if (recordTKXK.get('sophieu')) {
+        //    filter.push({ name: "filter", value: recordTKXK.get('sophieu') });
+        //}
+        //if (recordTKXK.get('loaiPhieu') && recordTKXK.get('loaiPhieu') != '0') {
+        //    filter.push({ name: "loaiPhieu", value: recordTKXK.get('loaiPhieu') });
+        //}
+        //if (me.ref.cbkhoXuat.getValue() != 0) {
+        //    filter.push({ name: "maKhoXuat", value: me.ref.cbkhoXuat.getValue() });
+        //}
+        //var dStart = Ext.Date.format(new Date(me.sDATECreate), 'Y/m/d 00:00:00.000');
+        //var dEnd = Ext.Date.format(new Date(me.eDATECreate), 'Y/m/d 23:59:59.999');
+        //if (me.sDATECreate && me.eDATECreate && recordTKXK.get('loaingay') && recordTKXK.get('loaingay') == 'ngayHachToan') {
+        //    filter.push({ name: "ngayHachToanStart", value: dStart });
+        //    filter.push({ name: "ngayHachToanEnd", value: dEnd });
+        //} else if (me.sDATECreate && me.eDATECreate && recordTKXK.get('loaingay') && recordTKXK.get('loaingay') == 'ngayChungTu') {
+        //    filter.push({ name: "ngayChungTuStart", value: dStart });
+        //    filter.push({ name: "ngayChungTuEnd", value: dEnd });
+        //}
+        //filter.push({ name: "sorting", value: "ngayHachToan desc" });
+        var store = me.storeinfo.storePhieuXuatKho;
+        var url = "api/Input?page=1&start=0&limit=25";
+        store.proxy.api.read = url;
+        store.pageSize = 500;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.load({
+            params: {
+                skipCount: 0,
+                maxResultCount: store.pageSize
+            },
+            scope: this,
+            callback: function (records, operation, success) {
+                if (records == null) {
+                    store.removeAll();
+                    var storePhieuXuatChiTietXuat = me.storeinfo.storePhieuXuatChiTietXuat;
+                    storePhieuXuatChiTietXuat.removeAll();
+                } else {
+                    me.ref.dsPhieuXuatKho.getSelectionModel().select(0);
+                    if (me.selectPhieuXuat == false && me.ref.dsPhieuXuatKho.getSelectionModel().getSelection().length > 0) {
+                        me.loadChiTietPhieuXuat(me.ref.dsPhieuXuatKho.getSelectionModel().getSelection()[0].data.id);
+                    }
+                }
+            }
+        });
+    },
 
-    //onChangeKhoXuat: function (his, newValue, oldValue, eOpts) {
-    //    var me = this;
-    //    if (abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Edit')) {
-    //        if (newValue == 0) {
-    //            me.ref.btnPhieuXuatKho.setDisabled(true);
-    //            me.ref.btnPhieuDieuChuyen.setDisabled(true);
-    //        } else {
-    //            me.ref.btnPhieuDieuChuyen.setDisabled(false);
-    //            me.ref.btnPhieuXuatKho.setDisabled(false);
-    //        }
-    //    }
-    //    me.onTimKiemXuatKho();
-    //},
+    onChangeKhoXuat: function (his, newValue, oldValue, eOpts) {
+        var me = this;
+        //if (abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Edit')) {
+            if (newValue == 0) {
+                me.ref.btnPhieuXuatKho.setDisabled(true);
+                me.ref.btnPhieuDieuChuyen.setDisabled(true);
+            } else {
+                me.ref.btnPhieuDieuChuyen.setDisabled(false);
+                me.ref.btnPhieuXuatKho.setDisabled(false);
+            }
+        //}
+        me.onTimKiemXuatKho();
+    },
 
     onThemPhieuXuatKho: function () {
         var me = this;

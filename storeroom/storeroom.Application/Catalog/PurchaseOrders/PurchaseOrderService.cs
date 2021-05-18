@@ -107,7 +107,7 @@ namespace storeroom.Application.Catalog.PurchaseOrders
                            Status = x.a.Status,
                            StoreroomId = x.a.StoreroomId,
                            StoreroomName = x.b.DisplayName,
-                           SuplierId = x.a.Id,
+                           SuplierId = x.c.Id,
                            SuplierName = x.c.DisplayName,
                            Priority=x.a.Priority,
                            UserId = x.a.UserId,
