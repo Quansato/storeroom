@@ -282,5 +282,10 @@ namespace storeroom.Application.Catalog.Materials
             };
             return pagedResult;
         }
+
+        public Task<PagedResult<MaterialStoreroomVm>> GetAllMaterialToAdd(MaterialStoreroomGetPaging request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

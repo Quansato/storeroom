@@ -29,11 +29,11 @@ namespace storeroom.WebApp.Services
             return token;
         }
 
-        public async Task<UserViewModel> GetUserLogged()
+        public async Task<UserViewModel> GetUserLogged(string token)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri("https://localhost:44390/");
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(request.Token);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(token);
             var response = await client.GetAsync("/api/User/getCurrentUserLogged");
             var body = await response.Content.ReadAsStringAsync();
             var users = JsonConvert.DeserializeObject<UserViewModel>(body);

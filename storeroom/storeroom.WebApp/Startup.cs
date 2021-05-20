@@ -1,7 +1,9 @@
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +22,7 @@ using storeroom.Application.Catalog.PurchaseProposals;
 using storeroom.Application.Catalog.Storerooms;
 using storeroom.Application.Catalog.Users;
 using storeroom.Application.Catalog.Users.Dtos;
+using storeroom.Application.Dtos;
 using storeroom.Data.EF;
 using storeroom.Data.Entities;
 using storeroom.WebApp.Services;
@@ -51,7 +54,7 @@ namespace storeroom.WebApp
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Storeroom.WebApp", Version = "v1" });
             });
             services.AddSession(option=> {
-                option.IdleTimeout = TimeSpan.FromMinutes(30);
+                option.IdleTimeout = TimeSpan.FromMinutes(100);
             });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -105,9 +108,37 @@ namespace storeroom.WebApp
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.UseExceptionHandler(c => c.Run(async context =>
+                {
+                    var exception = context.Features
+                        .Get<IExceptionHandlerPathFeature>()
+                        .Error;
+
+                    if (exception is StoreroomException)
+                    {
+                        var responseBadRequest = new
+                        {
+                            devMsg = exception.Message,
+                            userMsg = exception.Message,
+                            errorCode = "misa-400",
+                            moreInfo = "https://openapi.misa.com.vn/errorcode/misa-001",
+                            traceId = "ba9587fd-1a79-4ac5-a0ca-2c9f74dfd3fb"
+                        };
+                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                        await context.Response.WriteAsJsonAsync(responseBadRequest);
+                    }
+
+                    var response = new
+                    {
+                        devMsg = exception.Message,
+                        userMsg = "Có lỗi xảy ra, vui lòng liên hệ MISA để được trợ giúp!",
+                        errorCode = "misa-005",
+                        moreInfo = "https://openapi.misa.com.vn/errorcode/misa-001",
+                        traceId = "ba9587fd-1a79-4ac5-a0ca-2c9f74dfd3fb"
+                    };
+
+                    await context.Response.WriteAsJsonAsync(response);
+                }));
             }
             app.UseHttpsRedirection();
 

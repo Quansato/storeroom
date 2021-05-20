@@ -10,18 +10,82 @@ namespace storeroom.Application.Catalog.Materials
 {
     public interface IMaterialService
     {
+        /// <summary>
+        /// Thêm mới 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         Task<int> Create(MaterialCreateRequest request);
+
+        /// <summary>
+        /// cập nhật
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         Task<int> Update(MaterialUpdateRequest request);
         Task<int> Delete(int MaterialId);
+
+        /// <summary>
+        /// Lấy theo id
+        /// </summary>
+        /// <param name="MaterialId"></param>
+        /// <returns></returns>
         Task<PagedResult<MaterialViewModel>> GetDetail(int MaterialId);
 
+        /// <summary>
+        /// Phân trang
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         Task<PagedResult<MaterialViewModel>> GetAllPaging(SearchRequest request);
+
+        
+
+
+        /// <summary>
+        /// Lấy vật tư trong kho
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         Task<PagedResult<MaterialStoreroomVm>> GetAllMSPaging(MaterialStoreroomGetPaging request);
+
+        /// <summary>
+        /// Lấy vật tư chưa có trong kho
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<PagedResult<MaterialStoreroomVm>> GetAllMaterialToAdd(MaterialStoreroomGetPaging request);
+
+
+        /// <summary>
+        /// Lấy định mức tồn max
+        /// </summary>
+        /// <param name="MaterialId"></param>
+        /// <param name="StoreroomId"></param>
+        /// <returns></returns>
         Task<int> GetQuantityMax(int MaterialId, int StoreroomId);
+
+        /// <summary>
+        /// Lấy định mức tồn min
+        /// </summary>
+        /// <param name="MaterialId"></param>
+        /// <param name="StoreroomId"></param>
+        /// <returns></returns>
         Task<int> GetQuantityMin(int MaterialId, int StoreroomId);
+
+        /// <summary>
+        /// Cập nhật vật tư trong kho
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
 
         Task<int> UpdateMaterialToStoreroom(MaterialStoreroomVm request);
 
+        /// <summary>
+        /// Cập nhật số lượng vật tư trong kho
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         Task<int> UpdateStock(MaterialStoreroomVm request);
     }
 }

@@ -30,6 +30,14 @@ namespace storeroom.WebApp.Controllers
             var materials = await _inputService.GetMaterialByInputId(InputId);
             return Ok(materials);
         }
+        
+        [HttpGet("CheckMaterialIsExistInStoreroom")]
+        public async Task<IActionResult> CheckMaterialIsExist(int StoreroomId,int Id)
+        {
+            var isExist = await _inputService.CheckMaterialIsExist(StoreroomId,Id);
+            return Ok(isExist);
+        }
+
         [HttpPost()]
         public async Task<IActionResult> Create(InputCreateRequest request)
         {

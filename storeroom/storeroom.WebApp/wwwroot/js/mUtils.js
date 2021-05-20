@@ -1,4 +1,5 @@
 ﻿var app = app || {};
+
 (function () {
     app.mUtils = app.mUtils || {};
     app.mUtils = {
@@ -258,19 +259,39 @@
             return re.test(email);
         },
 
-        getUserName: function () {
+        getUrlVars: function () {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        },
+
+       /* getUserName: function () {
             var userName = "";
-            app.mUtils.fnGETAjax("/getCurrentUserLogged", function (response) {
-                console.log(response)
-            })
-            return
-        }
+            //app.mUtils.fnPOSTAjax("https://localhost:44390/api/User/authenticate", obj, function (response) {
+            app.mUtils.fnGETAjax("https://localhost:44356/getCurrentUserLogged", function (response) {
+                app.session = response;
+                    console.log(response)
+                })
+
+        }*/
     };
 })();
 
 
-// export const func = {
-//   functionName: (data) => {
-//      console.log(data);
-//    }
-// }
+(function () {
+    app.session = app.session || {}
+    app.mUtils.fnGETAjax("https://localhost:44356/getCurrentUserLogged", function (response) {
+            console.log(response)
+            //sessionStorage.clear();
+            sessionStorage.setItem("session", JSON.stringify(response));
+            app.session = JSON.parse(sessionStorage.getItem("session"));
+            //app.session = response;
+            return response;
+    })
+    console.log(1);
+})();

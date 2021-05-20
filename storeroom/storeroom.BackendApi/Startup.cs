@@ -44,7 +44,7 @@ namespace storeroom.BackendApi
             options.UseSqlServer(Configuration.GetConnectionString("storeroomDBTest")));
             services.AddSession(option =>
             {
-                option.IdleTimeout = TimeSpan.FromMinutes(30);
+                option.IdleTimeout = TimeSpan.FromMinutes(100);
             });
             services.AddCors();
             services.AddIdentity<AppUser, AppRole>()

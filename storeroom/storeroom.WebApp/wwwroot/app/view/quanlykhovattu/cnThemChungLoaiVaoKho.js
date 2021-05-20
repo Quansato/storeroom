@@ -58,14 +58,14 @@ Ext.define('Admin.view.quanlykhovattu.cnThemChungLoaiVaoKho', {
                 labelWidth: 105,
                 fieldLabel: '',
                 queryMode: 'local',
-                displayField: 'moTa',
+                displayField: 'displayName',
                 valueField: 'id',
                 forceSelection: true,
                 editable: false
             }, {
                 xtype: 'textfield',
                 labelWidth: 75,
-                fieldLabel:'Tìm',
+                fieldLabel: 'Tìm',
                 emptyText: 'Mã, Tên vật tư',
                 margin: '5 5 0 0',
                 bind: '{recordTK.maTenVatTu}',
@@ -73,6 +73,7 @@ Ext.define('Admin.view.quanlykhovattu.cnThemChungLoaiVaoKho', {
             }, {
                 margin: '5 5 0 0',
                 xtype: 'button',
+                ui: 'soft-blue',
                 text: 'Tìm',
                 iconCls: 'fa fa-search',
                 handler: 'onTimKiem'
@@ -144,6 +145,7 @@ Ext.define('Admin.view.quanlykhovattu.cnThemChungLoaiVaoKho', {
     buttons: [{
         text: 'Lưu thông tin',
         handler: 'onLuu',
+        ui: 'soft-blue',
         bind: { disabled: '{!selectVatTu}' },
         //hidden: !(abp.auth.hasPermission('CMMS.Inventory.Manager') || abp.auth.hasPermission('CMMS.Inventory.Edit')),
         reference: 'btnLuu',
@@ -174,71 +176,75 @@ Ext.define('Admin.view.quanlykhovattu.CNcnThemChungLoaiVaoKhoController', {
         var me = this;
         me.ref = me.getReferences();
         me.storeinfo = me.getViewModel().storeInfo;
-        //me.loadChungLoai();
+        me.loadChungLoai();
     },
 
-    //loadChungLoai: function (fnSauKhiLoad) {
-    //    var me = this;
-    //    //Lấy các loại vật tư
-    //    var recordNhomCL = me.getViewModel().data.recordNhomCL;
-    //    var store = me.storeinfo.storeNhomVatTu;
-    //    _cMMSKhoNhomVatTu.getAll({ name: 'maxResultCount', value: 1000 }).done(function (result) {
-    //        var dataResult = result.items
-    //        var dataLCV = { id: 0, ma: app.localize('All'), moTa: app.localize('All') };
-    //        dataResult.splice(0, 0, dataLCV);
-    //        store.loadData(dataResult);
-    //        setTimeout(function () {
-    //            var recordTK = me.getViewModel().data.recordTK;
-    //            if (recordNhomCL && recordNhomCL.length > 0) {
-    //                recordTK.set('nhomvattu', recordNhomCL[0].get('id'));
-    //            } else {
-    //                recordTK.set('nhomvattu', 0);
-    //            }
-    //            me.onTimKiem();
-    //        }, 500);
-    //    }).fail(function (data) {
-    //    });
-    //},
+    loadChungLoai: function (fnSauKhiLoad) {
+        var me = this;
+        //Lấy các loại vật tư
+        var recordNhomCL = me.getViewModel().data.recordNhomCL;
+        var store = me.storeinfo.storeNhomVatTu;
+        var url = "api/MaterialGroup?page=1&start=0&limit=25"
+        app.mUtils.fnGETAjax(url, function (response) {
+            var dataResult = response.items
+            var dataLCV = {
+                id: 0,
+                qrCode: "Tất cả",
+                displayName: "Tất cả"
+            };
+            dataResult.splice(0, 0, dataLCV);
+            store.loadData(dataResult);
+            setTimeout(function () {
+                var recordTK = me.getViewModel().data.recordTK;
+                if (recordNhomCL && recordNhomCL.length > 0) {
+                    recordTK.set('nhomvattu', recordNhomCL[0].get('id'));
+                } else {
+                    recordTK.set('nhomvattu', 0);
+                }
+                me.onTimKiem();
+            }, 500);
+        })
+    },
 
-    //onTimKiem: function () {
-    //    var me = this;
-    //    me.onloadDanhSachVatTu();
-    //},
+    onTimKiem: function () {
+        var me = this;
+        me.onloadDanhSachVatTu();
+    },
 
-    //onloadDanhSachVatTu: function (malienket) {
-    //    var me = this;
-    //    var filter = [{ name: "laKho", value: false }];
-    //    var makho = me.getViewModel().data.makho;
-    //    var recordTK = me.getViewModel().data.recordTK;
-    //    if (makho) {
-    //        filter.push({ name: "maKho", value: makho });
-    //    }
-    //    if (recordTK.get('maTenVatTu')) {
-    //        filter.push({ name: "filter", value: recordTK.get('maTenVatTu') });
-    //    }
-    //    if (recordTK.get('nhomvattu') != 0) {
-    //        filter.push({ name: "maNhomVatTu", value: recordTK.get('nhomvattu') });
-    //    }
-    //    var store = me.storeinfo.storeKhoVatTu;
-    //    var query = abp.utils.buildQueryString(filter);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoVatTu/GetVatTuKho" + query;
-    //    store.proxy.api.read = url;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            if (records == null) {
-    //                store.removeAll();
-    //            }
-    //        }
-    //    });
-    //},
+    onloadDanhSachVatTu: function (malienket) {
+        var me = this;
+        var filter = [{ name: "laKho", value: false }];
+        var makho = me.getViewModel().data.makho;
+        var recordTK = me.getViewModel().data.recordTK;
+        if (makho) {
+            filter.push({ name: "maKho", value: makho });
+        }
+        if (recordTK.get('maTenVatTu')) {
+            filter.push({ name: "filter", value: recordTK.get('maTenVatTu') });
+        }
+        if (recordTK.get('nhomvattu') != 0) {
+            filter.push({ name: "maNhomVatTu", value: recordTK.get('nhomvattu') });
+        }
+        var store = me.storeinfo.storeKhoVatTu;
+        var query = abp.utils.buildQueryString(filter);
+        var url = abp.appPath + "api/services/app/CMMSKhoVatTu/GetVatTuKho" + query;
+        store.proxy.api.read = url;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.load({
+            params: {
+                skipCount: 0,
+                maxResultCount: store.pageSize
+            },
+            scope: this,
+            callback: function (records, operation, success) {
+                if (records == null) {
+                    store.removeAll();
+                }
+            }
+        });
+    },
 
     //onThemTuExcel: function () {
     //    var me = this;

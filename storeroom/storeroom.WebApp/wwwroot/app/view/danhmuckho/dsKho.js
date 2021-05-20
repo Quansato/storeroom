@@ -248,7 +248,7 @@ Ext.define('Admin.view.danhmuckho.dsKhoController', {
     onTimKiem: function () {
         var me = this;
         console.log(1)
-        console.log(app.mUtils.getUserName());
+        console.log(app.session);
         me.loadKho();
     },
 

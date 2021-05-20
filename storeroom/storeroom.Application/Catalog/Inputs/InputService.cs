@@ -18,6 +18,17 @@ namespace storeroom.Application.Catalog.Inputs
         {
             _context = context;
         }
+
+        public async Task<bool> CheckMaterialIsExist(int storeroomId,int Id)
+        {
+            var material = await _context.MaterialStorerooms.FirstOrDefaultAsync(x=> x.StoreroomId == storeroomId && x.MaterialId == Id);
+            if(material == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public async Task<int> Create(InputCreateRequest request)
         {
             var input = new Input()

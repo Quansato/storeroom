@@ -21,7 +21,7 @@ namespace storeroom.Application.Catalog.Users
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<AppRole> _roleManager;
         private readonly IConfiguration _config;
-        public UserService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,RoleManager<AppRole> roleManager,IConfiguration config)
+        public UserService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager, IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -68,7 +68,7 @@ namespace storeroom.Application.Catalog.Users
             {
                 query = query.Where(x => x.UserName.Contains(request.keyword) || x.PhoneNumber.Contains(request.keyword));
             }
-            
+
             //3. Paging
             int totalRow = await query.CountAsync();
 
@@ -76,10 +76,10 @@ namespace storeroom.Application.Catalog.Users
                        .Take(request.PageSize)
                        .Select(x => new UserViewModel()
                        {
-                           Email=x.Email,
-                           PhoneNumber=x.PhoneNumber,
-                           FirstName=x.FirstName,
-                           LastName=x.LastName,
+                           Email = x.Email,
+                           PhoneNumber = x.PhoneNumber,
+                           FirstName = x.FirstName,
+                           LastName = x.LastName,
                            UserId = x.Id,
                            UserName = x.UserName
                        }).ToListAsync();
@@ -109,12 +109,12 @@ namespace storeroom.Application.Catalog.Users
         {
             var user = new AppUser()
             {
-                Dob=request.Dob,
-                Email=request.Email,
-                FirstName=request.FirstName,
-                LastName=request.LastName,
-                UserName=request.UserName,
-                PhoneNumber=request.PhoneNumber
+                Dob = request.Dob,
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                UserName = request.UserName,
+                PhoneNumber = request.PhoneNumber
             };
             var result = await _userManager.CreateAsync(user, request.Password);
             if (result.Succeeded)
@@ -124,27 +124,19 @@ namespace storeroom.Application.Catalog.Users
             return false;
         }
 
-        public async Task<List<UserViewModel>> GetUserByName(string userName)
+        public async Task<UserViewModel> GetUserByName(string userName)
         {
-            var query = _userManager.Users;
-            if (!string.IsNullOrEmpty(userName))
+            var user = await _userManager.FindByNameAsync(userName);
+
+            var data = new UserViewModel()
             {
-                query = query.Where(x => x.UserName.Contains(userName));
-            }
-
-            //3. Paging
-            int totalRow = await query.CountAsync();
-
-            var data = await query
-                       .Select(x => new UserViewModel()
-                       {
-                           Email = x.Email,
-                           PhoneNumber = x.PhoneNumber,
-                           FirstName = x.FirstName,
-                           LastName = x.LastName,
-                           UserId = x.Id,
-                           UserName = x.UserName
-                       }).ToListAsync();
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserId = user.Id,
+                UserName = user.UserName
+            };
             return data;
         }
     }

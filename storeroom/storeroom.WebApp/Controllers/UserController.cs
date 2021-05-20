@@ -40,7 +40,7 @@ namespace storeroom.WebApp.Controllers
                 HttpContext.Session.SetString("Token", resultToken);
             }
 
-            return Ok(resultToken);
+            return RedirectToAction("Index", "Home");
         }
         [HttpPost("register")]
         [AllowAnonymous]
@@ -57,12 +57,12 @@ namespace storeroom.WebApp.Controllers
             }
             return Ok();
         }
-       /* [Authorize, HttpGet("getCurrentUserLogged")]
+        [Authorize, HttpGet("getCurrentUserLogged")]
         public async Task<IActionResult> GetUserLogin()
         {
             var userName = User.Identity.Name;
             var user = await _userService.GetUserByName(userName);
             return Ok(user);
-        }*/
+        }
     }
 }

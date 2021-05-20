@@ -93,7 +93,8 @@ namespace storeroom.WebApp.Controllers
         public async Task<IActionResult> GetUserLogin()
         {
             //var userName = User.Identity.Name;
-            var user = await _userApiClient.GetUserLogged();
+            var token = HttpContext.Session.GetString("Token");
+            var user = await _userApiClient.GetUserLogged(token);
             return Ok(user);
         }
         private ClaimsPrincipal ValidateToken(string jwtToken)
