@@ -97,12 +97,12 @@ Ext.define('Admin.view.quanlykhovattu.cnThemChungLoaiVaoKho', {
         },
         columns: [{
             xtype: 'gridcolumn',
-            dataIndex: 'ma',
+            dataIndex: 'materialCode',
             width: 120,
             text: 'Mã vật tư'
         }, {
             xtype: 'gridcolumn',
-            dataIndex: 'moTa',
+            dataIndex: 'displayName',
             flex: 1,
             text: 'Tên vật tư'
         }],
@@ -216,18 +216,21 @@ Ext.define('Admin.view.quanlykhovattu.CNcnThemChungLoaiVaoKhoController', {
         var filter = [{ name: "laKho", value: false }];
         var makho = me.getViewModel().data.makho;
         var recordTK = me.getViewModel().data.recordTK;
-        if (makho) {
-            filter.push({ name: "maKho", value: makho });
-        }
-        if (recordTK.get('maTenVatTu')) {
-            filter.push({ name: "filter", value: recordTK.get('maTenVatTu') });
-        }
-        if (recordTK.get('nhomvattu') != 0) {
-            filter.push({ name: "maNhomVatTu", value: recordTK.get('nhomvattu') });
-        }
+        //if (makho) {
+        //    filter.push({ name: "maKho", value: makho });
+        //}
+        //if (recordTK.get('maTenVatTu')) {
+        //    filter.push({ name: "filter", value: recordTK.get('maTenVatTu') });
+        //}
+        //if (recordTK.get('nhomvattu') != 0) {
+        //    filter.push({ name: "maNhomVatTu", value: recordTK.get('nhomvattu') });
+        //}
         var store = me.storeinfo.storeKhoVatTu;
-        var query = abp.utils.buildQueryString(filter);
-        var url = abp.appPath + "api/services/app/CMMSKhoVatTu/GetVatTuKho" + query;
+        //var query = abp.utils.buildQueryString(filter);
+        if (recordTK.get('nhomvattu') == 0) {
+            var url = "api/Material/GetMaterialToAdd?page=1&start=0&limit=25&StoreroomId=" + makho ;
+        }
+        else var url = "api/Material/GetMaterialToAdd?page=1&start=0&limit=25&StoreroomId=" + makho + "&MaterialGroupId=" + recordTK.get('nhomvattu');
         store.proxy.api.read = url;
         store.proxy.pageParam = undefined;
         store.proxy.limitParam = undefined;
@@ -254,36 +257,34 @@ Ext.define('Admin.view.quanlykhovattu.CNcnThemChungLoaiVaoKhoController', {
     //    var me = this;
     //},
 
-    //onLuu: function (button) {
-    //    var me = this;
-    //    var ListVatTu = [];
-    //    var gridND = me.ref.gridKhoVatTu;
-    //    var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
-    //    var selected = gridND.getSelectionModel().getSelection();
-    //    var makho = me.getViewModel().data.makho;
-    //    for (var i = 0; i < selected.length; i++) {
-    //        var rotating = 0;
-    //        if (selected[i].data.rotating == true) {
-    //            rotating = 1;
-    //        }
-    //        ListVatTu.push({
-    //            MaVatTu: selected[i].get('id'),
-    //            MaKho: makho,
-    //            MaNhomVatTu: selected[i].get('maNhomVatTu'),
-    //            Rotating: rotating,
-    //            SoLuongSD: 0,
-    //            SoLuong: 0
-    //        });
-    //    }
-    //    _cMMSKhoInventory.createList(ListVatTu).done(function (result) {
-    //        me.getView().setLoading(false);
-    //        abp.notify.success(app.localize('SavedSuccessfully'));
-    //        if (fnSauKhiLoad)
-    //            fnSauKhiLoad();
-    //        me.getView().close();
-    //    }).fail(function (data) {
-    //        me.getView().setLoading(false);
-    //    });
+    onLuu: function (button) {
+        var me = this;
+        var ListVatTu = [];
+        var gridND = me.ref.gridKhoVatTu;
+        var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
+        var selected = gridND.getSelectionModel().getSelection();
+        var makho = me.getViewModel().data.makho;
+        var url = "/api/Material/materialStoreroom";
+        for (var i = 0; i < selected.length; i++) {
+            var rotating = 0;
+            if (selected[i].data.rotating == true) {
+                rotating = 1;
+            }
+            ListVatTu.push({
+                materialId: selected[i].get('id'),
+                storeroomId: makho,
+                //materialGroupId: selected[i].get('materialGroupId'),
+                quantity: 0,
+            });
+        }
 
-    //}
+        ListVatTu.forEach(function (item) {
+            app.mUtils.fnPOSTAjax(url, item)
+            console.log(1)
+        })
+
+        toastr.success("Thêm mới vật tư vào kho thành công")
+        if (fnSauKhiLoad) fnSauKhiLoad();
+        me.getView().close();
+    }
 });

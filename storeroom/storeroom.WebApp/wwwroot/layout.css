@@ -43,6 +43,16 @@
     /*background-color: #6512c2 !important;*/
 }
 
+.x-btn-soft-green-small {
+    -webkit-border-radius: 0.2rem !important;
+    -moz-border-radius: 0.2rem !important;
+    -ms-border-radius: 0.2rem !important;
+    border-radius: 0.2rem !important;
+    /* border-radius: 0.2rem !important; */
+    /*background-color: #6512c2 !important;*/
+}
+
+
 /*header*/
 .x-panel-header-title-light {
     color: #170085 !important;
@@ -80,6 +90,18 @@
 
 .x-panel-header-title-light > .x-title-icon-wrap-light > .x-title-icon-light {
     color: #170085 !important;
+}
+
+.vuotNguong {
+    color: red !important;
+}
+
+.duoiNguong {
+    color: orange !important;
+}
+
+.trongNguong {
+    color: green !important;
 }
 
 /*SweetAlert*/

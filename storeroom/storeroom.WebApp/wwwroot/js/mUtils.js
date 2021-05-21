@@ -270,6 +270,10 @@
             return vars;
         },
 
+        fnBuildQueryString: function (query) {
+            const params = new URLSearchParams(query);
+            return params.toString();
+        },
        /* getUserName: function () {
             var userName = "";
             //app.mUtils.fnPOSTAjax("https://localhost:44390/api/User/authenticate", obj, function (response) {

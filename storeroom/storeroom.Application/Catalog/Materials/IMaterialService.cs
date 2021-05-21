@@ -54,7 +54,7 @@ namespace storeroom.Application.Catalog.Materials
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        Task<PagedResult<MaterialStoreroomVm>> GetAllMaterialToAdd(MaterialStoreroomGetPaging request);
+        Task<PagedResult<MaterialViewModel>> GetAllMaterialToAdd(MaterialStoreroomGetPaging request);
 
 
         /// <summary>
@@ -87,5 +87,7 @@ namespace storeroom.Application.Catalog.Materials
         /// <param name="request"></param>
         /// <returns></returns>
         Task<int> UpdateStock(MaterialStoreroomVm request);
+
+        Task<int> DeleteMS(int storeroomId,int materialId);
     }
 }

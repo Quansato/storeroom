@@ -6,9 +6,9 @@
         selectionTonKho: null,
         recordKho: null
     },
-    //stores: {
-    //    storeTonDauKy: { type: 'stondauky' }
-    //}
+    stores: {
+        storeTonDauKy: { type: 'stondauky' }
+    }
 });
 
 Ext.define('Admin.view.danhmuckho.DSTonKho', {
@@ -40,10 +40,10 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
             border: true,
             ui: 'light',
             flex: 1,
-            //bind: {
-            //    store: '{storeTonDauKy}',
-            //    selection: '{selectionTonKho}'
-            //},
+            bind: {
+                store: '{storeTonDauKy}',
+                selection: '{selectionTonKho}'
+            },
             columns: [{
                 xtype: 'rownumberer',
                 text: '#',
@@ -63,7 +63,7 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                 //}
             }, {
                 xtype: 'gridcolumn',
-                dataIndex: 'vatTu',
+                dataIndex: 'materialCode',
                 cellWrap: true,
                 width: 100,
                 text: 'Mã',
@@ -72,7 +72,7 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                 }
             }, {
                 xtype: 'gridcolumn',
-                dataIndex: 'tenVatTu',
+                dataIndex: 'displayName',
                 cellWrap: true,
                 width: 200,
                 text: 'Tên',
@@ -93,7 +93,7 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                 }
             }, {
                 xtype: 'gridcolumn',
-                dataIndex: 'donViTinh',
+                dataIndex: 'unitName',
                 width: 100,
                 text: 'Đơn vị tính'
             }, {
@@ -105,11 +105,11 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                     style: 'text-align:center',
                     align: 'right',
                     width: 120,
-                    //renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                    //    if (value != undefined && value != null) {
-                    //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                    //    }
-                    //}
+                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
+                        if (value != undefined && value != null) {
+                            return app.mUtils.fnFormatCurrency(value, 2);
+                        }
+                    }
                 }, {
                     text: 'Thực tế',
                     dataIndex: 'soLuongTonKhoThuc',
@@ -118,11 +118,11 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                     style: 'text-align:center',
                     align: 'right',
                     width: 110,
-                    //renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                    //    if (value != undefined && value != null) {
-                    //        return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                    //    }
-                    //}
+                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
+                        if (value != undefined && value != null) {
+                            return app.mUtils.fnFormatCurrency(value, 2);
+                        }
+                    }
                 }]
             }, {
                 xtype: 'gridcolumn',
@@ -130,7 +130,7 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                 filter: {
                     xtype: 'textfield'
                 },
-                dataIndex: 'lyDo',
+                dataIndex: 'description',
                 sortable: true,
                 flex: 1
             }],
@@ -151,21 +151,15 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                     layout: 'hbox',
                     flex: 1,
                     items: [{
-                        xtype: 'combo',
-                        queryMode: 'local',
-                        displayField: 'text',
-                        valueField: 'value',
+                        xtype: 'datefield',
                         reference: 'cbNam',
                         fieldLabel: 'Chọn kỳ',
                         labelWidth: 100,
                         labelAlign: 'right',
-                        store: Ext.create('Ext.data.Store', {
-                            fields: ['text', 'value']
-                        }),
                         flex: 1,
-                        //listeners: {
-                        //    change: 'onChangeKho'
-                        //}
+                        listeners: {
+                            change: 'onChangeKho'
+                        }
                     }, {
                         xtype: 'textfield',
                         fieldLabel: 'Nhập mã, tên kho',
@@ -175,11 +169,12 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                         emptyText: 'Nhập mã, tên kho',
                         flex: 1,
                         cls: "EnterToTab",
-                        //listeners: {
-                        //    specialkey: 'specialkey'
-                        //}
+                        listeners: {
+                            specialkey: 'specialkey'
+                        }
                     }, { xtype: 'tbfill', flex: 1 }, {
                         xtype: 'button',
+                        ui: 'soft-blue',
                         name: 'btnTimKiemCK',
                         iconCls: 'x-fa fa-search',
                         text: 'Tìm',
@@ -200,11 +195,11 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                     ui: 'soft-blue',
                     margin: '0 5 0 5',
                     //hidden: !abp.auth.hasPermission('CMMS.Inventory.Kho.Manager'),
-                    //handler: 'onThemChotKho'
+                    handler: 'onThemChotKho'
                 }, {
                     text: 'Nhập tồn kho từ Excel',
                     iconCls: 'x-fa fa-database',
-                    ui: 'blue',
+                    ui: 'soft-blue',
                     tooltip: 'Nhập tồn kho từ Excel',
                     //handler: 'onImportDanhSach'
                 }, {
@@ -297,12 +292,12 @@ Ext.define('Admin.view.danhmuckho.DSTonKhoController', {
     //},
 
 
-    //specialkey: function (field, e) {
-    //    var me = this;
-    //    if (e.getKey() == e.ENTER) {
-    //        me.loadDataTonKho();
-    //    }
-    //},
+    specialkey: function (field, e) {
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.loadDataTonKho();
+        }
+    },
 
 
     //cellKho: function (obj, td, cellIndex, record, tr, rowIndex, e, eOpts) {

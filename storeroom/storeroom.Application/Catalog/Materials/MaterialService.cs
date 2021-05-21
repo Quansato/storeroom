@@ -231,7 +231,6 @@ namespace storeroom.Application.Catalog.Materials
             {
                 StoreroomId = request.StoreroomId,
                 MaterialId=request.MaterialId,
-                Quantity=request.Quantity,
                 QuantityMax=request.QuantityMax,
                 QuantityMin=request.QuantityMin,
             };
@@ -242,17 +241,34 @@ namespace storeroom.Application.Catalog.Materials
         public async Task<PagedResult<MaterialStoreroomVm>> GetAllMSPaging(MaterialStoreroomGetPaging request)
         {
             //1. Select join
-            var query = from a in _context.Materials
-                        join b in _context.Units on a.UnitId equals b.Id
-                        join c in _context.MaterialStorerooms on a.Id equals c.MaterialId
-                        join d in _context.Storerooms on c.StoreroomId equals d.Id
-                        join e in _context.MaterialGroups on a.MaterialGroupId equals e.Id
+            //var query = from a in _context.Materials
+            //            join b in _context.Units on a.UnitId equals b.Id
+            //            join c in _context.MaterialStorerooms on a.Id equals c.MaterialId
+            //            join d in _context.Storerooms on c.StoreroomId equals d.Id
+            //            join e in _context.MaterialGroups on a.MaterialGroupId equals e.Id
+            //            select new { a, b, c, d, e };
+
+            var query = from a in _context.MaterialStorerooms
+                        join c in _context.Materials on a.MaterialId equals c.Id
+                        join b in _context.Units on c.UnitId equals b.Id
+                        join d in _context.Storerooms on a.StoreroomId equals d.Id
+                        join e in _context.MaterialGroups on c.MaterialGroupId equals e.Id
                         select new { a, b, c, d, e };
-            
+
             //err
             if (request.MaterialGroupId.HasValue)
             {
-                query = query.Where(x => x.a.MaterialGroupId == request.MaterialGroupId);
+                query = query.Where(x => x.c.MaterialGroupId == request.MaterialGroupId);
+            }
+
+            if (request.StoreroomId.HasValue)
+            {
+                query = query.Where(x => x.a.StoreroomId == request.StoreroomId);
+            }
+
+            if (!string.IsNullOrEmpty(request.MaterialCode))
+            {
+                query = query.Where(x => x.c.MaterialCode == request.MaterialCode);
             }
             //3. Paging
             int totalRow = await query.CountAsync();
@@ -263,16 +279,16 @@ namespace storeroom.Application.Catalog.Materials
                        {
                            StoreroomId=x.d.Id,
                            StoreroomName=x.d.DisplayName,
-                           MaterialId=x.a.Id,
-                           MaterialCode=x.a.MaterialCode,
-                           DisplayName =x.a.DisplayName,
+                           MaterialId=x.a.MaterialId,
+                           MaterialCode=x.c.MaterialCode,
+                           DisplayName =x.c.DisplayName,
                            UnitName=x.b.DisplayName,
-                           Quantity=x.c.Quantity,
-                           QuantityMax=x.c.QuantityMax,
-                           QuantityMin =x.c.QuantityMin,
-                           Compartment=x.c.Compartment,
-                           Rack=x.c.Rack,
-                           Row=x.c.Row
+                           Quantity=x.a.Quantity,
+                           QuantityMax=x.a.QuantityMax,
+                           QuantityMin =x.a.QuantityMin,
+                           Compartment=x.a.Compartment,
+                           Rack=x.a.Rack,
+                           Row=x.a.Row
                        }).ToListAsync();
             //4. Select and projection
             var pagedResult = new PagedResult<MaterialStoreroomVm>()
@@ -283,9 +299,62 @@ namespace storeroom.Application.Catalog.Materials
             return pagedResult;
         }
 
-        public Task<PagedResult<MaterialStoreroomVm>> GetAllMaterialToAdd(MaterialStoreroomGetPaging request)
+        public async Task<PagedResult<MaterialViewModel>> GetAllMaterialToAdd(MaterialStoreroomGetPaging request)
         {
-            throw new NotImplementedException();
+            //var materials = _context.MaterialStorerooms.FindAsync();
+            var query = from a in _context.MaterialStorerooms
+                        select new { a };
+            if (request.StoreroomId.HasValue)
+            {
+                query = query.Where(x => x.a.StoreroomId == request.StoreroomId);
+            }
+
+            var data = await query
+                      .Select(x =>  x.a.MaterialId
+                      ).ToListAsync();
+
+            var querySelect = from a in _context.Materials
+                              join b in _context.MaterialGroups on a.MaterialGroupId equals b.Id
+                             select new { a, b };
+
+            if (request.MaterialGroupId.HasValue )
+            {
+                querySelect = querySelect.Where(x => x.a.MaterialGroupId == request.MaterialGroupId && data.All(id => id != x.a.Id));
+            }
+            else
+            {
+                querySelect = querySelect.Where(x => data.All(id => id != x.a.Id));
+            }
+
+            if (!string.IsNullOrEmpty(request.DisplayName))
+            {
+                querySelect = querySelect.Where(x => x.a.DisplayName == request.DisplayName );
+            }
+
+            var totalRow = await querySelect.CountAsync();
+            var data2 = await querySelect.Skip((request.page - 1) * request.limit)
+                       .Take(request.limit)
+                       .Select(x => new MaterialViewModel()
+                       {
+                           Id = x.a.Id,
+                           MaterialCode=x.a.MaterialCode,
+                           DisplayName=x.a.DisplayName
+                       }).ToListAsync();
+
+            var pagedResult = new PagedResult<MaterialViewModel>()
+            {
+                TotalRecord = totalRow,
+                Items = data2
+            };
+            return pagedResult;
+        }
+
+        public async Task<int> DeleteMS(int storeroomId, int materialId)
+        {
+            var material = await _context.MaterialStorerooms.FirstOrDefaultAsync(x=> x.StoreroomId == storeroomId && x.MaterialId ==materialId);
+            if (material == null) throw new StoreroomException($"Cannot find a material: {materialId}");
+            _context.MaterialStorerooms.Remove(material);
+            return await _context.SaveChangesAsync();
         }
     }
 }

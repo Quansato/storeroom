@@ -246,3 +246,6 @@ E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\ref\storeroom.WebApp.
 E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.pdb
 E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.genruntimeconfig.cache
 E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.MvcApplicationPartsAssemblyInfo.cs
+E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll

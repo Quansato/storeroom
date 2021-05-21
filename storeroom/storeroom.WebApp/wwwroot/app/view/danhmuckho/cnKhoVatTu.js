@@ -923,7 +923,6 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
         //}
         var tsKyThuat = me.refs.txtTSKT.getValue();
         record.set("specification", tsKyThuat);
-        debugger
         var fnSauKhiSave = me.getViewModel().get("fnSauKhiSave");
         var view = me.getView();
         view.setLoading(true);

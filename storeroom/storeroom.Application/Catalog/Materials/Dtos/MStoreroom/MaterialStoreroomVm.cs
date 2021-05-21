@@ -15,8 +15,8 @@ namespace storeroom.Application.Catalog.Materials.Dtos.MStoreroom
         public int Quantity { get; set; }
         public int QuantityMax { get; set; }
         public int QuantityMin { get; set; }
-        public int Compartment { get; set; }
-        public int Rack { get; set; }
-        public int Row{ get; set; }
+        public int? Compartment { get; set; }
+        public int? Rack { get; set; }
+        public int? Row{ get; set; }
     }
 }

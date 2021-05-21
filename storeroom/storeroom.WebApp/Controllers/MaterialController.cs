@@ -75,5 +75,19 @@ namespace storeroom.WebApp.Controllers
             var materials = await _materialService.GetAllMSPaging(request);
             return Ok(materials);
         }
+
+        [HttpGet("GetMaterialToAdd")]
+        public async Task<IActionResult> GetMaterialToAdd([FromQuery] MaterialStoreroomGetPaging request)
+        {
+            var materials = await _materialService.GetAllMaterialToAdd(request);
+            return Ok(materials);
+        }
+
+        [HttpDelete("materialStoreroom")]
+        public async Task<IActionResult> DeleteMS(int storeroomId, int materialId)
+        {
+            var result = await _materialService.DeleteMS(storeroomId,materialId);
+            return Ok(result);
+        }
     }
 }
