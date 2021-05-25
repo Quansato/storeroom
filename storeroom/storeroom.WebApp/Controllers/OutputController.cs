@@ -42,6 +42,14 @@ namespace storeroom.WebApp.Controllers
             var result = await _outputService.Update(request);
             return Ok(result);
         }
+
+        [HttpDelete()]
+        public async Task<IActionResult> Delete(int OutputId)
+        {
+            var result = await _outputService.Delete(OutputId);
+            return Ok(result);
+        }
+
         [HttpPut("detail")]
         public async Task<IActionResult> UpdateDetail(MaterialOutputCreateRequest request)
         {

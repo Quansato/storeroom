@@ -4,6 +4,7 @@ using storeroom.Application.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace storeroom.Application.Catalog.Materials
@@ -39,7 +40,7 @@ namespace storeroom.Application.Catalog.Materials
         /// <returns></returns>
         Task<PagedResult<MaterialViewModel>> GetAllPaging(SearchRequest request);
 
-        
+        public Task<List<MaterialViewModel>> GetAll();
 
 
         /// <summary>
@@ -87,6 +88,13 @@ namespace storeroom.Application.Catalog.Materials
         /// <param name="request"></param>
         /// <returns></returns>
         Task<int> UpdateStock(MaterialStoreroomVm request);
+
+        /// <summary>
+        /// Cập nhật định mức trong kho
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<int> UpdateQuantityMinMax(MaterialStoreroomVm request);
 
         Task<int> DeleteMS(int storeroomId,int materialId);
     }

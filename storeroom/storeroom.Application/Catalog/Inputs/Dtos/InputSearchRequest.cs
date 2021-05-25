@@ -15,6 +15,8 @@ namespace storeroom.Application.Catalog.Inputs.Dtos
         /// Tìm theo ngày chứng từ hoặc ngày nhập kho
         /// </summary>
         public int? Status { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public DateTime? Date { get; set; }
     }
 }

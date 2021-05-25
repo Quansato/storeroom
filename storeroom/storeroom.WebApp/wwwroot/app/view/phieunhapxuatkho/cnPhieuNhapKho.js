@@ -72,7 +72,7 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
                     labelAlign: 'right',
                     bind: {
                         store: '{storeKhoNhap}',
-                        value: '{recordPhieu.maKhoNhap}',
+                        value: '{recordPhieu.storeroomId}',
                         readOnly: '{recordPhieu.id>0}'
                     },
                     labelWidth: 120,
@@ -103,7 +103,7 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
                         labelWidth: 115,
                         flex: 1,
                         bind: {
-                            value: '{recordPhieu.tenNguoiPheDuyet}'
+                            value: '{recordPhieu.userName}'
                         }
                     }, {
                         margin: '5 5 0 0',
@@ -241,7 +241,7 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
                 type: 'hbox',
                 align: 'stretch'
             },
-            margin: 0,
+            //margin: '-10 0 10 0',
             width: 300,
             items: [{
                 xtype: 'fieldset',
@@ -328,7 +328,7 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
                 xtype: 'button',
                 text: 'Thêm vật tư',
                 reference: 'btnThemVatTu',
-                ui:"soft-blue",
+                ui: "soft-blue",
                 //hidden: !(abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Edit') || abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Manager')),
                 handler: 'onTimKiemvatTuNangCao',
                 iconCls: 'x-fa fa-plus',
@@ -339,139 +339,114 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
             selection: '{selectionPhieuNhapXuatChiTiet}'
         },
         layout: 'fit',
-            columns: [{
-                xtype: 'rownumberer',
-                text: '#',
-                width: 40,
-                align: 'center'
-            }, {
-                header: 'Mã - Tên',
-                cellWrap: true,
-                dataIndex: 'tenVatTu1',
-                flex: 1,
-                summaryType: 'count',
-                summaryRenderer: function (value, summaryData, dataIndex) {
-                    return ((value === 0 || value > 1) ? '(' + value + ' Vật tư)' : '(1 Vật tư)');
-                }
-            }, {
-                text: 'Đơn vị tính',
-                dataIndex: 'unit',
-                border: 1,
-                style: 'text-align:center',
-                align: 'left',
-                width: 110
-            }, {
-                text: 'Số lượng',
-                columns: [{
-                    text: 'Chứng từ',
-                    dataIndex: 'quantity',
-                    border: 1,
-                    style: 'text-align:center',
-                    align: 'right',
-                    width: 100,
-                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                        if (value != undefined && value != null) {
-                            return app.mUtils.fnFormatCurrency(value, 2);
-                        }
-                    },
-                    editor: {
-                        xtype: 'currencyfield',
-                        fieldStyle: 'text-align: right;'
-                    },
-                    summaryType: 'sum',
-                    summaryRenderer: function (value, summaryData, dataIndex) {
-                        if (value != undefined && value != null) {
-                            return app.mUtils.fnFormatCurrency(value, 2);
-                        }
-                    }
-                }, {
-                    text: 'Thực mua',
-                    dataIndex: 'soLuongThuc',
-                    border: 1,
-                    reference: 'clsoluongthuc',
-                    style: 'text-align:center',
-                    align: 'right',
-                    width: 100,
-                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
-                    },
-                    editor: {
-                        xtype: 'currencyfield',
-                        fieldStyle: 'text-align: right;'
-                    },
-                    summaryType: 'sum',
-                    summaryRenderer: function (value, summaryData, dataIndex) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
-                    }
-                }]
-            }, {
-                xtype: 'numbercolumn',
-                text: 'Đơn giá',
-                dataIndex: 'price',
-                style: 'text-align:center',
-                align: 'right',
-                border: 1,
-                width: 125,
-                renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                    if (value != undefined && value != null) {
-                        return app.mUtils.fnFormatCurrency(value, 2);
-                    }
-                },
-                editor: {
-                    xtype: 'currencyfield',
-                    cls: 'EnterToTab',
-                    fieldStyle: 'text-align: right;'
+        columns: [{
+            xtype: 'rownumberer',
+            text: '#',
+            width: 40,
+            align: 'center'
+        }, {
+            header: 'Mã - Tên',
+            cellWrap: true,
+            dataIndex: 'tenVatTu1',
+            flex: 1,
+            summaryType: 'count',
+            summaryRenderer: function (value, summaryData, dataIndex) {
+                return ((value === 0 || value > 1) ? '(' + value + ' Vật tư)' : '(1 Vật tư)');
+            }
+        }, {
+            text: 'Đơn vị tính',
+            dataIndex: 'unit',
+            border: 1,
+            style: 'text-align:center',
+            align: 'left',
+            width: 110
+        }, {
+            text: 'Số lượng',
+            dataIndex: 'quantity',
+            border: 1,
+            style: 'text-align:center',
+            align: 'right',
+            width: 100,
+            renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
+                if (value != undefined && value != null) {
+                    return app.mUtils.fnFormatCurrency(value, 2);
                 }
             },
-            {
-                xtype: 'numbercolumn',
-                text: 'Thành tiền',
-                dataIndex: 'total',
-                border: 1,
-                style: 'text-align:center',
-                align: 'right',
-                width: 145,
-                renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                    if (value != undefined && value != null) {
-                        return app.mUtils.fnFormatCurrency(value, 2);
-                    }
-                },
-                summaryType: 'sum',
-                summaryRenderer: function (value, summaryData, dataIndex) {
-                    if (value != undefined && value != null) {
-                        return app.mUtils.fnFormatCurrency(value, 2);
-                    }
+            editor: {
+                xtype: 'currencyfield',
+                fieldStyle: 'text-align: right;'
+            },
+            summaryType: 'sum',
+            summaryRenderer: function (value, summaryData, dataIndex) {
+                if (value != undefined && value != null) {
+                    return app.mUtils.fnFormatCurrency(value, 2);
                 }
-            }, {
-                text: 'Ghi chú',
-                dataIndex: 'description',
-                border: 1,
-                width: 145,
-                editor: {
-                    xtype: 'textfield'
+            }
+
+        }, {
+            xtype: 'numbercolumn',
+            text: 'Đơn giá',
+            dataIndex: 'price',
+            style: 'text-align:center',
+            align: 'right',
+            border: 1,
+            width: 125,
+            renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
+                if (value != undefined && value != null) {
+                    return app.mUtils.fnFormatCurrency(value, 2);
                 }
-            }, {
-                xtype: 'actioncolumn',
-                width: 40,
-                bind: {
-                    hidden: '{recordPhieu.status==1}'
-                },
+            },
+            editor: {
+                xtype: 'currencyfield',
+                cls: 'EnterToTab',
+                fieldStyle: 'text-align: right;'
+            }
+        },
+        {
+            xtype: 'numbercolumn',
+            text: 'Thành tiền',
+            dataIndex: 'total',
+            border: 1,
+            style: 'text-align:center',
+            align: 'right',
+            width: 145,
+            renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
+                if (value != undefined && value != null) {
+                    return app.mUtils.fnFormatCurrency(value, 2);
+                }
+            },
+            summaryType: 'sum',
+            summaryRenderer: function (value, summaryData, dataIndex) {
+                if (value != undefined && value != null) {
+                    return app.mUtils.fnFormatCurrency(value, 2);
+                }
+            }
+        }, {
+            text: 'Ghi chú',
+            dataIndex: 'description',
+            border: 1,
+            width: 145,
+            editor: {
+                xtype: 'textfield'
+            }
+        }, {
+            xtype: 'actioncolumn',
+            width: 40,
+            bind: {
+                // hidden: '{recordPhieu.status==1}'
+            },
+            align: 'center',
+            items: [{
+                xtype: 'button',
+                cls: 'actionDelete',
+                iconCls: 'x-fa fa-minus',
+                reference: 'btnXoaLoaiVatTu',
                 align: 'center',
-                items: [{
-                    xtype: 'button',
-                    cls: 'actionDelete',
-                    iconCls: 'x-fa fa-minus',
-                    reference: 'btnXoaLoaiVatTu',
-                    align: 'center',
-                    tooltip: 'Xoá vật tư',
-                    //hidden: !(abp.auth.hasPermission('CMMS.Inventory.MuaHang.Edit') || abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager')),
-                    handler: "onXoaLoaiVatTu"
-                }]
-            }],
+                tooltip: 'Xoá vật tư',
+                //hidden: !(abp.auth.hasPermission('CMMS.Inventory.MuaHang.Edit') || abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager')),
+                handler: "onXoaLoaiVatTu"
+            }]
+        }],
     }],
     buttons: [{
         text: 'Lưu thông tin',
@@ -518,37 +493,37 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
         //};
         //abp.event.on('abp.notifications.receivedEKGISData', me.pubSub);
         me.loadKho();
-        //var record = me.getViewModel().data.recordPhieu;
-        //if (record.get('id') == 0) {
-        //    record.set("tenNguoiPheDuyet", app.session.user.surname + " " + app.session.user.name);
-        //    record.set("nguoiPheDuyet", app.session.user.id);
-        //    me.loadLoaiPhieu();
-        //    var dataVatTu = me.getViewModel().data.dataVatTu;
-        //    if (dataVatTu) {
-        //        me.storeinfo.storePhieuNhapChiTiet.loadData(dataVatTu);
-        //    }
-        //} else {
-        //    me.onloadChiTiet();
-        //    var storeLoaiPhieu = me.storeinfo.storeLoaiPhieu;
-        //    storeLoaiPhieu.loadData([{ id: -1, moTa: app.localize("CMMSDMKhoPhanLoaiDChuyen") }])
-        //    if (record.get('loaiPhieu') == -1) {
-        //        me.ref.textNhapMaVatTu.setDisabled(true);
-        //        me.ref.btnTimKiemVT.setDisabled(true);
-        //        me.ref.btnThemVatTu.setDisabled(true);
-        //        me.ref.btnThucHien.setDisabled(true);
-        //        me.ref.btnLayNguoiDung.setDisabled(true);
-        //        setTimeout(function () {
-        //            me.ref.cbophanLoai.setReadOnly(true);
-        //        }, 300);
-        //        me.ref.btnXoaLoaiVatTu.setVisible(false);
-        //    } else {
-        //        me.loadLoaiPhieu();
-        //    }
-        //}
-        //setTimeout(function () {
-        //    if (me.getViewModel().data.donmuahang)
-        //        me.ref.cbkho.setReadOnly(me.getViewModel().data.donmuahang);
-        //}, 300);
+        var record = me.getViewModel().data.recordPhieu;
+        if (record.get('id') == 0) {
+            //record.set("tenNguoiPheDuyet", app.session.user.surname + " " + app.session.user.name);
+            //record.set("nguoiPheDuyet", app.session.user.id);
+            //me.loadLoaiPhieu();
+            var dataVatTu = me.getViewModel().data.dataVatTu;
+            if (dataVatTu) {
+                me.storeinfo.storePhieuNhapChiTiet.loadData(dataVatTu);
+            }
+        } else {
+            me.onloadChiTiet();
+            var storeLoaiPhieu = me.storeinfo.storeLoaiPhieu;
+            //storeLoaiPhieu.loadData([{ id: -1, moTa: app.localize("CMMSDMKhoPhanLoaiDChuyen") }])
+            //if (record.get('loaiPhieu') == -1) {
+            //me.ref.textNhapMaVatTu.setDisabled(true);
+            //me.ref.btnTimKiemVT.setDisabled(true);
+            //me.ref.btnThemVatTu.setDisabled(true);
+            //me.ref.btnThucHien.setDisabled(true);
+            //me.ref.btnLayNguoiDung.setDisabled(true);
+            //setTimeout(function () {
+            //    me.ref.cbophanLoai.setReadOnly(true);
+            //}, 300);
+            //me.ref.btnXoaLoaiVatTu.setVisible(false);
+            //} else {
+            //    me.loadLoaiPhieu();
+            //}
+        }
+        setTimeout(function () {
+            if (me.getViewModel().data.donmuahang)
+                me.ref.cbkho.setReadOnly(me.getViewModel().data.donmuahang);
+        }, 300);
     },
 
     onLayNguoiDung: function () {
@@ -560,7 +535,7 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
                     fnSauKhiChon: function (result, idPhongBan) {
                         console.log(result);
                         record.set("userId", result.get("userId"));
-                        record.set("tenNguoiPheDuyet", result.get("tenNguoiDaiDien"));
+                        record.set("userName", result.get("tenNguoiDaiDien"));
                         console.log(record);
                     }
                 }
@@ -577,7 +552,7 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
             store.loadRecords(storeKho.data.items);
             return;
         }
-        var url ="api/Storeroom?page=1&start=0&limit=25";
+        var url = "api/Storeroom?page=1&start=0&limit=25";
         store.proxy.api.read = url;
         store.load({
             scope: this,
@@ -676,9 +651,7 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
     onloadChiTiet: function () {
         var me = this;
         var record = me.getViewModel().data.recordPhieu;
-        var filter = [{ name: 'maPhieu', value: record.get('id') }];
-        var query = abp.utils.buildQueryString(filter);
-        var url = abp.appPath + "api/services/app/CMMSKhoPhieuNhapXuatChiTiet/GetAllByMaPhieu" + query;
+        var url = "api/Input/InputId?InputId=" + record.get('id');
         var store = me.storeinfo.storePhieuNhapChiTiet;
         store.proxy.api.read = url;
         store.proxy.pageParam = undefined;
@@ -698,15 +671,20 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
         });
     },
 
-    //specialkeyThemChungLoai: function (field, e) {
-    //    var me = this;
-    //    if (e.getKey() == e.ENTER) {
-    //        me.onTimKiem();
-    //    }
-    //},
+    specialkeyThemChungLoai: function (field, e) {
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.onTimKiem();
+        }
+    },
 
     onTimKiemVT: function () {
-        this.onTimKiem();
+        Swal.fire({
+            icon: 'info',
+            title: 'Oops...',
+            text: 'Tính năng này đang phát triển',
+        })
+        //this.onTimKiem();
     },
 
     //onTimKiem: function (dataPsub) {
@@ -793,7 +771,7 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
         var storePhieuNhapChiTiet = me.storeinfo.storePhieuNhapChiTiet;
         var record = storePhieuNhapChiTiet.data.items;
         for (var i = 0; i < record.length; i++) {
-            if (record[i].get('maVatTu') == machungloai)
+            if (record[i].get('materialId') == machungloai)
                 return record[i]
         }
         return false;
@@ -838,9 +816,9 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
                                     var tt = soluongthuc * dongia;
                                     record.set('total', tt);
                                 }
-                                if (recordPhieu.get('id') > 0) {
-                                    record.set('id', recordPhieu.get('id'));
-                                }
+                                //if (recordPhieu.get('id') > 0) {
+                                //    record.set('id', recordPhieu.get('id'));
+                                //}
                                 record.set('unit', recordVatTu[i].get('unitName'));
                                 record.set('donViTinhThuc', recordVatTu[i].get('donViPhatHanh'));
                                 storePhieuNhapChiTiet.add(record);
@@ -855,6 +833,10 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
 
     onEditGrid: function (editor, context, eOpts) {
         var me = this;
+        var quantity = context.value - context.originalValue;
+        var obj = {};
+        console.log(editor)
+        console.log(context)
         var record = context.record;
         var soluongthuc = record.get('quantity');
         var dongia = record.get('price');
@@ -863,6 +845,15 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
             record.set('total', tt)
             record.commit();
         }
+
+        obj.storeroomId = me.getViewModel().data.recordPhieu.data.storeroomId;
+        obj.materialId = record.get('materialId');
+        obj.quantity = quantity;
+        var url = "/api/Material/materialStoreroom/quantity"
+
+        app.mUtils.fnPUTAjax(url, obj, function (response) {
+            console.log(response)
+        })
         me.checkThayDoiChiTiet = true;
     },
 
@@ -874,46 +865,47 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
         }
     },
 
-    //onXoaLoaiVatTu: function (grid, rowIndex, colIndex) {
-    //    var me = this;
-    //    var record = me.getViewModel().data.recordPhieu;
-    //    var selected = grid.getStore().getAt(rowIndex);
-    //    if (record.get('loaiPhieu') == app.localize("CMMSDMKhoPhanLoaiDChuyen"))
-    //        return;
-    //    var store = me.storeinfo.storePhieuNhapChiTiet
-    //    var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
-    //    if (isNaN(selected.data.id) == true) {
-    //        abp.message.confirm(
-    //            app.localize('CMMSKhoThongBaoVatTu') + " " + selected.data.tenVatTu1,
-    //            app.localize('ExtgDataManagerAreYouSure'),
-    //            function (isConfirmed) {
-    //                if (isConfirmed) {
-    //                    store.remove(selected);
-    //                }
-    //            }
-    //        );
-    //    } else {
-    //        abp.message.confirm(
-    //            app.localize('CMMSKhoThongBaoVatTu') + " " + selected.data.tenVatTu1,
-    //            app.localize('ExtgDataManagerAreYouSure'),
-    //            function (isConfirmed) {
-    //                if (isConfirmed) {
-    //                    store.remove(selected);
-    //                    _cMMSKhoPhieuNhapXuatChiTiet.xoaChiTietPhieu({ id: selected.get('id') }, record.get('maKhoNhap'), 'nhapkho').done(function (result) {
-    //                        me.getView().setLoading(false);
-    //                        abp.notify.success(app.localize('SavedSuccessfully'));
-    //                        if (fnSauKhiLoad)
-    //                            fnSauKhiLoad(result);
-    //                    }).fail(function (data) {
-    //                        me.getView().setLoading(false);
-    //                    });
-    //                }
-    //            }
-    //        );
-    //    }
-    //},
+    onXoaLoaiVatTu: function (grid, rowIndex, colIndex) {
+        var me = this;
+        var record = me.getViewModel().data.recordPhieu;
+        var selected = grid.getStore().getAt(rowIndex);
+        //if (record.get('loaiPhieu') == app.localize("CMMSDMKhoPhanLoaiDChuyen"))
+        //    return;
+        var store = me.storeinfo.storePhieuNhapChiTiet
+        var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
+        store.remove(selected);
+        return;
+        if (isNaN(selected.data.id) == true) {
+            abp.message.confirm(
+                app.localize('CMMSKhoThongBaoVatTu') + " " + selected.data.tenVatTu1,
+                app.localize('ExtgDataManagerAreYouSure'),
+                function (isConfirmed) {
+                    if (isConfirmed) {
+                    }
+                }
+            );
+        } else {
+            abp.message.confirm(
+                app.localize('CMMSKhoThongBaoVatTu') + " " + selected.data.tenVatTu1,
+                app.localize('ExtgDataManagerAreYouSure'),
+                function (isConfirmed) {
+                    if (isConfirmed) {
+                        store.remove(selected);
+                        _cMMSKhoPhieuNhapXuatChiTiet.xoaChiTietPhieu({ id: selected.get('id') }, record.get('maKhoNhap'), 'nhapkho').done(function (result) {
+                            me.getView().setLoading(false);
+                            abp.notify.success(app.localize('SavedSuccessfully'));
+                            if (fnSauKhiLoad)
+                                fnSauKhiLoad(result);
+                        }).fail(function (data) {
+                            me.getView().setLoading(false);
+                        });
+                    }
+                }
+            );
+        }
+    },
 
-    onThucHien: function (isNhap) {
+    onThucHien: async function (isNhap) {
         var me = this;
         var form = me.ref.frmPhieuXuatKho;
         if (!form.getForm().isValid()) {
@@ -927,69 +919,100 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
             return;
         }
         for (var i = 0; i < rows.length; i++) {
-            if (rows[i].get('quantity') == null || rows[i].get('quantity') == 0) {
-                toastr.success("Số lượng VT không được để trông")
+            if (rows[i].get('quantity') == null || rows[i].get('quantity') == 0 || rows[i].get('quantity') < 0) {
+                toastr.warning("Số lượng VT không hợp lệ")
                 return;
             }
         }
         var record = me.getViewModel().data.recordPhieu;
         var data = record.data;
         var rowMaterial = [];
+        var obj = [];
         rows.forEach(function (element) {
             rowMaterial.push(element.data)
         })
+        var fl = 0;
+        await rowMaterial.forEach(function (el) {
+            var url = "api/Input/CheckMaterialIsExistInStoreroom?StoreroomId=" + data.storeroomId + "&Id=" + el.materialId
+            app.mUtils.fnGETAjax(url, function (response) {
+                console.log(response)
+                if (!response) {
+                    fl += 1;
+                    toastr.warning("Vật tư " + el.materialCode + " chưa tồn tại trong kho!")
+                } else {
+                    obj.push({ storeroomId: data.storeroomId, materialId: el.materialId, quantity: el.quantity })
+                }
+            })
+        })
+
+        /**
+         * Lỗi async
+         * */
+        setTimeout(function () {
+            console.log(fl);
+            if (fl > 0) return;
+            record.data.phanLoai = 'nhapkho'
+            if (record.get('id') == 0) {
+                var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
+                me.getView().setLoading(true);
+                var url = "/api/Input";
+                data.materialInput = rowMaterial
+                console.log(data)
+                me.getView().setLoading(true);
+                app.mUtils.fnPOSTAjax(url, data, function (res) {
+                    toastr.success("Thêm mới dl thành công!");
+                    me.getView().setLoading(false);
+                    fnSauKhiLoad();
+                    me.getView().doClose();
+                    //
+                    obj.forEach(function (el) {
+                        var url = "/api/Material/materialStoreroom/quantity"
+                        app.mUtils.fnPUTAjax(url, el, function (response) {
+                            console.log(response)
+                        })
+                    })
+                });
+            }
+            else if (record.dirty) {
+                var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
+                me.getView().setLoading(true);
+                var url = "/api/Input";
+                me.getView().setLoading(true);
+                app.mUtils.fnPUTAjax(url, data, function (res) {
+                    console.log(res)
+                    me.getView().setLoading(false);
+                    me.onLuuChiTiet(rowMaterial, record.get('id'));
+                    toastr.success("Cập nhật dữ liệu thành công");
+                    fnSauKhiLoad();
+                    me.getView().doClose();
+                })
+            } else {
+                me.onLuuChiTiet(rowMaterial, record.get('id'), true);
+                toastr.success("Cập nhật dữ liệu thành công");
+                me.getView().doClose();
+            }
+        }, 200)
         //record.data.thoiGian = Ext.Date.format(new Date(record.get('ngayHachToan')), "Y/m/d H:i:s");
         //record.data.ngayHachToan = Ext.Date.format(new Date(record.get('ngayHachToan')), "Y/m/d H:i:s");
         //record.data.ngayChungTu = Ext.Date.format(new Date(record.get('ngayChungTu')), "Y/m/d H:i:s");
-        record.data.phanLoai = 'nhapkho'
-        if (record.get('id') == 0) {
-            var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
-            me.getView().setLoading(true);
-            var url = "/api/Input";
-            data.materialInput = rowMaterial
-            console.log(data)
-            me.getView().setLoading(true);
-            app.mUtils.fnPOSTAjax(url, data, function (res) {
-                toastr.success("Thêm mới dl thành công!");
-                me.getView().setLoading(false);
-                fnSauKhiLoad();
-                me.getView().doClose();
-            });
-        }
-        else if (record.dirty) {
-            var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
-            me.getView().setLoading(true);
-            var url = "/api/Input";
-            me.getView().setLoading(true);
-            app.mUtils.fnPUTAjax(url, data, function (res) {
-                console.log(res)
-                me.getView().setLoading(false);
-                me.onLuuChiTiet(rows, record.get('id'));
-                toastr.success("Cập nhật dữ liệu thành công");
-                fnSauKhiLoad();
-                me.getView().doClose();
-            })
-        } else {
-            me.onLuuChiTiet(rows, record, true);
-            toastr.success("Cập nhật dữ liệu thành công");
-        }
     },
 
-    onLuuChiTiet: function (rows, record, thongbao) {
+    onLuuChiTiet: function (rows, id, thongbao) {
         var me = this;
         var lstphieuchitiet = [];
         var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
-        var url = "/api/Input/detail";
-        for (var i = 0; i < rows.length; i++) {
-            rows[i].data.unit = undefined;
-            app.mUtils.fnPUTAjax(url, rows[i].data, function (res) {
-                console.log(res)
-                me.getView().setLoading(false);
-                fnSauKhiLoad();
-                me.getView().doClose();
+        app.mUtils.fnDELETEAjax("api/Input/deleteMultiple/" + id, function () {
+            var url = "/api/Input/detail";
+            for (var i = 0; i < rows.length; i++) {
+                rows[i].unit = undefined;
+                rows[i].inputId = id
+                app.mUtils.fnPUTAjax(url, rows[i], function (res) {
+                    fnSauKhiLoad();
+                })
+            }
 
-            })
-        }
+        })
+
         //for (var i = 0; i < rows.length; i++) {
         //    rows[i].data.maPhieu = record.get('id');
         //    if (isNaN(rows[i].data.id) == true) {
@@ -1013,10 +1036,10 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
         //});
     },
 
-    //onDongWinDow: function () {
-    //    var me = this;
-    //    abp.event.off('abp.notifications.receivedEKGISData', me.pubSub);
-    //    var record = me.getViewModel().data.recordPhieu;
-    //    record.reject();
-    //}
+    onDongWinDow: function () {
+        var me = this;
+        //abp.event.off('abp.notifications.receivedEKGISData', me.pubSub);
+        var record = me.getViewModel().data.recordPhieu;
+        record.reject();
+    }
 });

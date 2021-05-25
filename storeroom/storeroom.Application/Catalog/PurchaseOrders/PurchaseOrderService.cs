@@ -57,6 +57,13 @@ namespace storeroom.Application.Catalog.PurchaseOrders
             if (purchaseOrder == null) throw new StoreroomException($"Cannot find a purchaseOrder: {PurchaseOrderId}");
             _context.PurchaseOrders.Remove(purchaseOrder);
             return await _context.SaveChangesAsync();
+            
+        }
+
+        public async Task<int> DeleteDetail(int PurchaseOrderId)
+        {
+            _context.MaterialPurchaseOrders.RemoveRange(_context.MaterialPurchaseOrders.Where(x => x.PurchaseOrderId == PurchaseOrderId));
+            return await _context.SaveChangesAsync();
         }
 
         public Task<PagedResult<PurchaseOrderViewModel>> GetAll()
@@ -83,11 +90,11 @@ namespace storeroom.Application.Catalog.PurchaseOrders
             }
             if (!string.IsNullOrEmpty(request.Code))
             {
-                query = query.Where(x => x.a.Code == request.Code);
+                query = query.Where(x => x.a.Code.Contains(request.Code));
             }
             if (request.Status.HasValue)
             {
-                query = query.Where(x => x.a.StoreroomId == request.StoreroomId);
+                query = query.Where(x => x.a.Status == request.Status);
             }
             if (request.Date.HasValue)
             {
@@ -111,7 +118,7 @@ namespace storeroom.Application.Catalog.PurchaseOrders
                            SuplierName = x.c.DisplayName,
                            Priority=x.a.Priority,
                            UserId = x.a.UserId,
-                           UserName = x.d.UserName
+                           UserName = x.d.FirstName + ' ' + x.d.LastName
                        }).ToListAsync();
             //4. Select and projection
             var pagedResult = new PagedResult<PurchaseOrderViewModel>()

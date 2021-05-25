@@ -20,7 +20,7 @@ namespace storeroom.Application.Catalog.Outputs
         }
         public async Task<int> Create(OutputCreateRequest request)
         {
-            if (request.StoreroomReceiveId != null)
+            if (request.StoreroomReceiveId != 0)
             {
                 var output = new Output()
                 {
@@ -29,11 +29,12 @@ namespace storeroom.Application.Catalog.Outputs
                     StoreroomId = request.StoreroomId,
                     StoreroomReceiveId = request.StoreroomReceiveId,
                     NameRecipient = request.UserRecipient,
-                    DateOutput = request.Date,
+                    DateOutput = request.DateOutput,
                     DateDocument = request.DateDocument,
                     CreationTime = DateTime.Now,
-                    UserId=request.UserId,
-                    MaterialOutputs=request.MaterialOutput                   
+                    UserId = request.UserId,
+                    Type = request.Type,
+                    MaterialOutputs = request.MaterialOutput
                     //Date = request.Date,
                     //Status = request.Status,
                     //SuplierId = request.SuplierId,
@@ -51,11 +52,11 @@ namespace storeroom.Application.Catalog.Outputs
                     OutputCode = request.OutputCode,
                     StoreroomId = request.StoreroomId,
                     Recipient = request.Recipient,
-                    NameRecipient=request.UserRecipient,
-                    DateOutput=request.Date,
-                    DateDocument=request.DateDocument,
+                    NameRecipient = request.UserRecipient,
+                    DateOutput = request.DateOutput,
+                    DateDocument = request.DateDocument,
                     UserId = request.UserId,
-                    MaterialOutputs=request.MaterialOutput
+                    MaterialOutputs = request.MaterialOutput
                 };
                 _context.Outputs.Add(output);
             }
@@ -64,6 +65,11 @@ namespace storeroom.Application.Catalog.Outputs
 
         public async Task<int> Delete(int OutputId)
         {
+            var material = await _context.MaterialOutputs.FirstOrDefaultAsync(x => x.OutputId == OutputId);
+            if (material != null)
+            {
+                return -1;
+            }
             var output = await _context.Outputs.FindAsync(OutputId);
             if (output == null) throw new StoreroomException($"Cannot find a output: {OutputId}");
             _context.Outputs.Remove(output);
@@ -97,7 +103,14 @@ namespace storeroom.Application.Catalog.Outputs
             }
             if (request.Status.HasValue)
             {
-                query = query.Where(x => x.a.StoreroomId == request.StoreroomId);
+                if (request.Status == 0)
+                {
+                    query = query.Where(x => x.a.DateOutput > request.StartDate && x.a.DateOutput < request.EndDate);
+                }
+                else
+                {
+                    query = query.Where(x => x.a.DateDocument > request.StartDate && x.a.DateDocument < request.EndDate);
+                }
             }
             if (request.Date.HasValue)
             {
@@ -116,10 +129,11 @@ namespace storeroom.Application.Catalog.Outputs
                            StoreroomReceiveId = x.a.StoreroomReceiveId,
                            Recipient = x.a.Recipient,
                            UserRecipient = x.a.NameRecipient,
-                           Date = x.a.DateOutput,
+                           Type = x.a.Type,
+                           DateOutput = x.a.DateOutput,
                            DateDocument = x.a.DateDocument,
                            UserId = x.a.UserId,
-                           UserName=x.c.UserName,
+                           UserName = x.c.UserName,
                            //MaterialOutputs = request.MaterialOutput
                        }).ToListAsync();
             //4. Select and projection
@@ -166,8 +180,8 @@ namespace storeroom.Application.Catalog.Outputs
 
         public async Task<int> Update(OutputUpdateRequest request)
         {
-            var output = await _context.Outputs.FirstOrDefaultAsync(x=>x.Id ==request.Id);
-            if(output ==null) throw new StoreroomException($"Cannot find a output: {request.Id}");
+            var output = await _context.Outputs.FirstOrDefaultAsync(x => x.Id == request.Id);
+            if (output == null) throw new StoreroomException($"Cannot find a output: {request.Id}");
             output.Id = request.Id;
             output.OutputCode = request.OutputCode;
             output.StoreroomId = request.StoreroomId;

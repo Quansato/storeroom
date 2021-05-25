@@ -72,7 +72,7 @@ Ext.define('Admin.view.danhmuckho.dsKho', {
                 text: 'Tên'
             }, {
                 xtype: 'gridcolumn',
-                dataIndex: 'userName',
+                dataIndex: 'tenNguoiDaiDien',
                 width: 180,
                 text: 'Người đại diện'
             }, {
@@ -130,7 +130,8 @@ Ext.define('Admin.view.danhmuckho.dsKho', {
                         xtype: 'button',
                         text: 'Tìm',
                         iconCls: 'x-fa fa-search',
-                        handler: 'onTimKiem'
+                        handler: 'onTimKiem',
+                        ui: 'soft-blue',
                     }]
                 }]
             }, {
@@ -141,25 +142,25 @@ Ext.define('Admin.view.danhmuckho.dsKho', {
                     text: 'Thêm',
                     iconCls: 'fa fa-plus',
                     ui: 'soft-blue',
-                    //hidden: !(abp.auth.hasPermission('CMMS.Inventory.Kho.Edit') || abp.auth.hasPermission('CMMS.Inventory.Kho.Manager')),
+                    //hidden: !(app.session.isAdmin),
                     handler: "onThemKho"
                 }, {
                     reference: 'btnSua',
                     text: 'Sửa',
-                    //bind: {
-                    //    disabled: '{!selectionKho}',
-                    //    hidden: !(abp.auth.hasPermission('CMMS.Inventory.Kho.Edit') || abp.auth.hasPermission('CMMS.Inventory.Kho.Manager'))
-                    //},
+                    bind: {
+                        disabled: '{!selectionKho}',
+                        //hidden: !(app.session.isAdmin)
+                    },
                     iconCls: 'fa fa-pencil',
                     ui: 'soft-blue',
                     handler: "onSua"
                 }, {
                     reference: 'btnXoaKho',
                     text: 'Xoá',
-                    //bind: {
-                    //    disabled: '{!selectionKho}',
-                    //    hidden: !(abp.auth.hasPermission('CMMS.Inventory.Kho.Edit') || abp.auth.hasPermission('CMMS.Inventory.Kho.Manager'))
-                    //},
+                    bind: {
+                        disabled: '{!selectionKho}',
+                        //hidden: !(app.session.isAdmin)
+                    },
                     iconCls: 'fa fa-minus-circle',
                     ui: 'soft-red',
                     handler: "onXoa"
@@ -181,29 +182,9 @@ Ext.define('Admin.view.danhmuckho.dsKho', {
                         store: '{storeKho}'
                     },
                     style: 'padding: 0px !important',
-                    //lastText: app.localize("ExtLastText"),
-                    //prevText: app.localize("ExtPrevText"),
-                    //firstText: app.localize("ExtFirstText"),
-                    //nextText: app.localize("ExtNextText"),
-                    //refreshText: app.localize("ExtRefreshText"),
-                    //beforePageText: app.localize("ExtBeforePageText"),
-                    //afterPageText: app.localize("ExtAfterPageText"),
-                    //displayMsg: app.localize("ExtDisplayMsg"),
-                    //emptyMsg: app.localize("ExtEmptyMsg"),
-                    listeners: {
-                        beforechange: function (page, currentPage) {
-                            //--- Get Proxy ------//
-                            var myProxy = this.store.getProxy();
-                            //--- Define Your Parameter for send to server ----//
-                            myProxy.params = {
-                                skipCount: 0,
-                                maxResultCount: 0
-                            };
-                            //--- Set value to your parameter  ----//
-                            myProxy.setExtraParam("skipCount", (currentPage - 1) * this.store.pageSize);
-                            myProxy.setExtraParam("maxResultCount", this.store.pageSize);
-                        }
-                    }
+                    beforePageText: "Trang",
+                    //afterPageText: "của {0}",
+                    displayMsg: "{0} - {1} của {2}",
                 }]
             }]
         }]
@@ -238,17 +219,16 @@ Ext.define('Admin.view.danhmuckho.dsKhoController', {
         me.onTimKiem();
     },
 
-    //specialkey: function (field, e) {
-    //    var me = this;
-    //    if (e.getKey() == e.ENTER) {
-    //        me.loadKho();
-    //    }
-    //},
+    specialkey: function (field, e) {
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.loadKho();
+        }
+    },
 
     onTimKiem: function () {
         var me = this;
-        console.log(1)
-        console.log(app.session);
+        console.log(app.session.isAdmin);
         me.loadKho();
     },
 
@@ -267,7 +247,7 @@ Ext.define('Admin.view.danhmuckho.dsKhoController', {
         store.proxy.startParam = undefined;
         store.load({
             params: {
-                page:1,
+                page: 1,
                 start: 0,
                 limit: store.pageSize
             },
@@ -362,7 +342,7 @@ Ext.define('Admin.view.danhmuckho.dsKhoController', {
         var record = selectSelection[0];
         Swal.fire({
             title: 'Bạn có chắc chắn?',
-            text: "Bạn có muốn xoá " + record.data.displayName+"?",
+            text: "Bạn có muốn xoá " + record.data.displayName + "?",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

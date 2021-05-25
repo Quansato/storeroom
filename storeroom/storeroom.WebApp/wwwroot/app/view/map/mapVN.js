@@ -72,6 +72,10 @@ Ext.define("Admin.view.map.mapVNController", {
 
     onMap: function () {
         var me = this;
+        var obj = [];
+        app.mUtils.fnGETAjax('api/Storeroom?page=1&start=0&limit=25', function (response) {
+            obj = response.items;
+        })
         var map = new mapboxgl.Map({
             container: 'divMapId',
             center: [105.82397460937636, 21.03589385426021], // starting position
@@ -81,11 +85,11 @@ Ext.define("Admin.view.map.mapVNController", {
             token: tokenVN
         }).addTo(map);
 
-        var marker = new mapboxgl.Marker({
+        /*var marker = new mapboxgl.Marker({
             draggable: true
         })
             .setLngLat([105.82397460937636, 21.03589385426021])
-            .addTo(map);
+            .addTo(map);*/
 
         //var marker1 = new mapboxgl.Marker()
         //    .setLngLat([105.82397460937636, 21.03589385426021])
@@ -98,24 +102,30 @@ Ext.define("Admin.view.map.mapVNController", {
                 'Kinh độ: ' + lngLat.lng + '<br />Vĩ độ: ' + lngLat.lat;
         }
 
-        marker.on('dragend', onDragEnd);
-        //
-        var popup = new mapboxgl.Popup({ offset: 25 }).setText(
-            'Construction on the Washington Monument began in 1848.'
-        );
-
+        //marker.on('dragend', onDragEnd);
         // create DOM element for the marker
         var el = document.createElement('div');
         el.id = 'marker';
-        //
-        //for (var i = 0; i < obj.length; i++) {
-        //    var marker = new mapboxgl.Marker({
-        //        draggable: true
-        //    })
-        //        .setLngLat([obj[i].x, obj[i].y])
-        //        .setPopup(popup)
-        //        .addTo(map);
-        //}
+
+        //map.on('click', function (e) {
+        //    console.log(e)
+        //    var obj = map.queryRenderedFeatures(
+        //        e.point
+        //    );
+        //    console.log(obj)
+        //})
+
+        for (var i = 0; i < obj.length; i++) {
+            var popup = new mapboxgl.Popup({ offset: 25 }).setText(
+                'Construction on the Washington Monument began in 1848.'
+            ).setLngLat([obj[i].x, obj[i].y]);
+            var marker = new mapboxgl.Marker({
+                draggable: true
+            })
+                .setLngLat([obj[i].x, obj[i].y])
+                .setPopup(popup)
+                .addTo(map);
+        }
         map.addControl(new mapboxgl.NavigationControl(), "top-left");
         map.addControl(new mapboxgl.GeolocateControl({
             positionOptions: {

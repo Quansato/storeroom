@@ -210,9 +210,9 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                 width: 110,
                 renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
                     var text = value;
-                    if (value == "true") {
+                    if (value == true) {
                         text = 'Hoạt động';
-                    } else if (value == "false") {
+                    } else if (value == false) {
                         text = 'Không hoạt động';
                     }
                     return text;
@@ -246,7 +246,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                 emptyText: 'Chưa có dữ liệu'
             },
             listeners: {
-                cellclick: "cellVatTu"
+                //cellclick: "cellVatTu"
             },
             dockedItems: [{
                 xtype: "toolbar",
@@ -608,17 +608,17 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
         me.onSearch();
     },
 
-    //onXuatExcel: function () {
-    //    var me = this;
-    //    var id = me.fnGetNhomId();
-    //    var txt = me.fnGetTxtSearch();
-    //    var query = abp.utils.buildQueryString([
-    //        { name: "filter", value: txt },
-    //        { name: "maNhomVatTu", value: id == 0 ? null : id }
-    //    ]);
-    //    var url = abp.appPath + "CMMSImportExport/GetDSVatTu" + query;
-    //    window.location.href = url;
-    //},
+    onXuatExcel: function () {
+        var me = this;
+        //var id = me.fnGetNhomId();
+        //var txt = me.fnGetTxtSearch();
+        //var query = abp.utils.buildQueryString([
+        //    { name: "filter", value: txt },
+        //    { name: "maNhomVatTu", value: id == 0 ? null : id }
+        //]);
+        var url = "api/Material/exportv2";
+        window.location.href = url;
+    },
 
     //onXuatExcelQR: function () {
     //    var me = this;

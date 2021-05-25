@@ -663,19 +663,19 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
         //me.fnLoadVatTuTT();
         //me.refs.dtvHinhAnh.getStore().loadData([]);
         //me.onLoadFile();
-        //var record = me.getViewModel().get("record");
-        //if (record.get('id') > 0) {
-        //    var qrcode = new QRCode("idqrcodeVT", {
-        //        width: 80,
-        //        height: 80
-        //    });
-        //    qrcode.clear();
-        //    if (record.get('qrCode') == "") {
-        //        return;
-        //    }
-        //    qrcode.makeCode(record.get('qrCode'));
+        var record = me.getViewModel().get("record");
+        if (record.get('id') > 0) {
+            var qrcode = new QRCode("idqrcodeVT", {
+                width: 80,
+                height: 80
+            });
+            qrcode.clear();
+            if (record.get('qrCode') == "") {
+                return;
+            }
+            qrcode.makeCode(record.get('qrCode'));
 
-        //}
+        }
         //me.onTimKiemTaiSan();
         //me.onTimKiemKho();
     },
@@ -726,25 +726,25 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
         });
     },
 
-    //blurMa: function () {
-    //    var me = this;
-    //    var record = me.getViewModel().get("record");
-    //    var ma = app.gplatformutils.BoDauBoKhoangTrangGiuNguyenHoaThuong(record.get("ma"));
-    //    record.set("ma", ma);
-    //    if (record.get("id") == 0) {
-    //        var qcode = record.get("maNhom") + app.gplatformutils.BoDauBoKhoangTrangGiuNguyenHoaThuong(record.get('ma'));
-    //        record.set('qrCode', qcode);
-    //        document.getElementById("idqrcodeVT").innerHTML = "";
-    //        var qrcode = new QRCode("idqrcodeVT", {
-    //            width: 80,
-    //            height: 80
-    //        });
-    //        if (qcode == "") {
-    //            return;
-    //        }
-    //        qrcode.makeCode(qcode);
-    //    }
-    //},
+    blurMa: function () {
+        var me = this;
+        var record = me.getViewModel().get("record");
+        var ma = record.get("materialCode");
+        record.set("ma", ma);
+        if (record.get("id") == 0) {
+            var qcode = record.get("qrCode") + record.get('ma');
+            record.set('qrCode', qcode);
+            document.getElementById("idqrcodeVT").innerHTML = "";
+            var qrcode = new QRCode("idqrcodeVT", {
+                width: 80,
+                height: 80
+            });
+            if (qcode == "") {
+                return;
+            }
+            qrcode.makeCode(qcode);
+        }
+    },
 
     //fnLoadVatTuTT: function () {
     //    var me = this;
@@ -899,7 +899,6 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
     },
 
     onSave: function () {
-        app.mUtils.getUserName();
         this.fnSave();
     },
 

@@ -59,5 +59,12 @@ namespace storeroom.WebApp.Controllers
             var result = await _purchaseOrderService.UpdateDetail(request);
             return Ok(result);
         }
+
+        [HttpDelete("deleteMultiple/{PurchaseOrderId}")]
+        public async Task<IActionResult> DeleteMaterial(int PurchaseOrderId)
+        {
+            var result = await _purchaseOrderService.DeleteDetail(PurchaseOrderId);
+            return Ok(result);
+        }
     }
 }

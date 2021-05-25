@@ -8,7 +8,14 @@
         { name: 'userId', type: 'string' },
         { name: 'area', type: 'float' },
         { name: 'userName', type: 'string' },
-        { name: 'tenNguoiDaiDien', type: 'string' },
+        //{ name: 'tenNguoiDaiDien', type: 'string' },
+        {
+            name: 'tenNguoiDaiDien', type: 'string',
+            convert: function (value, record) {
+                var total = record.get('firstName') + ' ' + record.get('lastName');
+                return total
+            }
+        },
         { name: 'firstName', type: 'string' },
         { name: 'lastName', type: 'string' },
         { name: 'x', type: 'float' },

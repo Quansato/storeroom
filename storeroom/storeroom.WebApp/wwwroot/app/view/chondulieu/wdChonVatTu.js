@@ -323,6 +323,7 @@ Ext.define("Admin.view.chondulieu.wdChonVatTuController", {
 
     fnSearchVatTu: function (me, id) {
         var txt = me.refs.txtSearch.getValue();
+        if (id == 0) id = '';
         var url = "api/Material?page=1&start=0&limit=25&keyword=" + txt + "&MaterialGroupId=" + id;
         var store = me.storeInfo.sVatTu;
         store.proxy.api.read = url;

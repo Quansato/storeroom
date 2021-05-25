@@ -1,6 +1,6 @@
 ﻿Ext.define('Admin.model.mDonHangChiTiet', {
     extend: 'Ext.data.Model',
-    idProperty: 'id',
+    //idProperty: 'id',
     fields: [
         //{ name: 'id', type: 'int', defaultValue: null, allowNull: true },
         //{ name: 'tenantId', type: 'int', defaultValue: null, allowNull: true },

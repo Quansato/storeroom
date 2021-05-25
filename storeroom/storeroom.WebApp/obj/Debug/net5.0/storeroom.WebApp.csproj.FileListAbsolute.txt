@@ -249,3 +249,5 @@ E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.MvcA
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\EPPlus.dll
+E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\System.Xml.XPath.XmlDocument.dll

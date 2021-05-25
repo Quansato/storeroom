@@ -70,5 +70,7 @@ namespace storeroom.Application.Catalog.Inputs
         /// <param name="Id"></param>
         /// <returns></returns>
         Task<bool> CheckMaterialIsExist(int storeroomId,int Id);
+
+        Task<int> DeleteDetail(int InputId);
     }
 }

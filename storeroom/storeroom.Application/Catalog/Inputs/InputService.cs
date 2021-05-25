@@ -56,9 +56,20 @@ namespace storeroom.Application.Catalog.Inputs
 
         public async Task<int> Delete(int InputId)
         {
+            var material = await _context.MaterialInputs.FirstOrDefaultAsync(x => x.InputId == InputId);
+            if (material != null)
+            {
+                return -1;
+            }
             var input = await _context.Inputs.FindAsync(InputId);
             if (input == null) throw new StoreroomException($"Cannot find a input: {InputId}");
             _context.Inputs.Remove(input);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteDetail(int InputId)
+        {
+            _context.MaterialInputs.RemoveRange(_context.MaterialInputs.Where(x => x.InputId == InputId));
             return await _context.SaveChangesAsync();
         }
 
@@ -89,7 +100,14 @@ namespace storeroom.Application.Catalog.Inputs
             }
             if (request.Status.HasValue)
             {
-                query = query.Where(x => x.a.StoreroomId == request.StoreroomId);
+                if (request.Status == 0)
+                {
+                    query = query.Where(x => x.a.DateInput > request.StartDate && x.a.DateInput < request.EndDate);
+                }
+                else
+                {
+                    query = query.Where(x => x.a.DateStatus > request.StartDate && x.a.DateStatus < request.EndDate);
+                }
             }
             if (request.Date.HasValue)
             {

@@ -92,6 +92,10 @@
     color: #170085 !important;
 }
 
+.shadow {
+    box-shadow: 0 1px 2px 0 rgb(0,0,0, .20) !important;
+}
+
 .vuotNguong {
     color: red !important;
 }
@@ -102,6 +106,81 @@
 
 .trongNguong {
     color: green !important;
+}
+
+
+.status.assignment {
+    color: #FFF !important;
+    line-height: 18px;
+    padding: 4px 6px;
+    font-size: 90%;
+    border-radius: 3px;
+    float: left;
+    min-width: 105px;
+    text-align: center;
+}
+
+
+    .status.assignment.unassigned {
+        background: #606060 !important;
+    }
+    .status.assignment.khongduyet {
+        background: #fb9678 !important;
+    }
+
+    .status.assignment.completed {
+        background: #00c292;
+    }
+
+
+.trangThaiPhieuCho .x-grid-cell {
+    color: black;
+}
+
+.trangThaiPhieuDaDuyet .x-grid-cell {
+    color: #00c292;
+}
+
+.trangThaiKhongConNo .x-grid-cell {
+    color: blue;
+}
+
+.trangThaiPhieuKhongDuyet .x-grid-cell {
+    color: #fb9678;
+}
+
+.trangThaiPhieuDeXuatHuy .x-grid-cell {
+    color: red;
+}
+
+.TTPhieuCho span {
+    background-color: #606060 !important;
+    padding: 0px !important;
+}
+
+.TTPhieuDaDuyet span {
+    background-color: #00c292 !important;
+    padding: 0px !important;
+}
+
+.TTDaNhapDaXuat span {
+    background-color: blue !important;
+    padding: 0px !important;
+}
+
+.TTPhieuDeXuatHuy span {
+    background-color: red !important;
+    padding: 0px !important;
+}
+
+.TTPhieuKhongDuyet span {
+    background-color: #fb9678 !important;
+    padding: 0px !important;
+}
+
+
+.status.assignment.unassigned {
+    background: #fb9678;
 }
 
 /*SweetAlert*/

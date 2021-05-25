@@ -114,15 +114,13 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                 dataIndex: 'status',
                 width: 120,
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    //if (value == null || value == 0) {
-                    //    return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell unassigned">' + app.localize('CMMSDMKhoTrangThaiDuyetChoDuyet') + '</div>'
-                    //} else if (value == 1) {
-                    //    return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell completed">' + app.localize('CMMSDMKhoTrangThaiDuyetDaHoanThanh') + '</div>'
-                    //} else if (value == 2) {
-                    //    return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell khongduyet">' + app.localize('CMMSDMKhoTrangThaiDuyetKhongDuyet') + '</div>'
-                    //} else if (value == 3) {
-                    //    return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell dong">' + app.localize('CMMSDMKhoTrangThaiPhieuDong') + '</div>'
-                    //}
+                    if (value == null || value == 0) {
+                        return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell unassigned">' + 'Chờ duyệt' + '</div>'
+                    } else if (value == 1) {
+                        return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell completed">' + 'Hoàn thành' + '</div>'
+                    } else if (value == 2) {
+                        return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell khongduyet">' + 'Từ chối' + '</div>'
+                    }
                 }
             }],
             viewConfig: {
@@ -149,7 +147,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                         reference: 'cbkho',
                         bind: {
                             store: '{storeKhoNhap}',
-                            value: '{recordTK.kho}'
+                            value: '{recordTK.storeroomId}'
                         },
                         labelWidth: 80,
                         width: 280,
@@ -202,7 +200,8 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                         xtype: 'button',
                         text: 'Tìm',
                         iconCls: 'x-fa fa-search',
-                        handler: 'onTimKiemDonHang'
+                        handler: 'onTimKiemDonHang',
+                        ui: 'soft-blue',
                     }]
                 }]
             }],
@@ -250,51 +249,23 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                 width: 100
             }, {
                 text: 'Số lượng',
-                columns: [{
-                    text: 'Chứng từ',
-                    dataIndex: 'quantity',
-                    border: 1,
-                    style: 'text-align:center',
-                    align: 'right',
-                    width: 100,
-                    summaryType: 'sum',
-                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                        if (value != undefined && value != null) {
-                            return app.mUtils.fnFormatCurrency(value, 2);
-                        }
-                    },
-                    summaryRenderer: function (value, summaryData, dataIndex) {
-                        if (value != undefined && value != null) {
-                            return app.mUtils.fnFormatCurrency(value, 2);
-                        }
+                dataIndex: 'quantity',
+                border: 1,
+                style: 'text-align:center',
+                align: 'right',
+                width: 100,
+                summaryType: 'sum',
+                renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
+                    if (value != undefined && value != null) {
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
-                }, {
-                    text: 'Thực mua',
-                    dataIndex: 'soLuongThuc',
-                    border: 1,
-                    style: 'text-align:center',
-                    align: 'right',
-                    width: 100,
-                    summaryType: 'sum',
-                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
-                    },
-                    summaryRenderer: function (value, summaryData, dataIndex) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
+                },
+                summaryRenderer: function (value, summaryData, dataIndex) {
+                    if (value != undefined && value != null) {
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
-                }, {
-                    text: 'Tồn kho',
-                    dataIndex: 'soLuongTrongKho',
-                    border: 1,
-                    hidden: true,
-                    style: 'text-align:center',
-                    align: 'right',
-                    width: 90
-                }]
+                }
+
             }, {
                 xtype: 'numbercolumn',
                 text: 'Đơn giá',
@@ -370,7 +341,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                     reference: 'btnSuaDonMuaHang',
                     //hidden: !(abp.auth.hasPermission('CMMS.Inventory.MuaHang.Edit') || abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager')),
                     text: 'Sửa',
-                    ui: 'blue',
+                    ui: 'soft-blue',
                     tooltip: 'Sửa',
                     handler: 'onSuaPhieuDonHang'
                 }, {
@@ -386,7 +357,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                     xtype: 'button',
                     iconCls: 'fa fa-puzzle-piece',
                     text: 'Tiện ích',
-                    ui: 'blue',
+                    ui: 'soft-blue',
                     tooltip: 'Tiện ích',
                     menu: new Ext.menu.Menu({
                         items: [{
@@ -394,7 +365,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                             text: 'Chuyển trạng thái',
                             iconCls: 'x-fa fa-plus',
                             //hidden: !(abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager')),
-                            ui: 'blue',
+                            ui: 'soft-blue',
                             tooltip: 'Chuyển trạng thái phiếu',
                             handler: 'onChuyenTrangThai'
                         }, {
@@ -402,7 +373,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                         }, {
                             text: 'Phiếu nhập kho',
                             iconCls: 'x-fa fa-check-circle-o',
-                            ui: 'blue',
+                            ui: 'soft-blue',
                             bind: {
                                 disabled: '{!recordTK.kho>0}' && '{selectionDonHang.tinhTrangDon!=1}'
                             },
@@ -414,7 +385,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                         }, {
                             text: 'Tìm phiếu đóng',
                             iconCls: 'x-fa fa-search',
-                            ui: 'blue',
+                            ui: 'soft-blue',
                             tooltip: 'Tìm phiếu đóng',
                             handler: 'onTimPhieuDongDonHang'
                         }]
@@ -462,29 +433,9 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                         store: '{storeDonHang}'
                     },
                     style: "padding: 0px !important",
-                    //lastText: app.localize("ExtLastText"),
-                    //prevText: app.localize("ExtPrevText"),
-                    //firstText: app.localize("ExtFirstText"),
-                    //nextText: app.localize("ExtNextText"),
-                    //refreshText: app.localize("ExtRefreshText"),
-                    //beforePageText: app.localize("ExtBeforePageText"),
-                    //afterPageText: app.localize("ExtAfterPageText"),
-                    //displayMsg: app.localize("ExtDisplayMsg"),
-                    //emptyMsg: app.localize("ExtEmptyMsg"),
-                    listeners: {
-                        beforechange: function (page, currentPage) {
-                            //--- Get Proxy ------//
-                            var myProxy = this.store.getProxy();
-                            //--- Define Your Parameter for send to server ----//
-                            myProxy.params = {
-                                skipCount: 0,
-                                maxResultCount: 0
-                            };
-                            //--- Set value to your parameter  ----//
-                            myProxy.setExtraParam("skipCount", (currentPage - 1) * this.store.pageSize);
-                            myProxy.setExtraParam("maxResultCount", this.store.pageSize);
-                        }
-                    }
+                    beforePageText: "Trang",
+                    //afterPageText: "của {0}",
+                    displayMsg: "{0} - {1} của {2}",
                 }]
             }]
         }]
@@ -813,7 +764,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                     },
                     //hidden: !(abp.auth.hasPermission('CMMS.Inventory.DeXuatMuaHang.Manager') || abp.auth.hasPermission('CMMS.Inventory.DeXuatMuaHang.Edit')),
                     text: 'Sửa',
-                    ui: 'blue',
+                    ui: 'soft-blue',
                     tooltip: 'Sửa',
                     handler: 'onSuaPhieuDeXuatDonHang'
                 }, {
@@ -843,7 +794,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                             //    disabled: '{!selectionDonDeXuatMuaHang}' && '{!recordTKDX.kho>0}',
                             //    hidden: !(abp.auth.hasPermission('CMMS.Inventory.DeXuatMuaHang.Manager'))
                             //},
-                            ui: 'blue',
+                            ui: 'soft-blue',
                             tooltip: 'Chuyển trạng thái phiếu',
                             handler: 'onChuyenTrangThaiDeXuat'
                         }, {
@@ -851,7 +802,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                         }, {
                             text: 'Tạo đơn mua hàng',
                             iconCls: 'x-fa fa-check-circle-o',
-                            ui: 'blue',
+                            ui: 'soft-blue',
                             //bind: {
                             //    disabled: '{!recordTKDX.kho>0}' && '{selectionDonDeXuatMuaHang.trangThai!=1}',
                             //    hidden: !(abp.auth.hasPermission('CMMS.Inventory.DeXuatMuaHang.Manager'))
@@ -865,7 +816,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                             text: 'In phiếu',
                             reference: 'btnInDX',
                             iconCls: 'x-fa fa-print',
-                            ui: 'blue',
+                            ui: 'soft-blue',
                             //bind: {
                             //    disabled: '{!selectionDonDeXuatMuaHang}' && '{selectionDonDeXuatMuaHang.trangThai!=1}',
                             //    hidden: !(abp.auth.hasPermission('CMMS.Inventory.DeXuatMuaHang.Manager') || abp.auth.hasPermission('CMMS.Inventory.DeXuatMuaHang.Edit'))
@@ -925,26 +876,9 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                         store: '{storeDonDeXuatMuaHang}'
                     },
                     style: "padding: 0px !important",
-                    //lastText: app.localize("ExtLastText"),
-                    //prevText: app.localize("ExtPrevText"),
-                    //firstText: app.localize("ExtFirstText"),
-                    //nextText: app.localize("ExtNextText"),
-                    //refreshText: app.localize("ExtRefreshText"),
-                    //beforePageText: app.localize("ExtBeforePageText"),
-                    //afterPageText: app.localize("ExtAfterPageText"),
-                    //displayMsg: app.localize("ExtDisplayMsg"),
-                    //emptyMsg: app.localize("ExtEmptyMsg"),
-                    listeners: {
-                        beforechange: function (page, currentPage) {
-                            var myProxy = this.store.getProxy();
-                            myProxy.params = {
-                                skipCount: 0,
-                                maxResultCount: 0
-                            };
-                            myProxy.setExtraParam("skipCount", (currentPage - 1) * this.store.pageSize);
-                            myProxy.setExtraParam("maxResultCount", this.store.pageSize);
-                        }
-                    }
+                    beforePageText: "Trang",
+                    //afterPageText: "của {0}",
+                    displayMsg: "{0} - {1} của {2}",
                 }]
             }]
         }]
@@ -1001,7 +935,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         //$('.daterangepicker').css('display', 'none');
         me.loadKho();
         var recordTK = me.getViewModel().data.recordTK;
-        recordTK.set('tinhtrangdon', 'tatca');
+        recordTK.set('status', 'tatca');
         //recordTK.set('tungay', app.gplatformutils.getstartDate());
         //recordTK.set('denngay', app.gplatformutils.getendDate());
         //recordTK.set('loaingay', "thoigian");
@@ -1057,37 +991,37 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
                 }
             }
         });
-        //var me = this;
-        //var recordTK = me.getViewModel().data.recordTK;
-        //var recordTKDX = me.getViewModel().data.recordTKDX;
-        //var store = me.storeinfo.storeKhoNhap;
-        //var storeKhoDeXuatMua = me.storeinfo.storeKhoDeXuatMua;
-        //var url = "api/Storeroom?page=1&start=0&limit=25";
-        //storeKhoDeXuatMua.proxy.api.read = url;
-        //storeKhoDeXuatMua.load({
-        //    scope: this,
-        //    callback: function (records, operation, success) {
-        //        store.loadRecords(records);
-        //        if (records.length > 0) {
-        //            recordTK.set('kho', records[0].get('id'));
-        //            recordTKDX.set('kho', records[0].get('id'));
-        //        }
-        //        recordTKDX.set('phanloai', 'tatca');
-        //        //recordTKDX.set('denngay', app.gplatformutils.getendDate());
-        //        //recordTK.set('phanloai', 'tatca');
-        //        //recordTK.set('denngay', app.gplatformutils.getendDate());
-        //        me.onTimKiemDonHang();
-        //        //var idUrl = app.gplatformutils.getUrlVars()["id"];
-        //        //if (idUrl && idUrl != "") {
-        //        //    var maPDX = idUrl.split("#");
-        //        //    if (maPDX.length > 0 && isNaN(parseInt(maPDX[0])) == false) {
-        //        //        me.getView().setActiveItem(1);
-        //        //        me.onChiTietPhieuDeXuatDonHang(maPDX[0]);
-        //        //    }
-        //        //}
-        //        me.getView().setLoading(false);
-        //    }
-        //});
+        var me = this;
+        var recordTK = me.getViewModel().data.recordTK;
+        var recordTKDX = me.getViewModel().data.recordTKDX;
+        var store = me.storeinfo.storeKhoNhap;
+        var storeKhoDeXuatMua = me.storeinfo.storeKhoDeXuatMua;
+        var url = "api/Storeroom?page=1&start=0&limit=25";
+        storeKhoDeXuatMua.proxy.api.read = url;
+        storeKhoDeXuatMua.load({
+            scope: this,
+            callback: function (records, operation, success) {
+                store.loadRecords(records);
+                if (records.length > 0) {
+                    recordTK.set('storeroomId', records[0].get('id'));
+                    recordTKDX.set('storeroomId', records[0].get('id'));
+                }
+                recordTKDX.set('status', 'tatca');
+                //recordTKDX.set('denngay', app.gplatformutils.getendDate());
+                //recordTK.set('phanloai', 'tatca');
+                //recordTK.set('denngay', app.gplatformutils.getendDate());
+                me.onTimKiemDonHang();
+                var idUrl = app.mUtils.getUrlVars()["id"];
+                if (idUrl && idUrl != "") {
+                    var maPDX = idUrl.split("#");
+                    if (maPDX.length > 0 && isNaN(parseInt(maPDX[0])) == false) {
+                        me.getView().setActiveItem(1);
+                        me.onChiTietPhieuDeXuatDonHang(maPDX[0]);
+                    }
+                }
+                me.getView().setLoading(false);
+            }
+        });
     },
 
     onTimKiemDonHang: function () {
@@ -1111,8 +1045,17 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
     loadDonHang: function (phieudong) {
         var me = this;
         var recordTK = me.getViewModel().data.recordTK;
-        var filter = [];
+        var filter = {};
         me.selectDonHang = false;
+        if (recordTK.get('storeroomId')) {
+            filter.storeroomId =recordTK.get('storeroomId')
+        }
+        if (recordTK.get('code')) {
+            filter.code=recordTK.get('code')
+        }
+        if (recordTK.get('status')&&recordTK.get('status')!= 'tatca') {
+            filter.status = recordTK.get('status')
+        }
         //if (recordTK.get('sophieu')) {
         //    filter.push({ name: "filter", value: recordTK.get('sophieu') });
         //}
@@ -1135,10 +1078,9 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         //if (me.eDATE != "") {
         //    filter.push({ name: "ngayDonHangEnd", value: dEnd });
         //}
-        filter.push({ name: "sorting", value: "item.SoDonHang desc" });
         var store = me.storeinfo.storeDonHang;
-        //var query = [];
-        var url = "api/PurchaseOrder?page=1&start=0&limit=25";
+        var query = app.mUtils.fnBuildQueryString(filter);
+        var url = "api/PurchaseOrder?page=1&start=0&limit=25&" + query;
         store.proxy.api.read = url;
         store.proxy.pageParam = undefined;
         store.proxy.limitParam = undefined;
@@ -1183,8 +1125,8 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
             return;
         }
         //me.ref.btnSuaDonMuaHang.setVisible(abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager') || abp.auth.hasPermission('CMMS.Inventory.MuaHang.Edit'));
-        //me.ref.btnHuyDonMuaHang.setVisible(abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager') || abp.auth.hasPermission('CMMS.Inventory.MuaHang.Edit'));
-        //me.ref.btnSuaDonMuaHang.setText(app.localize('Edit'))
+        me.ref.btnHuyDonMuaHang.setVisible(app.session.isAdmin);
+        me.ref.btnSuaDonMuaHang.setText("Sửa")
         if (selected[0].get('status') == 1) {
             me.ref.btnSuaDonMuaHang.setText("Xem")
             me.ref.btnHuyDonMuaHang.setVisible(false);
@@ -1241,7 +1183,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         record.set('phanLoai', "donhang");
         record.set('thoiGian', new Date());
         record.set('status', '0');
-        //record.set('storeroomId', nodesSelect.data.id);
+        record.set('storeroomId', nodesSelect.data.storeroomId);
         var title = "Thêm mới đơn mua hàng";
         var storeKho = app.mUtils.deepCloneStore(me.storeinfo.storeKhoNhap);
         var wnd = Ext.create('Admin.view.quanlydonmuahang.CNDonHang', {
@@ -1327,15 +1269,14 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         //{ matrangthai: 3, tentrangthai: app.localize("CMMSDMKhoTrangThaiPhieuDong") },
         //{ matrangthai: 0, tentrangthai: app.localize("CMMSDMKhoTrangThaiDuyetChoDuyet") }]
         dataTT = [{ value: "0", name: 'Chờ duyệt' },
-            { value: "1", name: 'Hoàn thành' },
-            { value: "2", name: 'Từ chối' },
-            { value: "3", name: 'Phiếu đóng' }]
-
-        var dataTTCu = [{ value: "0", name: 'Chờ duyệt' },
         { value: "1", name: 'Hoàn thành' },
         { value: "2", name: 'Từ chối' },
         { value: "3", name: 'Phiếu đóng' }]
-        var title = 'Thay đổi trang thái phiếu' + ": " + nodesSelect[0].data.soDonHang + "";
+
+        var dataTTCu = [{ value: "0", name: 'Chờ duyệt' },
+        { value: "1", name: 'Hoàn thành' },
+        { value: "2", name: 'Từ chối' }]
+        var title = 'Thay đổi trạng thái phiếu' + ": " + nodesSelect[0].data.code + "";
         var wnd = Ext.create('Admin.view.quanlydonmuahang.CNThayDoiTrangThai', {
             title: title,
             viewModel: {

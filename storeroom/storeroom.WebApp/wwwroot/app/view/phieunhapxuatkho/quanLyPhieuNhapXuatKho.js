@@ -71,7 +71,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
             }, {
                 xtype: 'datecolumn',
                 text: 'Ngày xuất kho',
-                dataIndex: 'ngayHachToan',
+                dataIndex: 'dateOutput',
                 width: 120,
                 align: 'center',
                 style: 'text-align:center',
@@ -79,7 +79,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
             }, {
                 xtype: 'gridcolumn',
                 text: 'Số phiếu',
-                dataIndex: 'soPhieu',
+                dataIndex: 'outputCode',
                 sortable: true,
                 width: 150
             }, {
@@ -87,23 +87,24 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                 dataIndex: 'loaiPhieu',
                 width: 100,
                 text: 'Loại phiếu',
+                hidden: true,
                 sortable: false,
                 renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
                     var text = record.get('tenLoaiPhieu');
-                    if (value == -1) {
-                        text = app.localize("CMMSDMKhoPhanLoaiDChuyen");
-                    }
+                    //if (value == -1) {
+                    //    text = app.localize("CMMSDMKhoPhanLoaiDChuyen");
+                    //}
                     return text;
                 }
             }, {
                 xtype: 'gridcolumn',
                 text: 'Người xuất',
-                dataIndex: 'tenNguoiDeXuat',
+                dataIndex: 'userName',
                 sortable: true,
                 flex: 1
             }, {
                 xtype: 'gridcolumn',
-                dataIndex: 'lyDo',
+                dataIndex: 'description',
                 flex: 1,
                 text: 'Lý do',
                 cellWrap: true,
@@ -114,7 +115,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
             {
                 xtype: 'gridcolumn',
                 text: 'Đơn vị nhận',
-                dataIndex: 'donViNhan',
+                dataIndex: 'recipient',
                 hidden: true,
                 sortable: true,
                 width: 150
@@ -122,7 +123,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
             {
                 xtype: 'gridcolumn',
                 text: 'Người nhận',
-                dataIndex: 'nguoiNhan',
+                dataIndex: 'userRecipient',
                 sortable: true,
                 width: 150
             }],
@@ -150,12 +151,12 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                         reference: 'cbkhoXuat',
                         bind: {
                             store: '{storeKhoNhapXuat}',
-                            value: '{recordTKXK.kho}'
+                            value: '{recordTKXK.storeroomId}'
                         },
                         labelWidth: 75,
                         fieldLabel: 'Kho',
                         queryMode: 'local',
-                        displayField: 'moTa',
+                        displayField: 'displayName',
                         valueField: 'id',
                         forceSelection: true,
                         editable: false,
@@ -171,6 +172,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                         flex: 1,
                         labelWidth: 75,
                         editable: false,
+                        hidden: true,
                         reference: 'phanLoaiXuat',
                         displayField: 'moTa',
                         bind: {
@@ -185,7 +187,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                         xtype: 'textfield',
                         margin: '5 5 0 0',
                         fieldLabel: 'Số phiếu',
-                        bind: '{recordTKXK.sophieu}',
+                        bind: '{recordTKXK.outputCode}',
                         labelWidth: 65,
                         flex: 1,
                         cls: "EnterToTab",
@@ -203,8 +205,8 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                         store: Ext.create('Ext.data.Store', {
                             fields: ['name', 'value'],
                             data: [
-                                { value: "ngayHachToan", name: 'Ngày xuất kho' },
-                                { value: "ngayChungTu", name: 'Ngày chứng từ' }]
+                                { value: 0, name: 'Ngày xuất kho' },
+                                { value: 1, name: 'Ngày chứng từ' }]
                         }),
                         triggerAction: 'all',
                         queryMode: 'local',
@@ -217,13 +219,14 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                             '<span></span>' +
                             '</div>',
                         margin: '5 0 0 5',
+                        reference: 'rangePicker',
                         listeners: {
                             afterRender: 'onRenderPicker'
                         }
                     }, {
                         margin: '5 0 0 5',
                         xtype: 'button',
-                        ui:'soft-blue',
+                        ui: 'soft-blue',
                         text: 'Tìm',
                         iconCls: 'x-fa fa-search',
                         handler: 'onTimKiemXuatKho'
@@ -262,7 +265,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                 flex: 1,
                 summaryType: 'count',
                 summaryRenderer: function (value, summaryData, dataIndex) {
-                    return ((value === 0 || value > 1) ? '(' + value + ' ' + app.localize('CMMSDMKhoVatTu') + ')' : '(1 ' + app.localize('CMMSDMKhoVatTu') + ')');
+                    return ((value === 0 || value > 1) ? '(' + value + ' vật tư)' : '(1 vật tư)');
                 }
             }, {
                 text: 'Đơn vị tính',
@@ -577,7 +580,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                         reference: 'cbkho',
                         bind: {
                             store: '{storeKho}',
-                            value: '{recordTK.kho}'
+                            value: '{recordTK.storeroomId}'
                         },
                         flex: 1,
                         labelWidth: 75,
@@ -596,8 +599,9 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                         queryMode: 'local',
                         flex: 1,
                         labelWidth: 75,
-                        reference: 'phanLoai',
+                        hidden: true,
                         editable: false,
+                        reference: 'phanLoai',
                         displayField: 'moTa',
                         valueField: 'id',
                         bind: {
@@ -626,21 +630,21 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                         store: Ext.create('Ext.data.Store', {
                             fields: ['name', 'value'],
                             data: [
-                                { value: "ngayHachToan", name: 'Ngày nhập kho' },
-                                { value: "ngayChungTu", name: 'Ngày chứng từ' }]
+                                { value: 0, name: 'Ngày nhập kho' },
+                                { value: 1, name: 'Ngày chứng từ' }]
                         }),
                         triggerAction: 'all',
                         queryMode: 'local',
                         width: 150
                     }, {
                         xtype: 'component',
-                        html: '<div id="reportrange" style="background: #fff; cursor: pointer; padding: 8px 10px; border: 1px solid #ccc; width: 200px;height:30px">' +
+                        html: '<div id="reportrange2" style="background: #fff; cursor: pointer; padding: 8px 10px; border: 1px solid #ccc; width: 200px;height:30px">' +
                             '<i class="fa fa-calendar"></i>&nbsp;' +
                             '<span></span>' +
                             '</div>',
                         margin: '5 0 5 5',
                         listeners: {
-                            afterRender: 'onRenderPicker'
+                            afterRender: 'onRenderPicker2'
                         }
                     }, {
                         margin: '5 0 5 5',
@@ -684,108 +688,67 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                 flex: 1,
                 summaryType: 'count',
                 summaryRenderer: function (value, summaryData, dataIndex) {
-                    //return ((value === 0 || value > 1) ? '(' + value + ' ' + app.localize("CMMSDMKhoVatTu") + ')' : '(1 ' + app.localize("CMMSDMKhoVatTu") + ')');
+                    return ((value === 0 || value > 1) ? '(' + value + '  vật tư )' : '(1 vật tư)');
                 }
             }, {
                 text: 'Đơn vị tính',
-                dataIndex: 'donViTinhThuc',
+                dataIndex: 'unit',
                 border: 1,
                 align: 'left',
                 style: 'text-align:center',
                 width: 100
             }, {
                 text: 'Số lượng',
-                columns: [{
-                    text: 'Chứng từ',
-                    dataIndex: 'soLuong',
-                    border: 1,
-                    style: 'text-align:center',
-                    align: 'right',
-                    width: 120,
-                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
-                    },
-                    summaryType: 'sum',
-                    summaryRenderer: function (value, summaryData, dataIndex) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
+                dataIndex: 'quantity',
+                border: 1,
+                style: 'text-align:center',
+                align: 'right',
+                width: 120,
+                renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
+                    if (value != undefined && value != null) {
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
-                }, {
-                    text: 'Thực nhập',
-                    dataIndex: 'soLuongThuc',
-                    border: 1,
-                    style: 'text-align:center',
-                    align: 'right',
-                    width: 120,
-                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
-                    },
-                    summaryType: 'sum',
-                    summaryRenderer: function (value, summaryData, dataIndex) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
+                },
+                summaryType: 'sum',
+                summaryRenderer: function (value, summaryData, dataIndex) {
+                    if (value != undefined && value != null) {
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
-                }, {
-                    text: 'Số lượng hỏng',
-                    dataIndex: 'soLuongHong',
-                    reference: 'coluonSoLuongHong',
-                    border: 1,
-                    hidden: true,
-                    style: 'text-align:center',
-                    align: 'right',
-                    width: 110,
-                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
-                    },
-                    summaryType: 'sum',
-                    summaryRenderer: function (value, summaryData, dataIndex) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
-                    }
-                }]
+                }
             }, {
                 xtype: 'numbercolumn',
                 text: 'Đơn giá',
-                dataIndex: 'donGia',
+                dataIndex: 'price',
                 style: 'text-align:center',
                 align: 'right',
                 border: 1,
                 width: 125,
                 renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
                     if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
                 }
             }, {
                 xtype: 'numbercolumn',
                 text: 'Thành tiền',
-                dataIndex: 'thanhTien',
+                dataIndex: 'total',
                 border: 1,
                 style: 'text-align:center',
                 align: 'right',
                 width: 145, summaryType: 'sum',
                 renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
                     if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
                 },
                 summaryRenderer: function (value, summaryData, dataIndex) {
                     if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
                 }
             }, {
                 text: 'Ghi chú',
-                dataIndex: 'ghiChu',
+                dataIndex: 'description',
                 border: 1,
                 width: 220
             }],
@@ -876,29 +839,9 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                         store: '{storePhieuNhapKho}'
                     },
                     style: "padding: 0px !important",
-                    //lastText: app.localize("ExtLastText"),
-                    //prevText: app.localize("ExtPrevText"),
-                    //firstText: app.localize("ExtFirstText"),
-                    //nextText: app.localize("ExtNextText"),
-                    //refreshText: app.localize("ExtRefreshText"),
-                    //beforePageText: app.localize("ExtBeforePageText"),
-                    //afterPageText: app.localize("ExtAfterPageText"),
-                    //displayMsg: app.localize("ExtDisplayMsg"),
-                    //emptyMsg: app.localize("ExtEmptyMsg"),
-                    listeners: {
-                        beforechange: function (page, currentPage) {
-                            //--- Get Proxy ------//
-                            var myProxy = this.store.getProxy();
-                            //--- Define Your Parameter for send to server ----//
-                            myProxy.params = {
-                                skipCount: 0,
-                                maxResultCount: 0
-                            };
-                            //--- Set value to your parameter  ----//
-                            myProxy.setExtraParam("skipCount", (currentPage - 1) * this.store.pageSize);
-                            myProxy.setExtraParam("maxResultCount", this.store.pageSize);
-                        }
-                    }
+                    beforePageText: "Trang",
+                    //afterPageText: "của {0}",
+                    displayMsg: "{0} - {1} của {2}"
                 }]
             }]
         }]
@@ -932,7 +875,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         var me = this;
         me.ref = me.getReferences();
         me.storeinfo = me.getViewModel().storeInfo;
-        //var recordTKXK = me.getViewModel().data.recordTKXK;
+        var recordTKXK = me.getViewModel().data.recordTKXK;
         //recordTKXK.set('loaingay', 'ngayHachToan');
         //recordTKXK.set('loaiPhieu', '0')
         //var dStart = app.gplatformconsts.sDate;//moment().startOf('month');
@@ -942,7 +885,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         me.loadKho();
         //me.loadLoaiPhieuXuat();
         //me.loadLoaiPhieu();
-        //var recordTK = me.getViewModel().data.recordTK;
+        var recordTK = me.getViewModel().data.recordTK;
         //recordTK.set('loaingay', "ngayHachToan");
 
     },
@@ -958,6 +901,34 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
             }
 
             $("#reportrange").daterangepicker({
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    "Hôm nay": [moment(), moment()],
+                    "Hôm qua": [moment().subtract(1, "days"), moment().subtract(1, "days")],
+                    "7 ngày trước": [moment().subtract(6, "days"), moment()],
+                    "30 ngày trước": [moment().subtract(29, "days"), moment()],
+                    "Tháng này": [moment().startOf("month"), moment().endOf("month")],
+                    "Tháng trước": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
+                }
+            }, cb);
+
+            cb(start, end);
+
+        });
+    },
+
+    onRenderPicker2: function () {
+        $(function () {
+
+            var start = moment().subtract(29, "days");
+            var end = moment();
+
+            function cb(start, end) {
+                $("#reportrange2 span").html(start.format("DD/MM/YYYY") + " - " + end.format("DD/MM/YYYY"));
+            }
+
+            $("#reportrange2").daterangepicker({
                 startDate: start,
                 endDate: end,
                 ranges: {
@@ -1032,9 +1003,9 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
             callback: function (records, operation, success) {
                 storeXuat.loadRecords(records);
                 if (records.length > 0) {
-                    recordTK.set('kho', records[0].get('id'));
+                    recordTK.set('storeroomId', records[0].get('id'));
                     //phiếu xuất
-                    recordTKXK.set('kho', records[0].get('id'));
+                    recordTKXK.set('storeroomId', records[0].get('id'));
                 }
 
                 recordTK.set('loaiPhieu', '-1');
@@ -1062,10 +1033,10 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         }
         me.ref.btnHuyPhieuNhap.setVisible(true);
         me.ref.btnSuaPhieuNhap.setText("Sửa");
-        //if (selected[0].get('loaiPhieu') == '-1') {
-        //    me.ref.btnHuyPhieuNhap.setVisible(false);
-        //    me.ref.btnSuaPhieuNhap.setText(app.localize('View'));
-        //}
+        if (selected[0].get('description') == 'Điều chuyển') {
+            me.ref.btnHuyPhieuNhap.setVisible(false);
+            me.ref.btnSuaPhieuNhap.setText("Xem");
+        }
         me.loadChiTietPhieu(selected[0].data.id);
     },
 
@@ -1103,29 +1074,22 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
     loadNhapKho: function () {
         var me = this;
         me.selectPhieuNhap = false;
-        var filter = [{ name: 'phanLoai', value: 'nhapkho' }];
         var recordTK = me.getViewModel().data.recordTK;
-        //if (recordTK.get('sophieu')) {
-        //    filter.push({ name: "filter", value: recordTK.get('sophieu') });
-        //}
-        //if (recordTK.get('loaiPhieu') && recordTK.get('loaiPhieu') != '-1') {
-        //    filter.push({ name: "loaiPhieu", value: recordTK.get('loaiPhieu') });
-        //}
-        //if (me.ref.cbkho.getValue() != 0) {
-        //    filter.push({ name: "maKhoNhap", value: me.ref.cbkho.getValue() });
-        //}
-        //var dStart = Ext.Date.format(new Date(me.sDATE), 'Y/m/d 00:00:00.000');
-        //var dEnd = Ext.Date.format(new Date(me.eDATE), 'Y/m/d 23:59:59.999');
-        //if (me.eDATE && me.sDATE && recordTK.get('loaingay') && recordTK.get('loaingay') == 'ngayHachToan') {
-        //    filter.push({ name: "ngayHachToanStart", value: dStart });
-        //    filter.push({ name: "ngayHachToanEnd", value: dEnd });
-        //} else if (me.eDATE && me.sDATE && recordTK.get('loaingay') && recordTK.get('loaingay') == 'ngayChungTu') {
-        //    filter.push({ name: "ngayChungTuStart", value: dStart });
-        //    filter.push({ name: "ngayChungTuEnd", value: dEnd });
-        //}
-        //filter.push({ name: "sorting", value: "ngayHachToan desc" });
+        var filter = {};
+        if (recordTK.get('storeroomId')) {
+            filter.storeroomId = recordTK.get('storeroomId');
+        }
+        if (recordTK.get('inputCode')) {
+            filter.outputCode = recordTK.get('inputCode')
+        }
+        if (recordTK.get('loaingay') != undefined) {
+            filter.status = recordTK.get('loaingay')
+            filter.startDate = $("#reportrange2").data('daterangepicker').startDate.format('YYYY-MM-DD')
+            filter.endDate = $("#reportrange2").data('daterangepicker').endDate.format('YYYY-MM-DD')
+        }
+        var query = app.mUtils.fnBuildQueryString(filter);
         var store = me.storeinfo.storePhieuNhapKho;
-        var url = "api/Input?page=1&start=0&limit=25";
+        var url = "api/Input?page=1&start=0&limit=25&" + query;
         store.proxy.api.read = url;
         store.pageSize = 500;
         store.load({
@@ -1147,12 +1111,12 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         });
     },
 
-    //specialkey: function (field, e) {
-    //    var me = this;
-    //    if (e.getKey() == e.ENTER) {
-    //        me.onTimKiemNhapKho();
-    //    }
-    //},
+    specialkey: function (field, e) {
+        var me = this;
+        if (e.getKey() == e.ENTER) {
+            me.onTimKiemNhapKho();
+        }
+    },
 
     onChangeKho: function (combo, newValue, oldValue, eOpts) {
         var me = this;
@@ -1192,52 +1156,68 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         wnd.show();
     },
 
-    //onSuaPhieuNhapKho: function () {
-    //    var me = this;
-    //    var nodesSelect = me.ref.cbkho.getSelection();
-    //    var title = app.localize("CMMSDMKhoSuaPhieuNhapKho") + ": " + nodesSelect.data.moTa;
-    //    var record = me.ref.dsPhieuNhapKho.getSelectionModel().getSelection();
-    //    var checkPhieu = false;
-    //    var storeKho = app.gplatformutils.deepCloneStore(me.storeinfo.storeKho);
-    //    var wnd = Ext.create('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
-    //        title: title,
-    //        viewModel: {
-    //            data: {
-    //                // DataPhanLoai: DataPhanLoai,
-    //                storeKho: storeKho,
-    //                recordPhieu: record[0],
-    //                phieuDieuChuyen: checkPhieu,
-    //                fnSauKhiLoad: function () {
-    //                    me.onTimKiemNhapKho();
-    //                    // me.loadChiTietPhieu(record[0].data.id);
-    //                }
-    //            }
-    //        }
-    //    });
-    //    wnd.show();
-    //},
+    onSuaPhieuNhapKho: function () {
+        var me = this;
+        var nodesSelect = me.ref.cbkho.getSelection();
+        var title = "Sửa phiếu nhập kho" + ": " + nodesSelect.data.moTa;
+        var record = me.ref.dsPhieuNhapKho.getSelectionModel().getSelection();
+        console.log(record[0]);
+        var checkPhieu = false;
+        var storeKho = app.mUtils.deepCloneStore(me.storeinfo.storeKho);
+        var wnd = Ext.create('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
+            title: title,
+            viewModel: {
+                data: {
+                    // DataPhanLoai: DataPhanLoai,
+                    storeKho: storeKho,
+                    recordPhieu: record[0],
+                    phieuDieuChuyen: checkPhieu,
+                    fnSauKhiLoad: function () {
+                        me.onTimKiemNhapKho();
+                        me.loadChiTietPhieu(record[0].data.id);
+                    }
+                }
+            }
+        });
+        wnd.show();
+    },
 
-    //onHuyPhieuNhapKho: function () {
-    //    var me = this;
-    //    var grid = me.ref.dsPhieuNhapKho;
-    //    var store = me.storeinfo.storePhieuNhapKho;
-    //    var rowselected = grid.getSelectionModel().getSelection();
-    //    abp.message.confirm(
-    //        app.localize("CMMSDMKhoBtnPhieuNhapKho") + ": " + rowselected[0].data.soPhieu,
-    //        app.localize('ExtgDataManagerAreYouSure'),
-    //        function (isConfirmed) {
-    //            if (isConfirmed) {
-    //                _cMMSKhoPhieuNhapXuat.xoaPhieuNhapXuat({ Id: rowselected[0].get('id') }, 'nhapkho').done(function (result) {
-    //                    me.onTimKiemNhapKho();
-    //                    me.getView().setLoading(false);
-    //                    abp.notify.success(app.localize('SavedSuccessfully'));
-    //                }).fail(function (data) {
-    //                    me.getView().setLoading(false);
-    //                });
-    //            }
-    //        }
-    //    );
-    //},
+    onHuyPhieuNhapKho: function () {
+        var me = this;
+        var grid = me.ref.dsPhieuNhapKho;
+        var store = me.storeinfo.storePhieuNhapKho;
+        var rowselected = grid.getSelectionModel().getSelection();
+        Swal.fire({
+            title: 'Bạn có chắc chắn?',
+            text: "Bạn có muốn xoá dữ liệu này?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Huỷ bỏ',
+            confirmButtonText: 'Đồng ý'
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                var url = "api/Input?InputId=" + rowselected[0].get('id')
+                app.mUtils.fnDELETEAjax(url, function (response) {
+                    if (response == 1) {
+                        Swal.fire(
+                            'Deleted!',
+                            '"Xoá dữ liệu thành công',
+                            'success'
+                        )
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Phiếu đang tồn tại vật tư không thể xoá!',
+                        })
+                    }
+                    me.onTimKiemNhapKho()
+                })
+            }
+        })
+    },
 
     //onInPhieu: function () {
     //    var me = this;
@@ -1260,7 +1240,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         me.loadXuatKho();
     },
 
-    //specialkeyXuat: function (field, e) {
+    //specialkeyXuat: function (field, e) { 
     //    var me = this;
     //    if (e.getKey() == e.ENTER) {
     //        me.loadXuatKho();
@@ -1271,28 +1251,22 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         var me = this;
         var recordTKXK = me.getViewModel().data.recordTKXK;
         me.selectPhieuXuat = false;
-        //var filter = [{ name: 'phanLoai', value: 'xuatkho,dieuchuyen' }];
-        //if (recordTKXK.get('sophieu')) {
-        //    filter.push({ name: "filter", value: recordTKXK.get('sophieu') });
-        //}
-        //if (recordTKXK.get('loaiPhieu') && recordTKXK.get('loaiPhieu') != '0') {
-        //    filter.push({ name: "loaiPhieu", value: recordTKXK.get('loaiPhieu') });
-        //}
-        //if (me.ref.cbkhoXuat.getValue() != 0) {
-        //    filter.push({ name: "maKhoXuat", value: me.ref.cbkhoXuat.getValue() });
-        //}
-        //var dStart = Ext.Date.format(new Date(me.sDATECreate), 'Y/m/d 00:00:00.000');
-        //var dEnd = Ext.Date.format(new Date(me.eDATECreate), 'Y/m/d 23:59:59.999');
-        //if (me.sDATECreate && me.eDATECreate && recordTKXK.get('loaingay') && recordTKXK.get('loaingay') == 'ngayHachToan') {
-        //    filter.push({ name: "ngayHachToanStart", value: dStart });
-        //    filter.push({ name: "ngayHachToanEnd", value: dEnd });
-        //} else if (me.sDATECreate && me.eDATECreate && recordTKXK.get('loaingay') && recordTKXK.get('loaingay') == 'ngayChungTu') {
-        //    filter.push({ name: "ngayChungTuStart", value: dStart });
-        //    filter.push({ name: "ngayChungTuEnd", value: dEnd });
-        //}
-        //filter.push({ name: "sorting", value: "ngayHachToan desc" });
+        var filter = {};
+        if (me.ref.cbkhoXuat.getValue() != 0) {
+            filter.storeroomId = me.ref.cbkhoXuat.getValue();
+        }
+        if (recordTKXK.outputCode) {
+            filter.outputCode = recordTKXK.get('outputCode')
+        }
+        if (recordTKXK.get('loaingay') != undefined) {
+            filter.status = recordTKXK.get('loaingay')
+            filter.startDate = $("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD')
+            filter.endDate = $("#reportrange").data('daterangepicker').endDate.format('YYYY-MM-DD')
+        }
+        console.log($("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD'));
         var store = me.storeinfo.storePhieuXuatKho;
-        var url = "api/Input?page=1&start=0&limit=25";
+        var query = app.mUtils.fnBuildQueryString(filter);
+        var url = "api/Output?page=1&start=0&limit=25&" + query;
         store.proxy.api.read = url;
         store.pageSize = 500;
         store.proxy.pageParam = undefined;
@@ -1305,6 +1279,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
             },
             scope: this,
             callback: function (records, operation, success) {
+                console.log(records);
                 if (records == null) {
                     store.removeAll();
                     var storePhieuXuatChiTietXuat = me.storeinfo.storePhieuXuatChiTietXuat;
@@ -1337,10 +1312,12 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         var me = this;
         var record = Ext.create('Admin.model.mPhieuNhapXuat');
         record.set('id', 0);
-        record.set('ngayHachToan', new Date());
-        record.set('ngayChungTu', new Date());
+        record.set('dateOuput', new Date());
+        record.set('dateDocument', new Date());
+        record.set('type', 0);
+        record.set('storeroomReceiveId', 0)
         var nodesSelect = me.ref.cbkhoXuat.getSelection();
-        record.set('maKhoXuat', nodesSelect.data.id);
+        record.set('storeroomId', nodesSelect.data.id);
         me.getView().setLoading(false);
         var storeKho = app.mUtils.deepCloneStore(me.storeinfo.storeKhoNhapXuat);
         var title = 'Thêm phiếu xuất kho'/* + ": " + nodesSelect.data.moTa*/;
@@ -1348,7 +1325,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
             title: title,
             viewModel: {
                 data: {
-                    //recordKho: nodesSelect,
+                    recordKho: nodesSelect,
                     storeKho: storeKho,
                     recordPhieu: record,
                     fnSauKhiLoad: function () {
@@ -1361,33 +1338,33 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
 
     },
 
-    //onThemPhieuDieuChuyen: function () {
-    //    var me = this;
-    //    var record = Ext.create('Admin.model.mPhieuNhapXuat');
-    //    record.set('id', 0);
-    //    record.set('ngayHachToan', new Date());
-    //    record.set('loaiPhieu', -1);
-    //    record.set('ngayChungTu', new Date());
-    //    var nodesSelect = me.ref.cbkhoXuat.getSelection();
-    //    var storeKho = app.gplatformutils.deepCloneStore(me.storeinfo.storeKhoNhapXuat);
-    //    record.set('maKhoXuat', nodesSelect.data.id);
-    //    me.getView().setLoading(false);
-    //    var title = app.localize("CMMSDMKhoBtnPhieuDieuChuyen") + ": " + nodesSelect.data.moTa;
-    //    var wnd = Ext.create('Admin.view.phieunhapxuatkho.CNPhieuXuatKho', {
-    //        title: title,
-    //        viewModel: {
-    //            data: {
-    //                storeKho: storeKho,
-    //                dieuchuyen: true,
-    //                recordPhieu: record,
-    //                fnSauKhiLoad: function () {
-    //                    me.onTimKiemXuatKho();
-    //                }
-    //            }
-    //        }
-    //    });
-    //    wnd.show();
-    //},
+    onThemPhieuDieuChuyen: function () {
+        var me = this;
+        var record = Ext.create('Admin.model.mPhieuNhapXuat');
+        record.set('id', 0);
+        record.set('ngayHachToan', new Date());
+        record.set('type', -1);
+        record.set('ngayChungTu', new Date());
+        var nodesSelect = me.ref.cbkhoXuat.getSelection();
+        var storeKho = app.mUtils.deepCloneStore(me.storeinfo.storeKhoNhapXuat);
+        record.set('storeroomId', nodesSelect.data.id);
+        me.getView().setLoading(false);
+        var title = "Thêm phiếu điều chuyển" + ": " + nodesSelect.data.displayName;
+        var wnd = Ext.create('Admin.view.phieunhapxuatkho.CNPhieuXuatKho', {
+            title: title,
+            viewModel: {
+                data: {
+                    storeKho: storeKho,
+                    dieuchuyen: true,
+                    recordPhieu: record,
+                    fnSauKhiLoad: function () {
+                        me.onTimKiemXuatKho();
+                    }
+                }
+            }
+        });
+        wnd.show();
+    },
 
     //onSuaPhieuXuatKho: function () {
     //    var me = this;
@@ -1428,10 +1405,10 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         }
         me.ref.btnHuyPhieuXuat.setVisible(true);
         me.ref.btnSuaPhieuXuat.setText('Sửa');
-        //if (selected[0].get('loaiPhieu') == '-1') {
-        //    me.ref.btnHuyPhieuXuat.setVisible(false);
-        //    me.ref.btnSuaPhieuXuat.setText(app.localize('View'));
-        //}
+        if (selected[0].get('type') == -1) {
+            me.ref.btnHuyPhieuXuat.setVisible(false);
+            me.ref.btnSuaPhieuXuat.setText('Xem');
+        }
         me.loadChiTietPhieuXuat(selected[0].data.id);
     },
 
@@ -1461,25 +1438,40 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         });
     },
 
-    //onHuyPhieuXuatKho: function () {
-    //    var me = this;
-    //    var grid = me.ref.dsPhieuXuatKho;
-    //    var store = me.storeinfo.storePhieuXuatKho;
-    //    var rowselected = grid.getSelectionModel().getSelection();
-    //    abp.message.confirm(
-    //        app.localize('CMMSDMKhoBtnPhieuXuatKho') + ": " + rowselected[0].data.soPhieu,
-    //        app.localize('ExtgDataManagerAreYouSure'),
-    //        function (isConfirmed) {
-    //            if (isConfirmed) {
-    //                _cMMSKhoPhieuNhapXuat.xoaPhieuNhapXuat({ Id: rowselected[0].get('id') }, 'xuatkho').done(function (result) {
-    //                    me.onTimKiemXuatKho();
-    //                    me.getView().setLoading(false);
-    //                    abp.notify.success(app.localize('SuccessfullyDeleted'));
-    //                }).fail(function (data) {
-    //                    me.getView().setLoading(false);
-    //                });
-    //            }
-    //        }
-    //    );
-    //}
+    onHuyPhieuXuatKho: function () {
+        var me = this;
+        var grid = me.ref.dsPhieuXuatKho;
+        var store = me.storeinfo.storePhieuXuatKho;
+        var rowselected = grid.getSelectionModel().getSelection();
+        Swal.fire({
+            title: 'Bạn có chắc chắn?',
+            text: "Bạn có muốn xoá dữ liệu này?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Huỷ bỏ',
+            confirmButtonText: 'Đồng ý'
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                var url = "api/Output?OutputId=" + rowselected[0].get('id')
+                app.mUtils.fnDELETEAjax(url, function (response) {
+                    if (response == 1) {
+                        Swal.fire(
+                            'Deleted!',
+                            '"Xoá dữ liệu thành công',
+                            'success'
+                        )
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Phiếu đang tồn tại vật tư không thể xoá!',
+                        })
+                    }
+                    me.onTimKiemXuatKho()
+                })
+            }
+        })
+    }
 });

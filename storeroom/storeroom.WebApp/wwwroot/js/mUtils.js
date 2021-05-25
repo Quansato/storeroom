@@ -22,8 +22,35 @@
                     console.log(exx);
                     if (fnError) fnError(exx);
                 },
+            }).done(function (response) {
+                return response
             });
         },
+
+        /**
+       * Lấy dữ liệu bằng ajax v2
+       *
+       */
+        fnGETAjaxV2: function (url, fnSuccess, fnComplete, fnError) {
+            return $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: url,
+                success: function (responseData) {
+                    if (fnSuccess) fnSuccess(responseData);
+                },
+                complete: function () {
+                    if (fnComplete) fnComplete();
+                },
+                error: function (exx) {
+                    console.log(exx);
+                    if (fnError) fnError(exx);
+                },
+            }).done(function (response) {
+                return response
+            });
+        },
+
         /**
          * Xoá dữ liệu bằng ajax
          *
@@ -274,15 +301,15 @@
             const params = new URLSearchParams(query);
             return params.toString();
         },
-       /* getUserName: function () {
-            var userName = "";
-            //app.mUtils.fnPOSTAjax("https://localhost:44390/api/User/authenticate", obj, function (response) {
-            app.mUtils.fnGETAjax("https://localhost:44356/getCurrentUserLogged", function (response) {
-                app.session = response;
-                    console.log(response)
-                })
-
-        }*/
+        /* getUserName: function () {
+             var userName = "";
+             //app.mUtils.fnPOSTAjax("https://localhost:44390/api/User/authenticate", obj, function (response) {
+             app.mUtils.fnGETAjax("https://localhost:44356/getCurrentUserLogged", function (response) {
+                 app.session = response;
+                     console.log(response)
+                 })
+ 
+         }*/
     };
 })();
 
@@ -290,12 +317,16 @@
 (function () {
     app.session = app.session || {}
     app.mUtils.fnGETAjax("https://localhost:44356/getCurrentUserLogged", function (response) {
-            console.log(response)
-            //sessionStorage.clear();
+        console.log(response)
+        //sessionStorage.clear();
+        if (sessionStorage.getItem("session") === null) {
+            //...
             sessionStorage.setItem("session", JSON.stringify(response));
-            app.session = JSON.parse(sessionStorage.getItem("session"));
-            //app.session = response;
-            return response;
+        }
+        app.session = JSON.parse(sessionStorage.getItem("session"));
+        app.session.isAdmin = app.session.role == 'Admin' ? true : false
+        //app.session = response;
+        return response;
     })
     console.log(1);
 })();

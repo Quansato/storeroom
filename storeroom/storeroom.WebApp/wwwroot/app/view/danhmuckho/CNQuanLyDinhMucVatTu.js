@@ -460,7 +460,7 @@ Ext.define('Admin.view.danhmuckho.quanLyDinhMucVatTuController', {
             toastr.warning("Định mức min phải bé hơn định mức max");
             return;
         }
-        var url = "api/Material/materialStoreroom";
+        var url = "api/Material/materialStoreroom/dinhMuc";
         if (record.dirty) {
             var obj = {
                 storeroomId: me.getViewModel().data.recordKho.get('id'),
@@ -472,7 +472,6 @@ Ext.define('Admin.view.danhmuckho.quanLyDinhMucVatTuController', {
                 Ke: record.get('rack'),
                 Day: record.get('row')
             }
-
             app.mUtils.fnPUTAjax(url, obj, function (result) {
                 me.getView().setLoading(false);
                 record.commit();

@@ -208,25 +208,24 @@ Ext.define('Admin.view.quanlydonmuahang.CNThayDoiTrangThaiController', {
         me.callParent(arguments);
     },
 
-    //onAfterrender: function () {
-    //    var me = this;
-    //    me.ref = me.getReferences();
-    //    me.storeinfo = me.getViewModel().storeInfo;
-    //    var data = [{ matrangthai: 1, tentrangthai: app.localize("CMMSDMKhoTrangThaiDuyetDaDuyet") },
-    //    { matrangthai: 2, tentrangthai: app.localize("CMMSDMKhoTrangThaiDuyetKhongDuyet") },
-    //    { matrangthai: 3, tentrangthai: app.localize("CMMSDMKhoTrangThaiPhieuDong") },
-    //    { matrangthai: 0, tentrangthai: app.localize("CMMSDMKhoTrangThaiDuyetChoDuyet") }]
-    //    if (me.getViewModel().data.dataTTCu.length > 0) {
-    //        me.ref.cbTrangThaiCu.getStore().loadData(me.getViewModel().data.dataTTCu);
-    //    } else {
-    //        me.ref.cbTrangThaiCu.getStore().loadData(data);
-    //    }
+    onAfterrender: function () {
+        var me = this;
+        me.ref = me.getReferences();
+        me.storeinfo = me.getViewModel().storeInfo;
+        var data = [{ matrangthai: 1, tentrangthai: "Hoàn thành" },
+        { matrangthai: 2, tentrangthai: "Không Duyệt" },
+        { matrangthai: 0, tentrangthai:"Chờ duyệt" }]
+        if (me.getViewModel().data.dataTTCu.length > 0) {
+            me.ref.cbTrangThaiCu.getStore().loadData(me.getViewModel().data.dataTTCu);
+        } else {
+            me.ref.cbTrangThaiCu.getStore().loadData(data);
+        }
 
-    //    var store = me.ref.cbTrangThaiMoi.getStore();
-    //    var dataTT = me.getViewModel().data.dataTT;
-    //    store.loadData(dataTT);
-    //    me.loadCT();
-    //},
+        var store = me.ref.cbTrangThaiMoi.getStore();
+        var dataTT = me.getViewModel().data.dataTT;
+        store.loadData(dataTT);
+        me.loadCT();
+    },
 
     //loadCT: function (fnSauKhiLoad) {
     //    var me = this;
@@ -251,61 +250,61 @@ Ext.define('Admin.view.quanlydonmuahang.CNThayDoiTrangThaiController', {
     //    });
     //},
 
-    //onLuu: function (button) {
-    //    var me = this;
-    //    var frm = me.ref.frmChuyenTrangThai;
-    //    var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
-    //    if (frm.isValid()) {
-    //        var record = me.getViewModel().data.record;
-    //        me.getView().setLoading(true);
-    //        var obj = {
-    //            NguoiThucHien: abp.session.userId,
-    //            LyDo: record.get('lyDo'),
-    //            MaPhieu: record.get('maPhieu'),
-    //            phanLoai: record.get('phanLoai'),
-    //            TrangThaiCu: record.get('trangThaiCu'),
-    //            TrangThaiMoi: record.get('trangThaiMoi')
-    //        }
-    //        if (record.get('id') == 0) {
-    //            me.getView().setLoading(true);
-    //            _cMMSKhoChuyenTrangThai.create(obj).done(function (result) {
-    //                me.getView().setLoading(false);
-    //                if (record.get('phanLoai') == 'donmuahang') {
-    //                    var objdh = { id: record.get('maPhieu'), TinhTrangDon: record.get('trangThaiMoi') }
-    //                    _cMMSKhoDonMuaHang.updateTinhTrangDon(objdh).done(function (result) {
-    //                        abp.notify.success(app.localize('SavedSuccessfully'));
-    //                        if (fnSauKhiLoad)
-    //                            fnSauKhiLoad(result);
-    //                    }).fail(function (data) {
-    //                    });
-    //                    if (fnSauKhiLoad)
-    //                        fnSauKhiLoad(result);
-    //                    me.getView().close();
-    //                } else if (record.get('phanLoai') == 'dexuat') {
-    //                    var objdh = { id: record.get('maPhieu'), TrangThai: record.get('trangThaiMoi') }
-    //                    _cMMSKhoPhieuNhapXuat.updateTrangThai(objdh).done(function (result) {
-    //                        abp.notify.success(app.localize('SavedSuccessfully'));
-    //                        if (fnSauKhiLoad)
-    //                            fnSauKhiLoad(result);
-    //                        me.getView().close();
-    //                    }).fail(function (data) {
-    //                    });
-    //                } else {
-    //                    var objdh = { id: record.get('maPhieu'), TrangThai: record.get('trangThaiMoi') }
-    //                    _cMMSKhoPhieuDeXuatMuaHang.updateTrangThai(objdh).done(function (result) {
-    //                        abp.notify.success(app.localize('SavedSuccessfully'));
-    //                        if (fnSauKhiLoad)
-    //                            fnSauKhiLoad(result);
-    //                        me.getView().close();
-    //                    }).fail(function (data) {
-    //                    });
-    //                }
-    //            }).fail(function (data) {
-    //                me.getView().setLoading(false);
-    //            });
-    //        }
-    //    }
-    //},
+    onLuu: function (button) {
+        var me = this;
+        var frm = me.ref.frmChuyenTrangThai;
+        var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
+        if (frm.isValid()) {
+            var record = me.getViewModel().data.record;
+            me.getView().setLoading(true);
+            var obj = {
+                NguoiThucHien: abp.session.userId,
+                LyDo: record.get('lyDo'),
+                MaPhieu: record.get('maPhieu'),
+                phanLoai: record.get('phanLoai'),
+                TrangThaiCu: record.get('trangThaiCu'),
+                TrangThaiMoi: record.get('trangThaiMoi')
+            }
+            if (record.get('id') == 0) {
+                me.getView().setLoading(true);
+                _cMMSKhoChuyenTrangThai.create(obj).done(function (result) {
+                    me.getView().setLoading(false);
+                    if (record.get('phanLoai') == 'donmuahang') {
+                        var objdh = { id: record.get('maPhieu'), TinhTrangDon: record.get('trangThaiMoi') }
+                        _cMMSKhoDonMuaHang.updateTinhTrangDon(objdh).done(function (result) {
+                            abp.notify.success(app.localize('SavedSuccessfully'));
+                            if (fnSauKhiLoad)
+                                fnSauKhiLoad(result);
+                        }).fail(function (data) {
+                        });
+                        if (fnSauKhiLoad)
+                            fnSauKhiLoad(result);
+                        me.getView().close();
+                    } else if (record.get('phanLoai') == 'dexuat') {
+                        var objdh = { id: record.get('maPhieu'), TrangThai: record.get('trangThaiMoi') }
+                        _cMMSKhoPhieuNhapXuat.updateTrangThai(objdh).done(function (result) {
+                            abp.notify.success(app.localize('SavedSuccessfully'));
+                            if (fnSauKhiLoad)
+                                fnSauKhiLoad(result);
+                            me.getView().close();
+                        }).fail(function (data) {
+                        });
+                    } else {
+                        var objdh = { id: record.get('maPhieu'), TrangThai: record.get('trangThaiMoi') }
+                        _cMMSKhoPhieuDeXuatMuaHang.updateTrangThai(objdh).done(function (result) {
+                            abp.notify.success(app.localize('SavedSuccessfully'));
+                            if (fnSauKhiLoad)
+                                fnSauKhiLoad(result);
+                            me.getView().close();
+                        }).fail(function (data) {
+                        });
+                    }
+                }).fail(function (data) {
+                    me.getView().setLoading(false);
+                });
+            }
+        }
+    },
 
     //onDongWinDow: function () {
     //    var me = this;
