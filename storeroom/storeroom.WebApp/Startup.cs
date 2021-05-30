@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using storeroom.Application.Catalog.Brands;
 using storeroom.Application.Catalog.Countries;
+using storeroom.Application.Catalog.Dashboard;
 using storeroom.Application.Catalog.Inputs;
 using storeroom.Application.Catalog.MaterialGroups;
 using storeroom.Application.Catalog.Materials;
@@ -103,6 +104,7 @@ namespace storeroom.WebApp
             services.AddTransient<IOutputService, OutputService>();
             services.AddTransient<IInputService, InputService>();
             services.AddTransient<IPurchaseProposalService, PurchaseProposalService>();
+            services.AddTransient<IDashboardService, DashboardService>();
 
         }
 

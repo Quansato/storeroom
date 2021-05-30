@@ -14,8 +14,8 @@
                 text: 'Dashboard',
                 iconCls: 'x-fa fa-database',
                 rowCls: 'nav-tree-badge',
-                viewType: 'databasemanager',
-                routeId: 'database', 
+                viewType: 'dashboard',
+                routeId: 'dashboard', 
                 leaf: true
             },
             {
@@ -26,14 +26,14 @@
                 routeId: 'dsCMMSKhoVatTu', 
                 leaf: true
             },
-            {
+            /*{
                 text: 'Đề xuất vật tư',
                 iconCls: 'x-fa fa-bars',
                 rowCls: 'nav-tree-badge',
                 viewType: 'quanLyDeXuatVatTu',
                 routeId: 'quanLyDeXuatVatTu',
                 leaf: true
-            },
+            },*/
             {
                 text: 'Phiếu xuất, nhập',
                 iconCls: 'x-fa fa-cloud-upload',
@@ -64,6 +64,14 @@
                 rowCls: 'nav-tree-badge',
                 viewType: 'dsCMMSKhoDMVatTu',
                 routeId: 'dsCMMSKhoDMVatTu',
+                leaf: true
+            },
+            {
+                text: 'Bản đồ kho',
+                iconCls: 'x-fa fa-globe',
+                rowCls: 'nav-tree-badge',
+                viewType: 'dsBanDoKho',
+                routeId: 'dsBanDoKho',
                 leaf: true
             },
             {

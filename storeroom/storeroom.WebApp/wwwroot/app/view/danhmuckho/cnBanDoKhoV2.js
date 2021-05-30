@@ -22,9 +22,10 @@ Ext.define("Admin.view.danhmuckho.cnBanDoKhoV2", {
         xtype: 'panel',
         padding: '5 5 5 5',
         width: '100%',
+        height: '50%',
         items: [{
             xtype: 'component',
-            height: '80%',
+            height: 600,
             width: 1600,
             html: '<div style="width: 100%;">' +
                 '<div id="divMapId" class= "map" ></div>' +
@@ -106,56 +107,70 @@ Ext.define("Admin.view.danhmuckho.cnBanDoKhoV2Controller", {
         }
     },
 */
+
+
     onMap: function () {
         var me = this;
-        var map2 = new mapboxgl.Map({
+        var record = me.getViewModel().get("record");
+        var map = new mapboxgl.Map({
             container: 'divMapId',
             center: [105.82397460937636, 21.03589385426021], // starting position
             zoom: 7
         });
         var vnMap = new mapboxgl.ekmap.TiledVietNamMapLayer({
             token: tokenVN
-        }).addTo(map2);
+        }).addTo(map);
 
-        var layers = map2.getStyle().layers;
-        console.log(layers)
-        var marker = new mapboxgl.Marker({
-            draggable: true
-        })
-            .setLngLat([105.82397460937636, 21.03589385426021])
-            .addTo(map2);
-
-        //var marker1 = new mapboxgl.Marker()
-        //    .setLngLat([105.82397460937636, 21.03589385426021])
-        //    .addTo(map);
+        if (record.get("x") != null) {
+            console.log(record.get("x"))
+            ttKho = record.get('status') == false ? 'Không hoạt động' : 'Hoạt động';
+            html = '<b>Tên kho:</b> ' + record.get('displayName') + '</br>' +
+                '<b>Địa chỉ:</b> ' + record.get('address') + '</br>' +
+                '<b>Quản lý:</b>' + record.get('firstName') + ' ' + record.get('lastName') + '</br>' +
+                '<b>Trạng thái:</b>' + ttKho
+            var popup = new mapboxgl.Popup({ offset: 25 })
+                .setLngLat([record.get("x"), record.get("y")])
+                .setHTML(html);
+            var marker = new mapboxgl.Marker({
+                draggable: true
+            })
+                .setLngLat([record.get("x"), record.get("y")])
+                .setPopup(popup)
+                .addTo(map);
+        } else {
+            var marker = new mapboxgl.Marker({
+                draggable: true
+            })
+                .setLngLat([105.82397460937636, 21.03589385426021])
+                .addTo(map);
+        }
+        /*        var marker1 = new mapboxgl.Marker()
+                    .setLngLat([105.82397460937636, 21.03589385426021])
+                    .addTo(map);*/
 
         function onDragEnd() {
             var lngLat = marker.getLngLat();
             coordinates.style.display = 'block';
             coordinates.innerHTML =
                 'Kinh độ: ' + lngLat.lng + '<br />Vĩ độ: ' + lngLat.lat;
+            me.result.x = lngLat.lng;
+            me.result.y = lngLat.lat
         }
 
         marker.on('dragend', onDragEnd);
-        //
+
         var popup = new mapboxgl.Popup({ offset: 25 }).setText(
             'Construction on the Washington Monument began in 1848.'
         );
 
-        // create DOM element for the marker
-        var el = document.createElement('div');
-        el.id = 'marker';
-        //
-        //for (var i = 0; i < obj.length; i++) {
-        //    var marker = new mapboxgl.Marker({
-        //        draggable: true
-        //    })
-        //        .setLngLat([obj[i].x, obj[i].y])
-        //        .setPopup(popup)
-        //        .addTo(map);
-        //}
-        map2.addControl(new mapboxgl.NavigationControl(), "top-left");
-        map2.addControl(new mapboxgl.GeolocateControl({
+        marker.on('dragend', onDragEnd);
+
+        map.addControl(new mapboxgl.NavigationControl(), "top-left");
+
+        //// create DOM element for the marker
+        //var el = document.createElement('div');
+        //el.id = 'marker';
+        map.addControl(new mapboxgl.GeolocateControl({
             positionOptions: {
                 enableHighAccuracy: true
             },
@@ -177,86 +192,6 @@ Ext.define("Admin.view.danhmuckho.cnBanDoKhoV2Controller", {
         });
         console.log(document.getElementById('geocoder'))
 
-        document.getElementById('geocoder').appendChild(geocoder.onAdd(map2));
+        document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
     }
-
-    //onMap: function () {
-    //    var me = this;
-    //    var record = me.getViewModel().get("record");
-    //    var map = new mapboxgl.Map({
-    //        container: 'divMapId',
-    //        center: [105.82397460937636, 21.03589385426021], // starting position
-    //        zoom: 7
-    //    });
-    //    var vnMap = new mapboxgl.ekmap.TiledVietNamMapLayer({
-    //        token: tokenVN
-    //    }).addTo(map);
-
-    //    if (record.get("x") != null) {
-    //        console.log(record.get("x"))
-    //        var marker = new mapboxgl.Marker({
-    //            draggable: true
-    //        })
-    //            .setLngLat([record.get("x"), record.get("y")])
-    //            .addTo(map);
-    //    } else {
-    //        var marker = new mapboxgl.Marker({
-    //            draggable: true
-    //        })
-    //            .setLngLat([105.82397460937636, 21.03589385426021])
-    //            .addTo(map);
-    //    }
-    //    //var marker1 = new mapboxgl.Marker()
-    //    //    .setLngLat([105.82397460937636, 21.03589385426021])
-    //    //    .addTo(map);
-
-    //    function onDragEnd() {
-    //        var lngLat = marker.getLngLat();
-    //        coordinates.style.display = 'block';
-    //        coordinates.innerHTML =
-    //            'Kinh độ: ' + lngLat.lng + '<br />Vĩ độ: ' + lngLat.lat;
-    //        me.result.x = lngLat.lng;
-    //        me.result.y = lngLat.lat
-    //    }
-
-    //    marker.on('dragend', onDragEnd);
-
-    //    var popup = new mapboxgl.Popup({ offset: 25 }).setText(
-    //        'Construction on the Washington Monument began in 1848.'
-    //    );
-
-    //    marker.on('dragend', onDragEnd);
-
-    //    map.addControl(new mapboxgl.NavigationControl(), "top-left");
-
-    //    //// create DOM element for the marker
-    //    //var el = document.createElement('div');
-    //    //el.id = 'marker';
-    //    //////
-    //    ////for (var i = 0; i < obj.length; i++) {
-    //    ////    var marker = new mapboxgl.Marker({
-    //    ////        draggable: true
-    //    ////    })
-    //    ////        .setLngLat([obj[i].x, obj[i].y])
-    //    ////        .setPopup(popup)
-    //    ////        .addTo(map);
-    //    ////}
-    //    //map.addControl(new mapboxgl.NavigationControl(), "top-left");
-    //    //map.addControl(new mapboxgl.GeolocateControl({
-    //    //    positionOptions: {
-    //    //        enableHighAccuracy: true
-    //    //    },
-    //    //    trackUserLocation: true
-    //    //}), 'top-left');
-
-    //    //var geocoder = new MapboxGeocoder({
-    //    //    accessToken: me.accessToken,
-    //    //    origin: 'https://api.mapbox.com',
-    //    //    target: 'geocoder',
-    //    //    placeholder: 'Tìm kiếm...'
-    //    //});
-    //    //console.log(document.getElementById('geocoder'))
-
-    //    //document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
-    //}
 });

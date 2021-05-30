@@ -140,7 +140,7 @@ Ext.define('Admin.view.main.MainController', {
 
     onMainViewRender:function() {
         if (!window.location.hash) {
-            this.redirectTo("database");
+            this.redirectTo("dashboard");
         }
     },
 

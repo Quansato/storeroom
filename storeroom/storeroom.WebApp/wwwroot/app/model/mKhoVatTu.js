@@ -19,7 +19,7 @@
         { name: "brandId", type: "int", defaultValue: null, allowNull: true },
         { name: "brandName", type: "string" },
         { name: "soLuongTrongKho", type: "float", defaultValue: null, allowNull: true },
-        { name: "experyDate", type: "string" },
+        { name: "experyDate", type: "date" },
         { name: "status", type: "bool" }, //
         { name: "taiLieu", type: "string" },
         { name: "specification", type: "string" },

@@ -23,7 +23,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
         type: "danhmuckho-cnkhovattu"
     },
     width: 1200,
-    height:500,
+    height: 500,
     modal: true,
     scrollable: true,
     iconCls: 'x-fa fa-th-list',
@@ -239,7 +239,9 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                     items: [{
                         xtype: "datefield",
                         name: "experyDate",
-                        bind: "{record.experyDate}",
+                        bind: {
+                            value: "{record.experyDate}"
+                        },
                         fieldLabel: 'Hạn sử dụng'
                     }, {
                         xtype: "combo",
@@ -312,7 +314,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                     style: {
                         borderTop: "solid 1px #d0d0d0 !important"
                     },
-                    hidden:true,
+                    hidden: true,
                     header: {
                         padding: 3,
                         items: [{
@@ -933,19 +935,27 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
                     if (fnSauKhiSave) fnSauKhiSave()
                     view.setLoading(false);
                 } else {
-                    toastr.warning('Có lỗi xảy ra trong quá trình thêm mới')
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Mã vật tư đã tồn tại trong hệ thống!',
+                    })
                     view.setLoading(false);
                 }
             })
         } else {
-            var url = "api/Material/"+record.get("id")
+            var url = "api/Material/" + record.get("id")
             app.mUtils.fnPUTAjax(url, record.data, function (response) {
                 if (response == 1) {
                     toastr.success("Cập nhật vật tư thành công")
                     if (fnSauKhiSave) fnSauKhiSave()
                     view.setLoading(false);
                 } else {
-                    toastr.warning('Cập nhật thất bại')
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Mã vật tư đã tồn tại trong hệ thống!',
+                    })
                 }
             })
         }

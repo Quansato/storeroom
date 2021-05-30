@@ -24,7 +24,7 @@ namespace storeroom.Application.Catalog.Materials
             var isExist = checkExistMaterialCode(request.MaterialCode);
             if (isExist != null)
             {
-                throw new StoreroomException("MaterialCode is already exist");
+                return -1;
             }
             var material = new Material()
             {

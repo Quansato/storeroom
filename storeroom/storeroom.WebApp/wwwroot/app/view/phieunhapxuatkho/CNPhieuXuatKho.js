@@ -908,13 +908,13 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKhoController', {
 
                             var check = me.onFnCheck(rVT.get('id'))
                             if (check != false) {
-                                var soluong = check.get('quantity') + 1
-                                check.set('quantity', soluong)
+                                var soluong = check.get('quantity') + 1;
+                                check.set('quantity', soluong);
                             }
                             if (check == false) {
                                 var record = Ext.create('Admin.model.mPhieuNhapXuatChiTiet');
                                 var url = "api/Input/CheckMaterialIsExistInStoreroom?StoreroomId=" + recordPhieu.data.storeroomId + "&Id=" + rVT.get('id')
-                                const isExist = await app.mUtils.fnGETAjaxV2(url)
+                                const isExist = await app.mUtils.fnGETAjaxV2(url);
                                 if (!isExist) record.set("color", "red");
                                 if (me.getViewModel().data.dieuchuyen) {
                                     var urlK2 = "api/Input/CheckMaterialIsExistInStoreroom?StoreroomId=" + recordPhieu.data.storeroomReceiveId + "&Id=" + rVT.get('id')
@@ -941,7 +941,7 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKhoController', {
                                 record.set('donViTinhThuc', rVT.get('donViPhatHanh'));
                                 storePhieuXuatChiTiet.add(record);
                             }
-                        }
+                        };
                         console.log(storePhieuXuatChiTiet);
                     }
                 }
@@ -1111,7 +1111,7 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKhoController', {
                     record.data.dateInput = record.get('dateOutput')
                     record.data.dateStatus = record.get('dateOutput')
                     record.data.deliveryUnit = "Điều chuyển"
-                    record.data.shipper=record.get('userName')
+                    record.data.shipper = record.get('userName')
                     var urlK2 = "/api/Input";
                     record.data.materialInput = rowMaterial
                     app.mUtils.fnPOSTAjax(urlK2, record.data, function (res) {

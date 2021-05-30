@@ -75,80 +75,78 @@ Ext.define("Admin.view.map.mapVNController", {
         var obj = [];
         app.mUtils.fnGETAjax('api/Storeroom?page=1&start=0&limit=25', function (response) {
             obj = response.items;
-        })
-        var map = new mapboxgl.Map({
-            container: 'divMapId',
-            center: [105.82397460937636, 21.03589385426021], // starting position
-            zoom: 7
-        });
-        var vnMap = new mapboxgl.ekmap.TiledVietNamMapLayer({
-            token: tokenVN
-        }).addTo(map);
+            var map = new mapboxgl.Map({
+                container: 'divMapId',
+                center: [105.82397460937636, 21.03589385426021], // starting position
+                zoom: 7
+            });
+            var vnMap = new mapboxgl.ekmap.TiledVietNamMapLayer({
+                token: tokenVN
+            }).addTo(map);
 
-        /*var marker = new mapboxgl.Marker({
-            draggable: true
-        })
-            .setLngLat([105.82397460937636, 21.03589385426021])
-            .addTo(map);*/
-
-        //var marker1 = new mapboxgl.Marker()
-        //    .setLngLat([105.82397460937636, 21.03589385426021])
-        //    .addTo(map);
-
-        function onDragEnd() {
-            var lngLat = marker.getLngLat();
-            coordinates.style.display = 'block';
-            coordinates.innerHTML =
-                'Kinh độ: ' + lngLat.lng + '<br />Vĩ độ: ' + lngLat.lat;
-        }
-
-        //marker.on('dragend', onDragEnd);
-        // create DOM element for the marker
-        var el = document.createElement('div');
-        el.id = 'marker';
-
-        //map.on('click', function (e) {
-        //    console.log(e)
-        //    var obj = map.queryRenderedFeatures(
-        //        e.point
-        //    );
-        //    console.log(obj)
-        //})
-
-        for (var i = 0; i < obj.length; i++) {
-            var popup = new mapboxgl.Popup({ offset: 25 }).setText(
-                'Construction on the Washington Monument began in 1848.'
-            ).setLngLat([obj[i].x, obj[i].y]);
-            var marker = new mapboxgl.Marker({
+            /*var marker = new mapboxgl.Marker({
                 draggable: true
             })
-                .setLngLat([obj[i].x, obj[i].y])
-                .setPopup(popup)
-                .addTo(map);
-        }
-        map.addControl(new mapboxgl.NavigationControl(), "top-left");
-        map.addControl(new mapboxgl.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: true
-            },
-            trackUserLocation: true
-        }), 'top-left');
-        //var geocoder = new MapboxGeocoder({
-        //    origin: 'https://api.mapbox.com',
-        //    accessToken: me.accessToken,
-        //    target: 'geocoder'
-        //})
+                .setLngLat([105.82397460937636, 21.03589385426021])
+                .addTo(map);*/
 
-        //map.addControl(geocoder);
+            //var marker1 = new mapboxgl.Marker()
+            //    .setLngLat([105.82397460937636, 21.03589385426021])
+            //    .addTo(map);
 
-        var geocoder = new MapboxGeocoder({
-            accessToken: me.accessToken,
-            origin: 'https://api.mapbox.com',
-            target: 'geocoder',
-            placeholder: 'Tìm kiếm...'
-        });
-        console.log(document.getElementById('geocoder'))
+            function onDragEnd() {
+                var lngLat = marker.getLngLat();
+                coordinates.style.display = 'block';
+                coordinates.innerHTML =
+                    'Kinh độ: ' + lngLat.lng + '<br />Vĩ độ: ' + lngLat.lat;
+            }
 
-        document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+            //marker.on('dragend', onDragEnd);
+            // create DOM element for the marker
+            var el = document.createElement('div');
+            el.id = 'marker';
+
+            console.log(obj);
+            for (var i = 0; i < obj.length; i++) {
+                ttKho = obj[i].status == false ? 'Không hoạt động' : 'Hoạt động';
+                html = '<b>Tên kho:</b> ' + obj[i].displayName + '</br>' +
+                    '<b>Địa chỉ:</b> ' + obj[i].address + '</br>' +
+                    '<b>Quản lý:</b>' + obj[i].firstName + ' ' + obj[i].lastName + '</br>' +
+                    '<b>Trạng thái:</b>' + ttKho
+                var popup = new mapboxgl.Popup({ offset: 25 })
+                    .setLngLat([obj[i].x, obj[i].y])
+                    .setHTML(html);
+                var marker = new mapboxgl.Marker({
+                    //draggable: true
+                })
+                    .setLngLat([obj[i].x, obj[i].y])
+                    .setPopup(popup)
+                    .addTo(map);
+            }
+            map.addControl(new mapboxgl.NavigationControl(), "top-left");
+            map.addControl(new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: true
+            }), 'top-left');
+            //var geocoder = new MapboxGeocoder({
+            //    origin: 'https://api.mapbox.com',
+            //    accessToken: me.accessToken,
+            //    target: 'geocoder'
+            //})
+
+            //map.addControl(geocoder);
+
+            var geocoder = new MapboxGeocoder({
+                accessToken: me.accessToken,
+                origin: 'https://api.mapbox.com',
+                target: 'geocoder',
+                placeholder: 'Tìm kiếm...'
+            });
+            console.log(document.getElementById('geocoder'))
+
+            document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+        })
     }
 });
