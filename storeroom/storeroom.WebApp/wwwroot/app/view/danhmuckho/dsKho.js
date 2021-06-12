@@ -363,7 +363,7 @@ Ext.define('Admin.view.danhmuckho.dsKhoController', {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'Xoá dữ liệu thất bại!',
+                            text: 'Không thể xoá kho vật tư này!',
                         })
                     }
                     me.onTImKiem()

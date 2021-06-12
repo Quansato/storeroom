@@ -8,6 +8,7 @@ namespace storeroom.Application.Catalog.Materials.Dtos.MStoreroom
     {
         public int StoreroomId { get; set; }
         public string StoreroomName { get; set; }
+        public decimal Price { get; set; }
         public int MaterialId { get; set; }
         public string MaterialCode { get; set; }
         public string DisplayName { get; set; }

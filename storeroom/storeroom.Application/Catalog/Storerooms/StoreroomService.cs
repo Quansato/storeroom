@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
+using storeroom.Application.Catalog.Storerooms.InventoryDtos;
+
 namespace storeroom.Application.Catalog.Storerooms
 {
     public class StoreroomService : IStoreroomService
@@ -33,8 +35,27 @@ namespace storeroom.Application.Catalog.Storerooms
             return await _context.SaveChangesAsync();
         }
 
+        public async Task<int> CreateInventory(InventoryCreateRequest request)
+        {
+            var inventory = new Inventory()
+            {
+                Date = request.Date,
+                StoreroomId = request.StoreroomId,
+                CreatedBy = request.CreatedBy,
+                CreatedDate = DateTime.Now,
+                InventoryDetails = request.InventoryDetails
+            };
+            _context.Inventories.Add(inventory);
+            return await _context.SaveChangesAsync();
+        }
+
         public async Task<int> Delete(int StoreroomId)
         {
+            var sMaterial= await _context.MaterialStorerooms.FirstOrDefaultAsync(x=>x.StoreroomId==StoreroomId);
+            if (sMaterial != null)
+            {
+                return -1;
+            }
             var storeroom = await _context.Storerooms.FindAsync(StoreroomId);
             if (storeroom == null) throw new StoreroomException($"Cannot find storeroom {StoreroomId}");
             _context.Storerooms.Remove(storeroom);
@@ -94,9 +115,53 @@ namespace storeroom.Application.Catalog.Storerooms
                 UserId = storeroom.UserId,
                 StoreroomCode = storeroom.StoreroomCode,
                 x = storeroom.x,
-                y=storeroom.y
+                y = storeroom.y
             };
             return listDetail;
+        }
+
+        public async Task<PagedResult<InventoryDetailViewModel>> GetInventoryDetail(string keyword, DateTime? date, int? storeroomId)
+        {
+            var query = from a in _context.InventoryDetails
+                        join c in _context.Materials on a.MaterialId equals c.Id
+                        join f in _context.Inventories on a.InventoryId equals f.Id
+                        join b in _context.Units on c.UnitId equals b.Id
+                        join d in _context.Storerooms on f.StoreroomId equals d.Id
+                        join e in _context.MaterialGroups on c.MaterialGroupId equals e.Id
+                        select new { a, b, c, d, e, f };
+
+            if (storeroomId.HasValue)
+            {
+                query = query.Where(x => x.f.StoreroomId == storeroomId);
+            }
+
+            if (date.HasValue)
+            {
+                query = query.Where(x => x.f.Date == date);
+            }
+
+            //3. Paging
+            int totalRow = await query.CountAsync();
+
+            var data = await query
+                       .Select(x => new InventoryDetailViewModel()
+                       {
+                           MaterialId = x.a.MaterialId,
+                           MaterialCode = x.c.MaterialCode,
+                           InventoryId=x.a.InventoryId,
+                           MaterialName=x.c.DisplayName,
+                           QuantityTT =x.a.QuantityTT,
+                           QuantityLT=x.a.QuantityLT,
+                           UnitName=x.b.DisplayName,
+                           Description=x.a.Description
+                       }).ToListAsync();
+            //4. Select and projection
+            var pagedResult = new PagedResult<InventoryDetailViewModel>()
+            {
+                TotalRecord = totalRow,
+                Items = data
+            };
+            return pagedResult;
         }
 
         public async Task<int> Update(StoreroomUpdateRequest request)
@@ -113,6 +178,16 @@ namespace storeroom.Application.Catalog.Storerooms
             storeroom.StoreroomCode = request.StoreroomCode;
             storeroom.x = request.x;
             storeroom.y = request.y;
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateInventoryDetail(InventoryDetailViewModel request)
+        {
+            var inventoryDetail = await _context.InventoryDetails.FirstOrDefaultAsync(x => x.InventoryId == request.InventoryId && x.MaterialId == request.MaterialId);
+            if (inventoryDetail == null) throw new StoreroomException($"Cannot find material: {request.MaterialId}");
+            inventoryDetail.QuantityLT = request.QuantityLT;
+            inventoryDetail.QuantityTT = request.QuantityTT;
+            inventoryDetail.Description = request.Description;
             return await _context.SaveChangesAsync();
         }
     }

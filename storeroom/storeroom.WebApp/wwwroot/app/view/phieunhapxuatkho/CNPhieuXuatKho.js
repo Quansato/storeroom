@@ -109,6 +109,7 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKho', {
                     }, {
                         margin: '5 5 0 0',
                         xtype: 'button',
+                        ui: 'soft-blue',
                         reference: 'btnLayNguoiDung',
                         tooltip: 'Chọn người xuất',
                         //hidden: !(abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Edit') || abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Manager')),
@@ -143,7 +144,7 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKho', {
                         listeners: {
                             blur: "blurMa"
                         }
-                    }, {
+                    },/* {
                         margin: '5 0 0 5',
                         xtype: 'button',
                         bind: {
@@ -152,7 +153,7 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKho', {
                         reference: 'btnLaySoPhieu',
                         handler: 'onLaySoNhap',
                         text: 'Lấy số'
-                    }]
+                    }*/]
                 }, {
                     xtype: 'combo',
                     fieldLabel: 'Phân loại',
@@ -338,6 +339,7 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKho', {
             items: [{
                 xtype: 'button',
                 text: 'Thêm vật tư',
+                ui: 'soft-blue',
                 reference: 'btnThemVatTu',
                 //hidden: !(abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Edit') || abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Manager')),
                 handler: 'onTimKiemvatTuNangCao',
@@ -392,59 +394,27 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKho', {
             width: 110
         }, {
             text: 'Số lượng',
-            columns: [{
-                text: 'Tồn kho',
-                dataIndex: 'soLuongTrongKho',
-                border: 1,
-                hidden: true,
-                style: 'text-align:center',
-                align: 'right',
-                width: 90
-            }, {
-                text: 'Chứng từ',
-                dataIndex: 'quantity',
-                border: 1,
-                style: 'text-align:center',
-                align: 'right',
-                width: 120,
-                renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                    if (value != undefined && value != null) {
-                        return app.mUtils.fnFormatCurrency(value, 2);
-                    }
-                },
-                editor: {
-                    xtype: 'currencyfield',
-                    fieldStyle: 'text-align: right;'
-                },
-                summaryType: 'sum',
-                summaryRenderer: function (value, summaryData, dataIndex) {
-                    if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                    }
+
+            dataIndex: 'quantity',
+            border: 1,
+            style: 'text-align:center',
+            align: 'right',
+            width: 120,
+            renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
+                if (value != undefined && value != null) {
+                    return app.mUtils.fnFormatCurrency(value, 2);
                 }
-            }, {
-                text: 'Thực xuất',
-                dataIndex: 'soLuongThuc',
-                border: 1,
-                style: 'text-align:center',
-                align: 'right',
-                width: 120,
-                renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                    if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                    }
-                },
-                editor: {
-                    xtype: 'currencyfield',
-                    fieldStyle: 'text-align: right;'
-                },
-                summaryType: 'sum',
-                summaryRenderer: function (value, summaryData, dataIndex) {
-                    if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                    }
+            },
+            editor: {
+                xtype: 'currencyfield',
+                fieldStyle: 'text-align: right;'
+            },
+            summaryType: 'sum',
+            summaryRenderer: function (value, summaryData, dataIndex) {
+                if (value != undefined && value != null) {
+                    //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
                 }
-            }]
+            }
         }, {
             xtype: 'numbercolumn',
             text: 'Đơn giá',
@@ -724,22 +694,22 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKhoController', {
         });
     },
 
-    //blurMa: function () {
-    //    var me = this;
-    //    var record = me.getViewModel().data.recordPhieu;
-    //    if (record.get('id') > 0) {
-    //        return;
-    //    }
-    //    $("#idqrcodeXK").html('');
-    //    var qrcode = new QRCode("idqrcodeXK", {
-    //        width: 80,
-    //        height: 80
-    //    });
-    //    if (qrcode == "") {
-    //        return;
-    //    }
-    //    qrcode.makeCode(record.data.soPhieu);
-    //},
+    blurMa: function () {
+        var me = this;
+        var record = me.getViewModel().data.recordPhieu;
+        if (record.get('id') > 0) {
+            return;
+        }
+        $("#idqrcodeXK").html('');
+        var qrcode = new QRCode("idqrcodeXK", {
+            width: 80,
+            height: 80
+        });
+        if (qrcode == "") {
+            return;
+        }
+        qrcode.makeCode(record.data.soPhieu);
+    },
 
     //onLaySoNhap: function (isNhap) {
     //    var me = this;
@@ -983,6 +953,7 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKhoController', {
     onXoaLoaiVatTu: function (grid, rowIndex, colIndex) {
         var me = this;
         var record = me.getViewModel().data.recordPhieu;
+        var store = me.storeinfo.storePhieuXuatChiTiet
         var selected = grid.getStore().getAt(rowIndex);
         if (record.get('id') > 0 && me.getViewModel().data.dieuchuyen == true) {
             abp.notify.success(app.localize('ExtgDataManagerPhieuDieuChuyen'));
@@ -1091,6 +1062,15 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKhoController', {
             console.log(record.data)
             me.getView().setLoading(true);
             app.mUtils.fnPOSTAjax(url, record.data, function (res) {
+                if (res == -1) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Cảnh báo!',
+                        text: 'Mã phiếu đã tồn tại!',
+                    })
+                    me.getView().setLoading(false);
+                    return;
+                }
                 toastr.success("Thêm mới dữ liệu thành công!");
                 me.getView().setLoading(false);
                 fnSauKhiLoad();

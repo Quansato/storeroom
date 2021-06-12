@@ -19,10 +19,10 @@ namespace storeroom.Application.Catalog.Inputs
             _context = context;
         }
 
-        public async Task<bool> CheckMaterialIsExist(int storeroomId,int Id)
+        public async Task<bool> CheckMaterialIsExist(int storeroomId, int Id)
         {
-            var material = await _context.MaterialStorerooms.FirstOrDefaultAsync(x=> x.StoreroomId == storeroomId && x.MaterialId == Id);
-            if(material == null)
+            var material = await _context.MaterialStorerooms.FirstOrDefaultAsync(x => x.StoreroomId == storeroomId && x.MaterialId == Id);
+            if (material == null)
             {
                 return false;
             }
@@ -31,13 +31,18 @@ namespace storeroom.Application.Catalog.Inputs
 
         public async Task<int> Create(InputCreateRequest request)
         {
+            var checkInput = await _context.Inputs.FirstOrDefaultAsync(x => x.InputCode == request.InputCode);
+            if (checkInput != null)
+            {
+                return -1;
+            }
             var input = new Input()
             {
                 Id = request.Id,
                 InputCode = request.InputCode,
                 StoreroomId = request.StoreroomId,
                 DeliveryUnit = request.DeliveryUnit,
-                Shipper=request.Shipper,
+                Shipper = request.Shipper,
                 DateInput = request.DateInput,
                 DateStatus = request.DateStatus,
                 CreationTime = DateTime.Now,
@@ -84,6 +89,7 @@ namespace storeroom.Application.Catalog.Inputs
             var query = from a in _context.Inputs
                         join b in _context.Storerooms on a.StoreroomId equals b.Id
                         join c in _context.Users on a.UserId equals c.Id
+                        orderby a.CreationTime descending
                         select new { a, b, c };
             //2. filter
             //if (!string.IsNullOrEmpty(request.keyword))
@@ -180,8 +186,8 @@ namespace storeroom.Application.Catalog.Inputs
             input.InputCode = request.InputCode;
             input.StoreroomId = request.StoreroomId;
             input.DeliveryUnit = request.DeliveryUnit;
-            input.Shipper= request.Shipper;
-            input.DateInput= request.DateInput;
+            input.Shipper = request.Shipper;
+            input.DateInput = request.DateInput;
             input.DateStatus = request.DateStatus;
             input.UserId = request.UserId;
             input.Description = request.Description;

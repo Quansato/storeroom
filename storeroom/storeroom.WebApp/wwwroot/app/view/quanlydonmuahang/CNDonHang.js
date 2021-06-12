@@ -114,7 +114,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                         listeners: {
                             blur: "blurMa"
                         }
-                    }, {
+                    }, /*{
                         margin: '0 0 0 0',
                         xtype: 'button',
                         reference: 'btnLaySo',
@@ -123,7 +123,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                         },
                         handler: 'onLaySoNhap',
                         text: 'Lấy số'
-                    }]
+                    }*/]
                 }, {
                     xtype: 'textfield',
                     margin: '0 5 0 5',
@@ -162,7 +162,10 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                     editable: false,
                     //readOnly: !abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager'),
                     displayField: 'name',
-                    bind: '{recordPhieu.status}',
+                    bind: {
+                        value: '{recordPhieu.status}',
+                        readOnly: '{recordPhieu.id==0}',
+                    },
                     valueField: 'value',
                     store: Ext.create('Ext.data.Store',
                         {
@@ -203,6 +206,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                     }, {
                         margin: '0 0 0 0',
                         xtype: 'button',
+                        ui: 'soft-blue',
                         bind: {
                             disabled: '{recordPhieu.status==1}'
                         },
@@ -459,52 +463,26 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                 width: 110
             }, {
                 text: 'Số lượng',
-                columns: [{
-                    text: 'Chứng từ',
-                    dataIndex: 'quantity',
-                    border: 1,
-                    style: 'text-align:center',
-                    align: 'right',
-                    width: 100,
-                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                        if (value != undefined && value != null) {
-                            return app.mUtils.fnFormatCurrency(value, 2);
-                        }
-                    },
-                    editor: {
-                        xtype: 'currencyfield',
-                        fieldStyle: 'text-align: right;'
-                    },
-                    summaryType: 'sum',
-                    summaryRenderer: function (value, summaryData, dataIndex) {
-                        if (value != undefined && value != null) {
-                            return app.mUtils.fnFormatCurrency(value, 2);
-                        }
+                dataIndex: 'quantity',
+                border: 1,
+                style: 'text-align:center',
+                align: 'right',
+                width: 100,
+                renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
+                    if (value != undefined && value != null) {
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
-                }, {
-                    text: 'Thực mua',
-                    dataIndex: 'soLuongThuc',
-                    border: 1,
-                    reference: 'clsoluongthuc',
-                    style: 'text-align:center',
-                    align: 'right',
-                    width: 100,
-                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
-                    },
-                    editor: {
-                        xtype: 'currencyfield',
-                        fieldStyle: 'text-align: right;'
-                    },
-                    summaryType: 'sum',
-                    summaryRenderer: function (value, summaryData, dataIndex) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
+                },
+                editor: {
+                    xtype: 'currencyfield',
+                    fieldStyle: 'text-align: right;'
+                },
+                summaryType: 'sum',
+                summaryRenderer: function (value, summaryData, dataIndex) {
+                    if (value != undefined && value != null) {
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
-                }]
+                }
             }, {
                 xtype: 'numbercolumn',
                 text: 'Đơn giá',
@@ -675,7 +653,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
         iconCls: 'fa fa-floppy-o',
         ui: 'soft-blue',
         bind: {
-            hidden: '{recordPhieu.status == 1}'
+            hidden: '{recordPhieu.status == 1 && record.id ==0}'
         },
         reference: 'btnThucHien',
         handler: 'onThucHien'

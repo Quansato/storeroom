@@ -145,7 +145,7 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
                         listeners: {
                             blur: "blurMa"
                         }
-                    }, {
+                    },/* {
                         margin: '5 0 0 0',
                         xtype: 'button',
                         reference: 'btnLaySoPhieu',
@@ -155,7 +155,7 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
                         handler: 'onLaySoNhap',
                         ui: "soft-blue",
                         text: 'Lấy số'
-                    }]
+                    }*/]
                 }, {
                     xtype: 'combo',
                     fieldLabel: 'Phân loại',
@@ -382,7 +382,6 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
                     return app.mUtils.fnFormatCurrency(value, 2);
                 }
             }
-
         }, {
             xtype: 'numbercolumn',
             text: 'Đơn giá',
@@ -838,6 +837,9 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
         console.log(editor)
         console.log(context)
         var record = context.record;
+        if (me.getViewModel().data.recordPhieu.get('id') == 0) {
+            return
+        }
         var soluongthuc = record.get('quantity');
         var dongia = record.get('price');
         if (soluongthuc != 0 || soluongthuc != null) {
@@ -960,7 +962,15 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
                 console.log(data)
                 me.getView().setLoading(true);
                 app.mUtils.fnPOSTAjax(url, data, function (res) {
-                    toastr.success("Thêm mới dl thành công!");
+                    if (res == -1) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Oops...',
+                            text: 'Mã phiếu đã tồn tại!',
+                        })
+                        me.getView().setLoading(false);
+                        return;
+                    }
                     me.getView().setLoading(false);
                     fnSauKhiLoad();
                     me.getView().doClose();

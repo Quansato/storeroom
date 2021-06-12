@@ -72,7 +72,7 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                 }
             }, {
                 xtype: 'gridcolumn',
-                dataIndex: 'displayName',
+                dataIndex: 'materialName',
                 cellWrap: true,
                 width: 200,
                 text: 'Tên',
@@ -82,7 +82,7 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
             }, {
                 xtype: 'datecolumn',
                 text: 'Thời điểm',
-                dataIndex: 'thoiDiem',
+                dataIndex: 'date',
                 style: 'text-align:center',
                 align: 'center',
                 width: 120,
@@ -100,7 +100,7 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                 text: 'Số lượng',
                 columns: [{
                     text: 'Lý thuyết',
-                    dataIndex: 'soLuongTonKhoLT',
+                    dataIndex: 'quantityLT',
                     border: 1,
                     style: 'text-align:center',
                     align: 'right',
@@ -112,7 +112,7 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                     }
                 }, {
                     text: 'Thực tế',
-                    dataIndex: 'soLuongTonKhoThuc',
+                    dataIndex: 'quantityTT',
                     border: 1,
                     reference: 'clsoluongthuc',
                     style: 'text-align:center',
@@ -278,18 +278,18 @@ Ext.define('Admin.view.danhmuckho.DSTonKhoController', {
         }
         //var store = me.ref.cbNam.getStore();
         //store.loadData(dataNam);
-        //me.ref.cbNam.setValue(new Date().getFullYear());
-        //me.clickTimKiemCK();
+        me.ref.cbNam.setValue(new Date());
+        me.clickTimKiemCK();
     },
 
-    //clickTimKiemCK: function () {
-    //    this.loadDataTonKho();
-    //},
+    clickTimKiemCK: function () {
+        this.loadDataTonKho();
+    },
 
-    //onChangeKho: function (combo, record, eOpts) {
-    //    var me = this;
-    //    me.loadDataTonKho();
-    //},
+    onChangeKho: function (combo, record, eOpts) {
+        var me = this;
+        me.loadDataTonKho();
+    },
 
 
     specialkey: function (field, e) {
@@ -328,56 +328,56 @@ Ext.define('Admin.view.danhmuckho.DSTonKhoController', {
     //    }
     //},
 
-    //loadDataTonKho: function (fnSauKhiLoad) {
-    //    var me = this;
-    //    var record = me.getViewModel().data.recordKho;
-    //    var filter = []
-    //    var store = me.storeinfo.storeTonDauKy;
-    //    var txtMaTen = me.ref.txtMaTen.getValue();
-    //    if (txtMaTen != "") {
-    //        filter.push({ name: "Filter", value: txtMaTen });
-    //    }
-    //    filter.push({ name: "maKho", value: record.get('id') });
-    //    filter.push({ name: "thoiDiem", value: me.ref.cbNam.getValue() + "-1-1" });
-    //    filter.push({ name: "Sorting", value: "vattu.Ma" });
-    //    var query = abp.utils.buildQueryString(filter);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoTonDauKy/GetAll" + query;
-    //    store.proxy.api.read = url;
-    //    store.pageSize = 25;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            if (records == null) {
-    //                store.removeAll();
-    //            }
-    //        }
-    //    });
-    //},
+    loadDataTonKho: function (fnSauKhiLoad) {
+        var me = this;
+        var record = me.getViewModel().data.recordKho;
+        var filter = {}
+        var store = me.storeinfo.storeTonDauKy;
+        //var txtMaTen = me.ref.txtMaTen.getValue();
+        //if (txtMaTen != "") {
+        //    filter.push({ name: "Filter", value: txtMaTen });
+        //}
+        filter.storeroomId = record.get('id');
+        filter.date = Ext.Date.format(me.ref.cbNam.getValue(), "Y-m-d") || me.ref.cbNam.getValue();
+        var query = app.mUtils.fnBuildQueryString(filter)
+        var url = "Inventory?" + query;
+        store.proxy.api.read = url;
+        store.pageSize = 25;
+        store.proxy.pageParam = undefined;
+        store.proxy.limitParam = undefined;
+        store.proxy.startParam = undefined;
+        store.load({
+            params: {
+                skipCount: 0,
+                maxResultCount: store.pageSize
+            },
+            scope: this,
+            callback: function (records, operation, success) {
+                console.log(store)
+                if (records == null) {
+                    store.removeAll();
+                }
+            }
+        });
+    },
 
-    //onThemChotKho: function () {
-    //    var me = this;
-    //    var nodesSelect = me.getViewModel().data.recordKho;
-    //    var wnd = Ext.create('Admin.view.danhmuckho.CNFormChotTon', {
-    //        title: app.localize("CMMSDMKhoChotTonDauKy") + ": " + nodesSelect.data.moTa,
-    //        viewModel: {
-    //            data: {
-    //                nam: me.ref.cbNam.getValue(),
-    //                recordKho: nodesSelect,
-    //                fnSauKhiLoad: function () {
-    //                    me.loadDataTonKho();
-    //                }
-    //            }
-    //        }
-    //    });
-    //    wnd.show();
-    //},
+    onThemChotKho: function () {
+        var me = this;
+        var nodesSelect = me.getViewModel().data.recordKho;
+        var wnd = Ext.create('Admin.view.danhmuckho.CNFormChotTon', {
+            title: 'Chốt tồn đầu kỳ' + ": " + nodesSelect.data.moTa,
+            viewModel: {
+                data: {
+                    nam: me.ref.cbNam.getValue(),
+                    recordKho: nodesSelect,
+                    fnSauKhiLoad: function () {
+                        me.loadDataTonKho();
+                    }
+                }
+            }
+        });
+        wnd.show();
+    },
 
     //onImportDanhSach: function () {
     //    var me = this;

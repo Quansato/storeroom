@@ -317,6 +317,7 @@ namespace storeroom.Application.Catalog.Materials
                            MaterialId = x.a.MaterialId,
                            MaterialCode = x.c.MaterialCode,
                            DisplayName = x.c.DisplayName,
+                           Price=x.c.Price,
                            UnitName = x.b.DisplayName,
                            Quantity = x.a.Quantity,
                            QuantityMax = x.a.QuantityMax,

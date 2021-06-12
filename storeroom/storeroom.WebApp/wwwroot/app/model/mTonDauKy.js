@@ -11,14 +11,36 @@
         { name: 'isDeleted', type: 'bool', defaultValue: null, allowNull: true },
         { name: 'deleterUserId', type: 'int', defaultValue: null, allowNull: true },
         { name: 'deletionTime', type: 'date', defaultValue: null, allowNull: true },
-        { name: 'maKho', type: 'string' },
-        { name: 'maVatTu', type: 'string' },
-        { name: 'thoiDiem', type: 'date', defaultValue: null, useNull: true },
-        { name: 'soLuongTonKhoLT', type: 'float', defaultValue: null, allowNull: true },
-        { name: 'soLuongTonKhoThuc', type: 'float', defaultValue: null, allowNull: true },
-        { name: 'lyDo', type: 'string' },
-        { name: 'vatTu', type: 'string' },
-        { name: 'tenVatTu', type: 'string' },
-        { name: 'donViTinh', type: 'string' }
+        { name: 'storeroomId', type: 'int' },
+        { name: 'materialId', type: 'int' },
+        { name: 'date', type: 'date', defaultValue: null, useNull: true },
+        { name: 'quantityLT', type: 'int', defaultValue: null, allowNull: true },
+        {
+            name: 'quantity', type: 'int',
+            convert: function (value, record) {
+                var total = record.get('quantityLT');
+                return total
+            }
+        },
+        { name: 'quantityTT', type: 'int', defaultValue: null, allowNull: true },
+        {
+            name: 'quantityReal', type: 'int',
+            convert: function (value, record) {
+                var total = record.get('quantityTT');
+                return total
+            }
+        },
+        { name: 'description', type: 'string' },
+        {name:'price',type:'float'},
+        { name: 'materialCode', type: 'string' },
+        { name: 'materialName', type: 'string' },
+        {
+            name: 'displayName', type: 'string',
+            convert: function (value, record) {
+                var total = record.get('materialName');
+                return total
+            }
+        },
+        { name: 'unitName', type: 'string' }
     ]
 });

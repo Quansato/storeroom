@@ -328,5 +328,8 @@
         //app.session = response;
         return response;
     })
+    app.mUtils.fnGETAjax('api/Dashboard', function (response) {
+        sessionStorage.setItem("data", JSON.stringify(response))
+    })
     console.log(1);
 })();

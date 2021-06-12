@@ -45,7 +45,7 @@
                 '->',
                 {
                     ui: 'header',
-                    html: '<div style="padding-top: 10px;"><img style="width:35px;height:35px;margin-right:10px;float: left;margin-top: -5px;" src="/resources/images/user-profile/avatar.jpg"><span style="font-weight: bold;line-height: 25px;margin: 0px;font-size:14px;">' + app.session != undefined ? app.session.lastName : ""+ '</span></div>',
+                    html: '<div style="padding-top: 10px;"><img style="width:35px;height:35px;margin-right:10px;float: left;margin-top: -5px;" src="/resources/images/user-profile/avatar.jpg"><span style="font-weight: bold;line-height: 25px;margin: 0px;font-size:14px;">' + app.session != undefined ? app.session.lastName + ' ' + app.session.firstName: ""+ '</span></div>',
                     menuAlign: 'tr-br?',
                     menu: {
                         xtype: 'menu',

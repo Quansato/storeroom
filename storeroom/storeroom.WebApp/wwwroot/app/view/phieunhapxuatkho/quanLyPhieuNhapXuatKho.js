@@ -143,7 +143,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                     flex: 1,
                     combineErrors: true,
                     defaults: {
-                        margin: '5 0 0 0',
+                        margin: '5 0 5 0',
                         labelAlign: 'right'
                     },
                     items: [{
@@ -276,43 +276,23 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                 width: 100
             }, {
                 text: 'Số lượng',
-                columns: [{
-                    text: 'Chứng từ',
-                    dataIndex: 'soLuong',
-                    border: 1,
-                    style: 'text-align:center',
-                    align: 'right',
-                    width: 120,
-                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
-                    },
-                    summaryType: 'sum',
-                    summaryRenderer: function (value, summaryData, dataIndex) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
+
+                dataIndex: 'soLuong',
+                border: 1,
+                style: 'text-align:center',
+                align: 'right',
+                width: 120,
+                renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
+                    if (value != undefined && value != null) {
+                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
                     }
-                }, {
-                    text: 'Thực xuất',
-                    dataIndex: 'soLuongThuc',
-                    border: 1,
-                    style: 'text-align:center',
-                    align: 'right',
-                    width: 120,
-                    renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
-                    },
-                    summaryType: 'sum',
-                    summaryRenderer: function (value, summaryData, dataIndex) {
-                        if (value != undefined && value != null) {
-                            //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
-                        }
+                },
+                summaryType: 'sum',
+                summaryRenderer: function (value, summaryData, dataIndex) {
+                    if (value != undefined && value != null) {
+                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
                     }
-                }]
+                }
             }, {
                 xtype: 'numbercolumn',
                 text: 'Đơn giá',
@@ -1027,10 +1007,10 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
             return;
         }
         var nodesSelect = me.ref.cbkho.getSelection();
-        me.ref.coluonSoLuongHong.setVisible(false);
-        if (nodesSelect && nodesSelect.data.phanloai == 1) {
-            me.ref.coluonSoLuongHong.setVisible(true);
-        }
+        //me.ref.coluonSoLuongHong.setVisible(false);
+        //if (nodesSelect && nodesSelect.data.phanloai == 1) {
+        //    me.ref.coluonSoLuongHong.setVisible(true);
+        //}
         me.ref.btnHuyPhieuNhap.setVisible(true);
         me.ref.btnSuaPhieuNhap.setText("Sửa");
         if (selected[0].get('description') == 'Điều chuyển') {

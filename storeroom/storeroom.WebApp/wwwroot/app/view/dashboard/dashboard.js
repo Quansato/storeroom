@@ -39,7 +39,7 @@ Ext.define("Admin.view.dashboard.dashboard", {
         margin: '5 5 5 5',
         userCls: 'big-60 small-100',
         height: 420,
-        cls:'shadow',
+        cls: 'shadow',
         title: 'Chi phí ước tính',
         ui: 'light',
         iconCls: 'x-fa fa-bar-chart-o',
@@ -62,10 +62,10 @@ Ext.define("Admin.view.dashboard.dashboard", {
         bodyPadding: 15,
         ui: 'light',
         iconCls: 'x-fa fa-list',
-        cls:'shadow',
+        cls: 'shadow',
         items: [{
             xtype: 'component',
-            html: '<div style="text-align:center;font-size:50px;font-weight:600">900</div>'
+            html: '<div id="material" style="text-align:center;font-size:50px;font-weight:600">900</div>'
         }]
     },
     {
@@ -77,7 +77,7 @@ Ext.define("Admin.view.dashboard.dashboard", {
         bodyPadding: 15,
         ui: 'light',
         iconCls: 'x-fa fa-user',
-        cls:'shadow',
+        cls: 'shadow',
         items: [{
             xtype: 'component',
             html: '<div style="text-align:center;font-size:50px;font-weight:600">900</div>'
@@ -89,12 +89,12 @@ Ext.define("Admin.view.dashboard.dashboard", {
         height: 100,
         title: 'Doanh số xuất kho',
         bodyPadding: 15,
-        cls:'shadow',
+        cls: 'shadow',
         ui: 'light',
         iconCls: 'x-fa fa-user',
         items: [{
             xtype: 'component',
-            html: '<div style="text-align:center;font-size:50px;font-weight:600">900.000 VND</div>'
+            html: '<div id="value" style="text-align:center;font-size:50px;font-weight:600">900.000 VND</div>'
         }]
     },
     {
@@ -103,7 +103,7 @@ Ext.define("Admin.view.dashboard.dashboard", {
         userCls: 'big-40 small-100',
         height: 200,
         ui: 'light',
-        cls:'shadow',
+        cls: 'shadow',
         items: [{
             xtype: 'component',
             html: '<div>' +
@@ -121,9 +121,9 @@ Ext.define("Admin.view.dashboard.dashboard", {
         userCls: 'big-50 small-100',
         height: 300,
         title: 'Doanh số xuất kho',
-        bodyPadding: 15,
+        //bodyPadding: 15,
         ui: 'light',
-        cls:'shadow',
+        cls: 'shadow',
         reference: 'panelDonHang',
         flex: 1,
         ui: 'light',
@@ -172,27 +172,9 @@ Ext.define("Admin.view.dashboard.dashboard", {
             width: 120
         }, {
             xtype: 'gridcolumn',
-            text: 'Người mua',
-            dataIndex: 'userName',
-            sortable: true,
-            flex: 1
-        }, {
-            xtype: 'gridcolumn',
-            text: 'Đơn vị cung cấp',
-            dataIndex: 'suplierName',
-            sortable: true,
-            flex: 1
-        }, {
-            xtype: 'gridcolumn',
-            text: 'Lý do',
-            dataIndex: 'nameOfOrder',
-            sortable: true,
-            flex: 1
-        }, {
-            xtype: 'gridcolumn',
             text: 'Tình trạng đơn',
             dataIndex: 'status',
-            width: 120,
+            width: 200  ,
             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                 if (value == null || value == 0) {
                     return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell unassigned">' + 'Chờ duyệt' + '</div>'
@@ -212,7 +194,7 @@ Ext.define("Admin.view.dashboard.dashboard", {
         margin: '5 5 5 5',
         userCls: 'big-50 small-100',
         height: 300,
-        cls:'shadow',
+        cls: 'shadow',
         title: 'Vật tư',
         ui: 'light',
         iconCls: 'x-fa fa-bar-chart-o',
@@ -240,6 +222,7 @@ Ext.define("Admin.view.dashboard.dashboardController", {
     refs: null,
     init: function () {
         var me = this;
+        me.data = null;
         me.callParent(arguments);
     },
 
@@ -247,6 +230,15 @@ Ext.define("Admin.view.dashboard.dashboardController", {
         var me = this;
         me.refs = me.getReferences();
         me.storeInfo = me.getViewModel().storeInfo;
+        console.log(JSON.parse(sessionStorage.getItem('data')))
+        app.mUtils.fnGETAjax('api/Dashboard', function (response) {
+            me.data = response
+            document.getElementById('value').innerHTML = me.data.totalReveneuOutput + 'VNĐ'
+            document.getElementById('material').innerHTML = me.data.totalMaterial
+            me.storeInfo.storeDonHang.loadData(me.data.purchaseOrders)
+
+            console.log(me.data)
+        })
         //me.onLoadBarChart();
     },
 
@@ -339,21 +331,41 @@ Ext.define("Admin.view.dashboard.dashboardController", {
     },
 
     onPieChart: function () {
+        var me = this;
         const DATA_COUNT = 5;
+        const dataPie = JSON.parse(sessionStorage.getItem('data'));
+        var label = dataPie.materials.map(x => x.materialCode);
+        var dataSet = dataPie.materials.map(x => x.quantity);
+        console.log(label)
         const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
 
         const data = {
-            labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+            labels: label,
             datasets: [
                 {
                     label: 'Dataset 1',
-                    data: [65, 59, 80, 81],
+                    data: dataSet,
                     backgroundColor: [
-                        'red',
-                        'blue',
-                        'yellow',
-                        'green',
-                        'orange',
+                        '#1abc9c',
+                        '#2ecc71',
+                        '#3498db',
+                        '#9b59b6',
+                        '#34495e',
+                        '#16a085',
+                        '#27ae60',
+                        '#2980b9',
+                        '#8e44ad',
+                        '#2c3e50',
+                        '#f1c40f',
+                        '#e67e22',
+                        '#95a5a6',
+                        '#f39c12',
+                        '#f39c12',
+                        '#d35400',
+                        '#c0392b',
+                        '#bdc3c7',
+                        '#7f8c8d',
+                        '#192a56'
                     ],
                 }
             ]
@@ -416,7 +428,7 @@ Ext.define("Admin.view.dashboard.dashboardController", {
             },
         };
 
-         var myChart = new Chart(
+        var myChart = new Chart(
             document.getElementById('myLineChart'),
             config
         );

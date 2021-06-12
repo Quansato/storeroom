@@ -78,6 +78,7 @@ namespace storeroom.Application.Catalog.PurchaseOrders
                         join b in _context.Storerooms on a.StoreroomId equals b.Id
                         join c in _context.Supliers on a.SuplierId equals c.Id
                         join d in _context.Users on a.UserId equals d.Id
+                        orderby a.Date descending
                         select new { a, b, c, d };
             //2. filter
             //if (!string.IsNullOrEmpty(request.keyword))

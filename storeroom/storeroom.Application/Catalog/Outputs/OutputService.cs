@@ -20,6 +20,11 @@ namespace storeroom.Application.Catalog.Outputs
         }
         public async Task<int> Create(OutputCreateRequest request)
         {
+            var outputExist = await _context.Outputs.FirstOrDefaultAsync(x => x.OutputCode == request.OutputCode);
+            if (outputExist != null)
+            {
+                return -1;
+            }
             if (request.StoreroomReceiveId != 0)
             {
                 var output = new Output()
@@ -87,6 +92,7 @@ namespace storeroom.Application.Catalog.Outputs
             var query = from a in _context.Outputs
                         join b in _context.Storerooms on a.StoreroomId equals b.Id
                         join c in _context.Users on a.UserId equals c.Id
+                        orderby a.CreationTime descending
                         select new { a, b, c };
             //2. filter
             //if (!string.IsNullOrEmpty(request.keyword))

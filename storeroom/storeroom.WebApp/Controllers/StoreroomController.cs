@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using storeroom.Application.Catalog.Storerooms;
 using storeroom.Application.Catalog.Storerooms.Dtos;
+using storeroom.Application.Catalog.Storerooms.InventoryDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,27 @@ namespace storeroom.WebApp.Controllers
         public async Task<IActionResult> Delete(int ma)
         {
             var result = await _storeroomService.Delete(ma);
+            return Ok(result);
+        }
+
+
+        [HttpGet("/Inventory")]
+        public async Task<IActionResult> GetInventory(string keyword, DateTime? date, int? storeroomId)
+        {
+            var materialgroups = await _storeroomService.GetInventoryDetail(keyword,date,storeroomId);
+            return Ok(materialgroups);
+        }
+
+        [HttpPost("Inventory")]
+        public async Task<IActionResult> CreateInventory(InventoryCreateRequest request)
+        {
+            var result = await _storeroomService.CreateInventory(request);
+            return Ok(result);
+        }
+        [HttpPut("Inventory/Detail")]
+        public async Task<IActionResult> UpdateInventory(InventoryDetailViewModel request)
+        {
+            var result = await _storeroomService.UpdateInventoryDetail(request);
             return Ok(result);
         }
     }

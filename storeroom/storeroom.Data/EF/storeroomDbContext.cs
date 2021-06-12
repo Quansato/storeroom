@@ -38,6 +38,8 @@ namespace storeroom.Data.EF
             modelBuilder.ApplyConfiguration(new AppUserConfiguration());
             modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
             modelBuilder.ApplyConfiguration(new MaterialImageConfiguration());
+            modelBuilder.ApplyConfiguration(new InventoryConfiguration());
+            modelBuilder.ApplyConfiguration(new InventoryDetailConfiguration());
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
             modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new { x.UserId, x.RoleId });
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
@@ -65,5 +67,8 @@ namespace storeroom.Data.EF
         public DbSet<PurchaseProposal> PurchaseProposals { get; set; }
         public DbSet<MaterialPurchaseProposal> MaterialPurchaseProposals { get; set; }
         public DbSet<MaterialImage> MaterialImages { get; set; }
+        public DbSet<Inventory> Inventories { get; set; }
+        public DbSet<InventoryDetail> InventoryDetails { get; set; }
+
     }
 }
