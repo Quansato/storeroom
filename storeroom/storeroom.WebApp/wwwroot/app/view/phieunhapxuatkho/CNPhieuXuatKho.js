@@ -920,27 +920,27 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKhoController', {
         wnd.show();
     },
 
-    //onEditGrid: function (editor, context, eOpts) {
-    //    var me = this;
-    //    var record = context.record;
-    //    if (me.getViewModel().data.dataVatTu.length > 0) {
-    //        var dongia = record.get('donGia');
-    //        if (record.get('soLuongThuc') != 0 || record.get('soLuongThuc') != null) {
-    //            var tt = record.get('soLuongThuc') * dongia;
-    //            record.set('thanhtien', tt)
-    //            record.commit();
+    onEditGrid: function (editor, context, eOpts) {
+        var me = this;
+        var record = context.record;
+        if (me.getViewModel().data.dataVatTu.length > 0) {
+            var dongia = record.get('donGia');
+            if (record.get('soLuongThuc') != 0 || record.get('soLuongThuc') != null) {
+                var tt = record.get('soLuongThuc') * dongia;
+                record.set('thanhtien', tt)
+                record.commit();
 
-    //        }
-    //        return;
-    //    }
-    //    var dongia = record.get('donGia');
-    //    if (record.get('soLuongThuc') != 0 || record.get('soLuongThuc') != null) {
-    //        var tt = record.get('soLuongThuc') * dongia;
-    //        record.set('thanhTien', tt)
-    //        record.commit();
-    //    }
-    //    me.checkThayDoiChiTiet = true;
-    //},
+            }
+            return;
+        }
+        var dongia = record.get('donGia');
+        if (record.get('soLuongThuc') != 0 || record.get('soLuongThuc') != null) {
+            var tt = record.get('soLuongThuc') * dongia;
+            record.set('thanhTien', tt)
+            record.commit();
+        }
+        me.checkThayDoiChiTiet = true;
+    },
 
     beforeedit: function (editor, context, eOpts) {
         var me = this;

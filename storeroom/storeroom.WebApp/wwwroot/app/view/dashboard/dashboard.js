@@ -18,12 +18,7 @@ Ext.define("Admin.view.dashboard.dashboard", {
     xtype: "dashboard",
     requires: ["Admin.view.dashboard.dashboardController",
         "Admin.view.dashboard.dashboardModel",
-        "Ext.ux.layout.ResponsiveColumn",
-        "Ext.chart.CartesianChart",
-        "Ext.chart.axis.Numeric",
-        "Ext.chart.axis.Category",
-        "Ext.chart.series.Bar",
-        "Ext.chart.interactions.ItemEdit"],
+        "Ext.ux.layout.ResponsiveColumn"],
     controller: "dashboard",
     viewModel: {
         type: "dashboard"

@@ -9,7 +9,7 @@
     },
     stores: {
         storeUser: { type: 'sdsthanhvien' },
-        storeQuyen: { type: 'sdsQuyen' }
+        //storeQuyen: { type: 'sdsQuyen' }
     }
 });
 
@@ -38,7 +38,7 @@ Ext.define('Admin.view.users.dsUsers', {
             xtype: 'grid',
             layout: 'fit',
             flex: 1,
-            title: app.localize('UsersHeaderInfo'),
+            title: 'Danh sách người dùng',
             iconCls: 'x-fa fa-users',
             cls: 'user-grid',
             ui: 'light',
@@ -84,7 +84,7 @@ Ext.define('Admin.view.users.dsUsers', {
                 cellWrap: true,
                 align: 'left',
                 style: 'text-align:left',
-                dataIndex: 'name'
+                dataIndex: 'firstName'
             }, {
                 xtype: 'gridcolumn',
                 text: 'Tên',
@@ -92,7 +92,7 @@ Ext.define('Admin.view.users.dsUsers', {
                 cellWrap: true,
                 align: 'left',
                 style: 'text-align:left',
-                dataIndex: 'surname'
+                dataIndex: 'lastName'
             }, {
                 xtype: 'gridcolumn',
                 text: 'Vai trò',
@@ -117,7 +117,7 @@ Ext.define('Admin.view.users.dsUsers', {
                 cellWrap: true,
                 align: 'left',
                 style: 'text-align:left',
-                dataIndex: 'emailAddress'
+                dataIndex: 'email'
             }, {
                 xtype: 'gridcolumn',
                 text: 'Xác thực email',
@@ -127,9 +127,9 @@ Ext.define('Admin.view.users.dsUsers', {
                 //style: 'text-align:left',
                 dataIndex: 'isEmailConfirmed',
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    var text = text = '<span class="label kt-badge kt-badge--dark kt-badge--inline">' + app.localize('No') + '</span>'
+                    var text = text = '<span class="label kt-badge kt-badge--dark kt-badge--inline">Có</span>'
                     if (value) {
-                        text = '<span class="label kt-badge kt-badge--success kt-badge--inline">' + app.localize('Yes') + "</span>";
+                        text = '<span class="label kt-badge kt-badge--success kt-badge--inline">Không</span>';
                     }
                     return text;
                 }
@@ -209,7 +209,7 @@ Ext.define('Admin.view.users.dsUsers', {
                                 layout: 'hbox',
                                 items: [{
                                     labelWidth: 135,
-                                    fieldLabel: app.localize('OnlyLockedUsers'),
+                                    fieldLabel: 'Người dùng bị khoá',
                                     xtype: 'checkboxfield',
                                     margin: '5 5 5 5',
                                     reference: 'checkboxonlyLockedUsers',
@@ -217,7 +217,7 @@ Ext.define('Admin.view.users.dsUsers', {
                                 }, {
                                     xtype: 'button',
                                     margin: '5 5 5 5',
-                                    text: app.localize('Search'),
+                                    text: 'Tìm kiếm',
                                     iconCls: 'fa fa-search',
                                     handler: 'onTimKiem'
                                 }]
@@ -255,7 +255,7 @@ Ext.define('Admin.view.users.dsUsers', {
                             iconCls: 'fa fa-ban',
                             reference: 'btnPermissionsUsers',
                             bind: { disabled: '{!selectionUsers}' },
-                            text: app.localize('Permissions'),
+                            text: 'Quyền',
                             ui: 'soft-green',
                             //hidden: !abp.auth.hasPermission('Pages.Administration.Users.ChangePermissions'),
                             tooltip: 'Quyền',
@@ -296,9 +296,9 @@ Ext.define('Admin.view.users.dsUsers', {
                                         ui: 'blue',
                                         reference: 'btnUnlockUsers',
                                         bind: { disabled: '{!selectionUsers}' },
-                                        text: app.localize('Unlock'),
+                                        text: 'Mở khoá',
                                         //hidden: !abp.auth.hasPermission('Pages.Administration.Users.Unlock'),
-                                        tooltip: app.localize('Unlock'),
+                                        tooltip: 'Mở khoá',
                                         handler: 'onUnlockUsers'
                                     }
                                 ]
@@ -312,7 +312,7 @@ Ext.define('Admin.view.users.dsUsers', {
                                 store: '{storeUser}'
                             },
                             style: 'padding: 0px !important',
-                            lastText: app.localize("ExtLastText"),
+                            /*lastText: app.localize("ExtLastText"),
                             prevText: app.localize("ExtPrevText"),
                             firstText: app.localize("ExtFirstText"),
                             nextText: app.localize("ExtNextText"),
@@ -320,7 +320,7 @@ Ext.define('Admin.view.users.dsUsers', {
                             beforePageText: app.localize('ExtBeforePageText'),
                             afterPageText: app.localize('ExtAfterPageText'),
                             displayMsg: app.localize('ExtDisplayMsg'),
-                            emptyMsg: app.localize("ExtEmptyMsg"),
+                            emptyMsg: app.localize("ExtEmptyMsg"),*/
                             listeners: {
                                 beforechange: function (page, currentPage) {
                                     //--- Get Proxy ------//
@@ -350,7 +350,6 @@ Ext.define('Admin.view.users.dsUsersController', {
     ref: null,
     dataUnit: [],
     storeInfo: null,
-    _userService: abp.services.app.userNew,
     init: function () {
         var me = this;
         me.storeInfo = me.getViewModel().storeInfo;
@@ -359,7 +358,7 @@ Ext.define('Admin.view.users.dsUsersController', {
 
     onAfterrender: function () {
         var me = this;
-        me.onLoadQuyen();
+        //me.onLoadQuyen();
         me.onTimKiem();
         //  var html =
         // me.ref.btnImportToExcelUsers.setHtml(html)
@@ -392,19 +391,19 @@ Ext.define('Admin.view.users.dsUsersController', {
     onLoadDSUsers: function () {
         var me = this;
         var filter = "";
-        var OnlyLockedUsers = me.ref.checkboxonlyLockedUsers.getValue();
-        var txtSeach = me.ref.txtSeach.getValue();
-        if (me.ref.txtSeach.getValue() != "") {
-            filter = me.ref.txtSeach.getValue();
-        }
-        var queryparam = abp.utils.buildQueryString([
-            { name: 'filter', value: txtSeach },
-            { name: 'permissions', value: "" },
-            { name: 'role', value: me.ref.cboQuyen.getValue() == -1 ? "" : me.ref.cboQuyen.getValue() },
-            { name: 'onlyLockedUsers', value: OnlyLockedUsers }
-        ]);
-        var url = abp.appPath + 'api/services/app/UserNew/GetUsers' + queryparam + '';
+        //var OnlyLockedUsers = me.ref.checkboxonlyLockedUsers.getValue();
+        //var txtSeach = me.ref.txtSeach.getValue();
+        //if (me.ref.txtSeach.getValue() != "") {
+        //    filter = me.ref.txtSeach.getValue();
+        //}
+        //var queryparam = abp.utils.buildQueryString([
+        //    { name: 'filter', value: txtSeach },
+        //    { name: 'permissions', value: "" },
+        //    { name: 'role', value: me.ref.cboQuyen.getValue() == -1 ? "" : me.ref.cboQuyen.getValue() },
+        //    { name: 'onlyLockedUsers', value: OnlyLockedUsers }
+        //]);
         var storeUser = me.storeInfo.storeUser;
+        var url = "https://localhost:44390/api/User/paging?PageIndex=1&PageSize=25";
         storeUser.proxy.api.read = url;
         storeUser.currentPage = 1;
         storeUser.proxy.pageParam = undefined;
@@ -448,20 +447,20 @@ Ext.define('Admin.view.users.dsUsersController', {
         var me = this;
         var record = Ext.create('Admin.model.mThanhVien');
         record.set('id', 0);
-        var _userService = abp.services.app.userNew;
-        _userService.getUserForEdit({}).done(function (result) {
-            record.set('password', '');
-            record.set('roles', result.roles);
-            record.set('SetRandomPassword', false);
-            record.set('shouldChangePasswordOnNextLogin', true);
-            record.set('sendActivationEmail', true);
-            record.set('isActive', true);
-            record.set('isTwoFactorEnabled', true);
-            record.set('isLockoutEnabled', true);
-            record.set('organizationUnits', result.allOrganizationUnits);
-            record.set('memberedOrganizationUnits', result.memberedOrganizationUnits);
+        //var _userService = abp.services.app.userNew;
+        //_userService.getUserForEdit({}).done(function (result) {
+            //record.set('password', '');
+            //record.set('roles', result.roles);
+            //record.set('SetRandomPassword', false);
+            //record.set('shouldChangePasswordOnNextLogin', true);
+            //record.set('sendActivationEmail', true);
+            //record.set('isActive', true);
+            //record.set('isTwoFactorEnabled', true);
+            //record.set('isLockoutEnabled', true);
+            //record.set('organizationUnits', result.allOrganizationUnits);
+            //record.set('memberedOrganizationUnits', result.memberedOrganizationUnits);
             var wnd = Ext.create('Admin.view.users.cnUsers', {
-                title: app.localize('CreateNewUser'),
+                title: 'Thêm mới người dùng',
                 wnd: wnd,
                 viewModel: {
                     data: {
@@ -473,8 +472,8 @@ Ext.define('Admin.view.users.dsUsersController', {
                 }
             });
             wnd.show();
-        }).fail(function (err) {
-        });
+        //}).fail(function (err) {
+        //});
     },
 
     onEditUsers: function () {

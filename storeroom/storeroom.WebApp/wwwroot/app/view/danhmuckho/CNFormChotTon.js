@@ -222,6 +222,7 @@ Ext.define('Admin.view.danhmuckho.CNFormChotTon', {
                             }, {
                                 xtype: 'button',
                                 name: 'btnXemTonDauKy',
+                                ui: 'soft-blue',
                                 iconCls: 'fa fa-search-plus',
                                 margin: '0 5 0 5',
                                 text: 'Xem tồn đầu kỳ',
@@ -274,12 +275,14 @@ Ext.define('Admin.view.danhmuckho.CNFormChotTon', {
                 }, {
                     text: 'Lưu thông tin',
                     handler: 'clickThucHienChotKho',
+                    ui: 'soft-blue',
                     reference: 'btnLuu',
                     //hidden: !(abp.auth.hasPermission('CMMS.Inventory.Kho.Edit') || abp.auth.hasPermission('CMMS.Inventory.Kho.Manager')),
                     bind: { disabled: '{!selectionChuaChot}' },
                     iconCls: 'x-fa fa-floppy-o'
                 }, {
                     text: 'Huỷ bỏ',
+                    ui: 'soft-blue',
                     handler: function () {
                         this.up('window').close();
                     },
@@ -355,10 +358,10 @@ Ext.define('Admin.view.danhmuckho.CNFormChotTonController', {
         });
         var dataExcel = me.getViewModel().data.dataExcel;
         //  storeDC.loadData(dataDSCHungLoai);
-      /*  var filter = []
-        filter.push({ name: "maKho", value: nodesSelect.get('id') });
-        filter.push({ name: "thoiDiem", value: Ext.Date.format(me.ref.dateNam.getValue(), 'Y/m/d') });
-        var query = abp.utils.buildQueryString(filter);*/
+        /*  var filter = []
+          filter.push({ name: "maKho", value: nodesSelect.get('id') });
+          filter.push({ name: "thoiDiem", value: Ext.Date.format(me.ref.dateNam.getValue(), 'Y/m/d') });
+          var query = abp.utils.buildQueryString(filter);*/
         var url = "api/Material/materialStoreroom/paging?page=1&start=0&limit=25&storeroomId=" + nodesSelect.get('id');
         store.proxy.api.read = url;
         store.pageSize = 10005;
@@ -375,11 +378,11 @@ Ext.define('Admin.view.danhmuckho.CNFormChotTonController', {
                 if (records == null) {
                     store.removeAll();
                 } else {
-                console.log(store.data.items)
+                    console.log(store.data.items)
                     for (var record of store.data.items) {
                         console.log(record);
-                    record.set('date', Ext.Date.format(me.ref.dateNam.getValue(), 'Y/m/d'))
-                    record.set('quantityReal',record.get('quantity'))
+                        record.set('date', Ext.Date.format(me.ref.dateNam.getValue(), 'Y/m/d'))
+                        record.set('quantityReal', record.get('quantity'))
                     }
                     if (dataExcel)
                         for (var i = 0; i < dataExcel.length; i++) {
@@ -428,19 +431,27 @@ Ext.define('Admin.view.danhmuckho.CNFormChotTonController', {
         //    return
         //}
         data.storeroomId = me.getViewModel().data.recordKho.get('id');
-        data.date = Ext.Date.format(me.ref.dateNam.getValue(), "Y-m-d")||me.ref.dateNam.getValue();
+        data.date = Ext.Date.format(me.ref.dateNam.getValue(), "Y-m-d") || me.ref.dateNam.getValue();
         data.createdBy = 'Quản trị';
         data.inventoryDetails = arrValue;
         me.getView().setLoading(true);
         var url = "api/Storeroom/Inventory"
         app.mUtils.fnPOSTAjax(url, data, function (response) {
             me.getView().setLoading(false);
+            if (response == -1) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Thông báo',
+                    text: 'Ngày hôm nay đã chốt tồn kho, không thể chốt tồn thêm!',
+                })
+                return;
+            }
             toastr.success('Chốt tồn kho thành công');
             if (fnSauKhiLoad)
                 fnSauKhiLoad()
             me.getView().close();
         })
-        
+
     },
 
     onChangeTextSearch: function (button) {

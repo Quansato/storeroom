@@ -56,7 +56,7 @@ Ext.define('Admin.view.users.cnUsers', {
                 items: [
                     {
                         xtype: 'form',
-                        title: app.localize('UserInformations'),
+                        title: 'Thông tin người dùng',
                         reference: 'frmUsers',
                         bodyPadding: 0,
                         layout: {
@@ -81,32 +81,32 @@ Ext.define('Admin.view.users.cnUsers', {
                                     flex: 1,
                                     items: [{
                                         xtype: 'textfield',
-                                        fieldLabel: app.localize('Name') + app.eKMapConsts.var_required,
+                                        fieldLabel: 'Tên',
                                         margin: '5 5 5 5',
                                         labelAlign: 'right',
                                         bind: '{record.name}',
                                         labelWidth: 130,
                                         allowBlank: false,
-                                        blankText: app.localize('Name') + app.localize('ExtNotText')
+                                        blankText: 'Tên không được để trống'
                                     }, {
-                                        fieldLabel: app.localize('Surname') + app.eKMapConsts.var_required,
+                                        fieldLabel: 'Họ', 
                                         xtype: 'textfield',
                                         labelAlign: 'right',
                                         labelWidth: 130,
                                         margin: '5 5 5 5',
                                         allowBlank: false,
-                                        blankText: app.localize('surname') + app.localize('ExtNotText'),
+                                        blankText: 'Họ không được để trống',
                                         bind: '{record.surname}'
                                     }]
                                 }]
                             },
                             {
-                                fieldLabel: app.localize('EmailAddress') + app.eKMapConsts.var_required,
+                                fieldLabel: 'Địa chỉ Email',
                                 allowBlank: false,
-                                blankText: app.localize('EmailAddress') + app.localize('ExtNotText'),
+                                blankText: 'Địa chỉ Email không được để trống',
                                 vtype: 'email',
                                 labelAlign: 'right',
-                                vtypeText: app.localize('ExtEmailFormat'),
+                                vtypeText: 'email',
                                 xtype: 'textfield',
                                 labelWidth: 130,
                                 margin: '5 5 5 5',
@@ -117,8 +117,8 @@ Ext.define('Admin.view.users.cnUsers', {
                                 labelWidth: 130,
                                 labelAlign: 'right',
                                 maxLength: 64,
-                                fieldLabel: app.localize('PhoneNumber'),
-                                emptyText: app.localize('PhoneNumber'),
+                                fieldLabel: 'Số điện thoại',
+                                emptyText: 'Số điện thoại',
                                 bind: '{record.phoneNumber}'
                             }, {
                                 xtype: 'textfield',
@@ -127,10 +127,10 @@ Ext.define('Admin.view.users.cnUsers', {
                                 labelAlign: 'right',
                                 reference: 'txtUserName',
                                 allowBlank: false,
-                                blankText: app.localize('UserName') + app.localize('ExtNotText'),
+                                blankText: 'Tên đăng nhập không được để trống',
                                 maxLength: 256,
-                                fieldLabel: app.localize('UserName') + app.eKMapConsts.var_required,
-                                emptyText: app.localize('UserName'),
+                                fieldLabel: 'Tên đăng nhập',
+                                emptyText: 'Tên đăng nhập',
                                 bind: '{record.userName}'
                             }, {
                                 xtype: 'container',
@@ -173,30 +173,30 @@ Ext.define('Admin.view.users.cnUsers', {
                                     autoComplete: true,
                                     autoCapitalize: true,
                                     allowBlank: false,
-                                    blankText: app.localize('password') + app.localize('ExtNotText'),
+                                    blankText: 'Mật khẩu không được để trống',
                                     margin: '5 5 5 5',
                                     labelAlign: 'right',
                                     minLength: 3,
                                     autoCorrect: true,
                                     labelWidth: 130,
                                     maxLength: 256,
-                                    fieldLabel: app.localize('Password') + app.eKMapConsts.var_required,
-                                    emptyText: app.localize('Password'),
+                                    fieldLabel: 'Mật khẩu',
+                                    emptyText: 'Mật khẩu',
                                     bind: '{record.password}'
                                 }, {
                                     xtype: 'textfield',
                                     margin: '5 5 5 5',
                                     reference: 'PasswordRepeat',
                                     allowBlank: false,
-                                    blankText: app.localize('PasswordRepeat') + app.localize('ExtNotText'),
+                                    blankText: 'Trường này không được để trống',
                                     labelAlign: 'right',
                                     autoComplete: true,
                                     minLength: 3,
                                     inputType: 'password',
                                     labelWidth: 130,
                                     maxLength: 256,
-                                    fieldLabel: app.localize('PasswordRepeat') + app.eKMapConsts.var_required,
-                                    emptyText: app.localize('PasswordRepeat'),
+                                    fieldLabel: 'Nhập lại mật khẩu',
+                                    emptyText: 'Nhập lại mật khẩu',
                                     bind: '{record.passwordRepeat}',
                                     listeners: {
                                         blur: 'onBlur'
@@ -228,9 +228,9 @@ Ext.define('Admin.view.users.cnUsers', {
                             , {
                                 xtype: 'checkboxfield',
                                 bind: '{record.isActive}',
-                                boxLabel: app.localize('Active'),
+                                boxLabel: 'Kích hoạt',
                                 margin: '0 0 0 140'
-                            }, {
+                            }, /*{
                                 hidden: true,
                                 xtype: 'checkboxfield',
                                 boxLabel: app.localize('IsTwoFactorEnabled'),
@@ -241,8 +241,8 @@ Ext.define('Admin.view.users.cnUsers', {
                                 bind: '{record.isLockoutEnabled}',
                                 margin: '0 0 0 140',
                                 boxLabel: app.localize('IsLockoutEnabled')
-                            },
-                            {
+                            },*/
+                            /*{
                                 xtype: 'container',
                                 bind: { hidden: '{record.id==0}' },
                                 reference: 'contaiDaXacThuc',
@@ -286,9 +286,9 @@ Ext.define('Admin.view.users.cnUsers', {
                                             iconCls: 'fa fa-envelope'
                                         }]
                                     }]
-                            }]
+                            }*/]
                     },
-                    {
+                    /*{
                         xtype: 'panel',
                         layout: {
                             type: 'vbox',
@@ -493,18 +493,18 @@ Ext.define('Admin.view.users.cnUsers', {
                                 }
                             }]
                         }]
-                    }]
+                    }*/]
             }];
         this.callParent(arguments);
     },
     buttons: [{
-        text: app.localize('Save'),
+        text: 'Lưu thông tin',
         iconCls: 'fa fa-floppy-o',
         ui: 'soft-blue',
         reference: 'btnThucHien',
         handler: 'onThucHien'
     }, {
-        text: app.localize('Cancel'),
+        text: 'Huỷ bỏ',
         ui: 'soft-red',
         handler: function () {
             this.up('window').close();

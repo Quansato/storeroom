@@ -92,7 +92,7 @@ namespace storeroom.Application.Catalog.Outputs
             var query = from a in _context.Outputs
                         join b in _context.Storerooms on a.StoreroomId equals b.Id
                         join c in _context.Users on a.UserId equals c.Id
-                        orderby a.CreationTime descending
+                        //orderby a.CreationTime descending
                         select new { a, b, c };
             //2. filter
             //if (!string.IsNullOrEmpty(request.keyword))
@@ -141,7 +141,7 @@ namespace storeroom.Application.Catalog.Outputs
                            UserId = x.a.UserId,
                            UserName = x.c.UserName,
                            //MaterialOutputs = request.MaterialOutput
-                       }).ToListAsync();
+                       }).OrderByDescending(x=>x.CreationTime).ToListAsync();
             //4. Select and projection
             var pagedResult = new PagedResult<OutputViewModel>()
             {

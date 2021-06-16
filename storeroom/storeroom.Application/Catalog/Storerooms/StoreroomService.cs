@@ -37,6 +37,11 @@ namespace storeroom.Application.Catalog.Storerooms
 
         public async Task<int> CreateInventory(InventoryCreateRequest request)
         {
+            var inventoryExist = await _context.Inventories.FirstOrDefaultAsync(x => x.Date == request.Date);
+            if (inventoryExist != null)
+            {
+                return -1;
+            }
             var inventory = new Inventory()
             {
                 Date = request.Date,

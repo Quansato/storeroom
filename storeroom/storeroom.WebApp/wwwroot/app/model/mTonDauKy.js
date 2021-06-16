@@ -14,24 +14,21 @@
         { name: 'storeroomId', type: 'int' },
         { name: 'materialId', type: 'int' },
         { name: 'date', type: 'date', defaultValue: null, useNull: true },
+        { name: 'quantity', type: 'int', defaultValue: null, allowNull: true },
         { name: 'quantityLT', type: 'int', defaultValue: null, allowNull: true },
         {
-            name: 'quantity', type: 'int',
+            name: 'quantityTheoretical', type: 'int',
             convert: function (value, record) {
-                var total = record.get('quantityLT');
+                var total = record.get('quantity');
                 return total
             }
         },
         { name: 'quantityTT', type: 'int', defaultValue: null, allowNull: true },
         {
-            name: 'quantityReal', type: 'int',
-            convert: function (value, record) {
-                var total = record.get('quantityTT');
-                return total
-            }
+            name: 'quantityReal', type: 'int'
         },
         { name: 'description', type: 'string' },
-        {name:'price',type:'float'},
+        { name: 'price', type: 'float' },
         { name: 'materialCode', type: 'string' },
         { name: 'materialName', type: 'string' },
         {

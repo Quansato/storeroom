@@ -86,6 +86,13 @@
                         viewType: 'dsBanDoKho',
                         routeId: 'dsBanDoKho',
                         leaf: true
+                    }, {
+                        text: 'Người dùng',
+                        iconCls: 'x-fa fa-user',
+                        rowCls: 'nav-tree-badge',
+                        viewType: 'dsUsers',
+                        routeId: 'dsUsers',
+                        leaf: true
                     }
                 ]
             }
