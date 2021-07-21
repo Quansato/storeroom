@@ -57,13 +57,13 @@ Ext.define('Admin.view.quanlydonmuahang.CNThayDoiTrangThai', {
                 value: '{record.trangThaiCu}'
             },
             store: Ext.create('Ext.data.Store', {
-                fields: ['matrangthai', 'tentrangthai']
+                fields: ['value', 'name']
             }),
             labelWidth: 105,
             fieldLabel: 'Trạng thái cũ',
             queryMode: 'local',
-            displayField: 'tentrangthai',
-            valueField: 'matrangthai',
+            displayField: 'name',
+            valueField: 'value',
             readOnly: true,
             flex: 1
         }, {
@@ -74,13 +74,13 @@ Ext.define('Admin.view.quanlydonmuahang.CNThayDoiTrangThai', {
                 value: '{record.trangThaiMoi}'
             },
             store: Ext.create('Ext.data.Store', {
-                fields: ['matrangthai', 'tentrangthai']
+                fields: ['value', 'name']
             }),
             labelWidth: 105,
             fieldLabel: 'Trạng thái mới',
             queryMode: 'local',
-            displayField: 'tentrangthai',
-            valueField: 'matrangthai',
+            displayField: 'name',
+            valueField: 'value',
             editable: false,
             flex: 1
         }, {
@@ -99,6 +99,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNThayDoiTrangThai', {
         title: 'Danh sách lịch sử thay đổi trạng thái',
         iconCls: 'x-fa fa-exchange',
         flex: 1,
+        hidden: true,
         height: 200,
         cls: 'topGrid',
         bind: {
@@ -212,9 +213,9 @@ Ext.define('Admin.view.quanlydonmuahang.CNThayDoiTrangThaiController', {
         var me = this;
         me.ref = me.getReferences();
         me.storeinfo = me.getViewModel().storeInfo;
-        var data = [{ matrangthai: 1, tentrangthai: "Hoàn thành" },
-        { matrangthai: 2, tentrangthai: "Không Duyệt" },
-        { matrangthai: 0, tentrangthai:"Chờ duyệt" }]
+        var data = [{ value: 1, name: "Hoàn thành" },
+        { value: 2, name: "Không Duyệt" },
+        { value: 0, name: "Chờ duyệt" }]
         if (me.getViewModel().data.dataTTCu.length > 0) {
             me.ref.cbTrangThaiCu.getStore().loadData(me.getViewModel().data.dataTTCu);
         } else {
@@ -258,51 +259,20 @@ Ext.define('Admin.view.quanlydonmuahang.CNThayDoiTrangThaiController', {
             var record = me.getViewModel().data.record;
             me.getView().setLoading(true);
             var obj = {
-                NguoiThucHien: abp.session.userId,
-                LyDo: record.get('lyDo'),
-                MaPhieu: record.get('maPhieu'),
-                phanLoai: record.get('phanLoai'),
-                TrangThaiCu: record.get('trangThaiCu'),
-                TrangThaiMoi: record.get('trangThaiMoi')
+                Id: record.get('maPhieu'),
+                Stt: record.get('trangThaiMoi')
             }
-            if (record.get('id') == 0) {
-                me.getView().setLoading(true);
-                _cMMSKhoChuyenTrangThai.create(obj).done(function (result) {
-                    me.getView().setLoading(false);
-                    if (record.get('phanLoai') == 'donmuahang') {
-                        var objdh = { id: record.get('maPhieu'), TinhTrangDon: record.get('trangThaiMoi') }
-                        _cMMSKhoDonMuaHang.updateTinhTrangDon(objdh).done(function (result) {
-                            abp.notify.success(app.localize('SavedSuccessfully'));
-                            if (fnSauKhiLoad)
-                                fnSauKhiLoad(result);
-                        }).fail(function (data) {
-                        });
-                        if (fnSauKhiLoad)
-                            fnSauKhiLoad(result);
-                        me.getView().close();
-                    } else if (record.get('phanLoai') == 'dexuat') {
-                        var objdh = { id: record.get('maPhieu'), TrangThai: record.get('trangThaiMoi') }
-                        _cMMSKhoPhieuNhapXuat.updateTrangThai(objdh).done(function (result) {
-                            abp.notify.success(app.localize('SavedSuccessfully'));
-                            if (fnSauKhiLoad)
-                                fnSauKhiLoad(result);
-                            me.getView().close();
-                        }).fail(function (data) {
-                        });
-                    } else {
-                        var objdh = { id: record.get('maPhieu'), TrangThai: record.get('trangThaiMoi') }
-                        _cMMSKhoPhieuDeXuatMuaHang.updateTrangThai(objdh).done(function (result) {
-                            abp.notify.success(app.localize('SavedSuccessfully'));
-                            if (fnSauKhiLoad)
-                                fnSauKhiLoad(result);
-                            me.getView().close();
-                        }).fail(function (data) {
-                        });
-                    }
-                }).fail(function (data) {
-                    me.getView().setLoading(false);
-                });
-            }
+
+            me.getView().setLoading(true);
+            var url = 'api/PurchaseOrder/status'
+            app.mUtils.fnPUTAjax(url, obj, function (response) {
+                if (response == 1) {
+                    toastr.success('Chuyển trạng thái phiếu thành công')
+                    fnSauKhiLoad();
+                    me.getView.close();
+                }
+            })
+
         }
     },
 

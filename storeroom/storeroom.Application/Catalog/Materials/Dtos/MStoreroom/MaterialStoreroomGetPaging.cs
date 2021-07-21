@@ -15,6 +15,7 @@ namespace storeroom.Application.Catalog.Materials.Dtos.MStoreroom
         public string MaterialCode { get; set; }
         public string DisplayName { get; set; }
         public string StoreroomName { get; set; }
+        public string Operator { get; set; }
         public int? MaterialGroupId { get; set; }
         public int? Quantity { get; set; }
     }

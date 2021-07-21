@@ -255,7 +255,7 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKho', {
                 flex: 1,
                 labelAlign: 'right',
                 labelWidth: 115,
-                bind: '{recordPhieu.lyDo}',
+                bind: '{recordPhieu.description}',
                 fieldLabel: 'Lý do'
             }]
         }, {
@@ -270,7 +270,7 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKho', {
                 xtype: 'fieldset',
                 title: 'Tìm kiếm vật tư',
                 padding: '0 5 5 5',
-                margin: 0,
+                margin: '-10 0 0 0',
                 flex: 1,
                 layout: {
                     type: 'vbox',
@@ -559,7 +559,7 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKhoController', {
             me.ref.cbkhonhan.allowBlank = true;
         }
 
-        if (record.get('id') == 0) {
+        if (record.get('id') == 0) {    
             //record.set("tenNguoiDeXuat", app.session.user.surname + " " + app.session.user.name);
             //record.set("nguoiDeXuat", app.session.user.id);
             var dataVatTu = me.getViewModel().data.dataVatTu;
@@ -933,10 +933,10 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKhoController', {
             }
             return;
         }
-        var dongia = record.get('donGia');
-        if (record.get('soLuongThuc') != 0 || record.get('soLuongThuc') != null) {
-            var tt = record.get('soLuongThuc') * dongia;
-            record.set('thanhTien', tt)
+        var dongia = record.get('price');
+        if (record.get('quantity') != 0 || record.get('soLuongThuc') != null) {
+            var tt = record.get('quantity') * dongia;
+            record.set('total', tt)
             record.commit();
         }
         me.checkThayDoiChiTiet = true;
@@ -1110,7 +1110,7 @@ Ext.define('Admin.view.phieunhapxuatkho.CNPhieuXuatKhoController', {
         }
         else if (record.dirty) {
             me.getView().setLoading(true);
-            _cMMSKhoPhieuNhapXuat.update(record.data).done(function (result) {
+           _cMMSKhoPhieuNhapXuat.update(record.data).done(function (result) {
                 me.ref.btnThemVatTu.setDisabled(false);
                 record.commit(record);
                 me.getView().setLoading(false);

@@ -14,10 +14,10 @@ E:\G\storeroom\storeroom\storeroom.Data\bin\Debug\netcoreapp3.1\storeroom.Data.r
 E:\G\storeroom\storeroom\storeroom.Data\bin\Debug\netcoreapp3.1\storeroom.Data.runtimeconfig.dev.json
 E:\G\storeroom\storeroom\storeroom.Data\bin\Debug\netcoreapp3.1\storeroom.Data.dll
 E:\G\storeroom\storeroom\storeroom.Data\bin\Debug\netcoreapp3.1\storeroom.Data.pdb
-E:\G\storeroom\storeroom\storeroom.Data\obj\Debug\netcoreapp3.1\storeroom.Data.csprojAssemblyReference.cache
 E:\G\storeroom\storeroom\storeroom.Data\obj\Debug\netcoreapp3.1\storeroom.Data.AssemblyInfoInputs.cache
 E:\G\storeroom\storeroom\storeroom.Data\obj\Debug\netcoreapp3.1\storeroom.Data.AssemblyInfo.cs
 E:\G\storeroom\storeroom\storeroom.Data\obj\Debug\netcoreapp3.1\storeroom.Data.csproj.CoreCompileInputs.cache
 E:\G\storeroom\storeroom\storeroom.Data\obj\Debug\netcoreapp3.1\storeroom.Data.dll
 E:\G\storeroom\storeroom\storeroom.Data\obj\Debug\netcoreapp3.1\storeroom.Data.pdb
 E:\G\storeroom\storeroom\storeroom.Data\obj\Debug\netcoreapp3.1\storeroom.Data.genruntimeconfig.cache
+E:\G\storeroom\storeroom\storeroom.Data\obj\Debug\netcoreapp3.1\storeroom.Data.csproj.AssemblyReference.cache

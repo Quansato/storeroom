@@ -120,7 +120,7 @@ namespace storeroom.Application.Catalog.PurchaseOrders
                            Priority=x.a.Priority,
                            UserId = x.a.UserId,
                            UserName = x.d.FirstName + ' ' + x.d.LastName
-                       }).OrderByDescending(x=>x.Date).ToListAsync();
+                       }).ToListAsync();
             //4. Select and projection
             var pagedResult = new PagedResult<PurchaseOrderViewModel>()
             {
@@ -209,6 +209,13 @@ namespace storeroom.Application.Catalog.PurchaseOrders
             materialDetail.Quantity = request.Quantity;
             materialDetail.Price = request.Price;
             materialDetail.Description = request.Description;
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateStatus(int Id,int Stt)
+        {
+            var PO = await _context.PurchaseOrders.FirstOrDefaultAsync(x => x.Id == Id);
+            PO.Status = Stt;
             return await _context.SaveChangesAsync();
         }
     }

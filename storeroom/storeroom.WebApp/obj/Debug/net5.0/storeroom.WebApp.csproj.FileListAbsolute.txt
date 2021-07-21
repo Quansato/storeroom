@@ -82,13 +82,6 @@ E:\Đồ án\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\storeroom.Dat
 E:\Đồ án\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\storeroom.Application.pdb
 E:\Đồ án\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\storeroom.Data.pdb
 E:\Đồ án\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.MvcApplicationPartsAssemblyInfo.cs
-E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.GeneratedMSBuildEditorConfig.editorconfig
-E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.AssemblyInfoInputs.cache
-E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.AssemblyInfo.cs
-E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.csproj.CoreCompileInputs.cache
-E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.MvcApplicationPartsAssemblyInfo.cache
-E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.RazorAssemblyInfo.cache
-E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.RazorAssemblyInfo.cs
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\appsettings.Development.json
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\appsettings.json
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\storeroom.WebApp.exe
@@ -100,6 +93,7 @@ E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\ref\storeroom.WebApp.
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\storeroom.WebApp.pdb
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\storeroom.WebApp.Views.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\storeroom.WebApp.Views.pdb
+E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\EPPlus.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\FluentValidation.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\FluentValidation.AspNetCore.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\FluentValidation.DependencyInjectionExtensions.dll
@@ -107,6 +101,8 @@ E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Humanizer.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.AspNetCore.Razor.Language.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.Bcl.AsyncInterfaces.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.CodeAnalysis.dll
@@ -138,6 +134,7 @@ E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.VisualStudi
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Newtonsoft.Json.dll
+E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -151,6 +148,7 @@ E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\System.Diagnostics.Di
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\System.Runtime.Caching.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\System.Security.Cryptography.ProtectedData.dll
+E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\System.Xml.XPath.XmlDocument.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\cs\Microsoft.CodeAnalysis.resources.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\de\Microsoft.CodeAnalysis.resources.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\es\Microsoft.CodeAnalysis.resources.dll
@@ -221,7 +219,14 @@ E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\storeroom.Application
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\storeroom.Data.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\storeroom.Application.pdb
 E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\storeroom.Data.pdb
-E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.csprojAssemblyReference.cache
+E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.GeneratedMSBuildEditorConfig.editorconfig
+E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.AssemblyInfoInputs.cache
+E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.AssemblyInfo.cs
+E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.csproj.CoreCompileInputs.cache
+E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.MvcApplicationPartsAssemblyInfo.cs
+E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.MvcApplicationPartsAssemblyInfo.cache
+E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.RazorAssemblyInfo.cache
+E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.RazorAssemblyInfo.cs
 E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\staticwebassets\storeroom.WebApp.StaticWebAssets.Manifest.cache
 E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\staticwebassets\storeroom.WebApp.StaticWebAssets.xml
 E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\scopedcss\bundle\storeroom.WebApp.styles.css
@@ -245,9 +250,4 @@ E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\ref\storeroom.WebApp.dll
 E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.pdb
 E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.genruntimeconfig.cache
-E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.MvcApplicationPartsAssemblyInfo.cs
-E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
-E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
-E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
-E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\EPPlus.dll
-E:\G\storeroom\storeroom\storeroom.WebApp\bin\Debug\net5.0\System.Xml.XPath.XmlDocument.dll
+E:\G\storeroom\storeroom\storeroom.WebApp\obj\Debug\net5.0\storeroom.WebApp.csproj.AssemblyReference.cache

@@ -312,7 +312,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                 xtype: 'fieldset',
                 title: 'Tìm kiếm vật tư',
                 padding: '0 5 5 5',
-                margin: 0,
+                margin: '-10 0 0 0',
                 flex: 1,
                 layout: {
                     type: 'vbox',

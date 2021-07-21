@@ -269,7 +269,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                 }
             }, {
                 text: 'Đơn vị tính',
-                dataIndex: 'donViTinhThuc',
+                dataIndex: 'unit',
                 border: 1,
                 align: 'left',
                 style: 'text-align:center',
@@ -277,57 +277,57 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
             }, {
                 text: 'Số lượng',
 
-                dataIndex: 'soLuong',
+                dataIndex: 'quantity',
                 border: 1,
                 style: 'text-align:center',
                 align: 'right',
                 width: 120,
                 renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
                     if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
                 },
                 summaryType: 'sum',
                 summaryRenderer: function (value, summaryData, dataIndex) {
                     if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
                 }
             }, {
                 xtype: 'numbercolumn',
                 text: 'Đơn giá',
-                dataIndex: 'donGia',
+                dataIndex: 'price',
                 style: 'text-align:center',
                 align: 'right',
                 border: 1,
                 width: 100,
                 renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
                     if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
                 }
             }, {
                 xtype: 'numbercolumn',
                 text: 'Thành tiền',
-                dataIndex: 'thanhTien',
+                dataIndex: 'total',
                 border: 1,
                 style: 'text-align:center',
                 align: 'right',
                 width: 110,
                 renderer: function (value, meta, record, rowIndex, colIndex, storedt, view) {
                     if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
                 },
                 summaryType: 'sum',
                 summaryRenderer: function (value, summaryData, dataIndex) {
                     if (value != undefined && value != null) {
-                        //return app.gplatformutils.fnDinhDangSoThuc(value, 2);
+                        return app.mUtils.fnFormatCurrency(value, 2);
                     }
                 }
             }, {
                 text: 'Ghi chú',
-                dataIndex: 'ghiChu',
+                dataIndex: 'description',
                 border: 1,
                 width: 220
             }],
@@ -1346,33 +1346,33 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         wnd.show();
     },
 
-    //onSuaPhieuXuatKho: function () {
-    //    var me = this;
-    //    var nodesSelect = me.ref.cbkhoXuat.getSelection();
-    //    var title = app.localize("CMMSDMKhoSuaPhieuXuatKho") + ": " + nodesSelect.data.moTa;
-    //    var record = me.ref.dsPhieuXuatKho.getSelectionModel().getSelection();
-    //    var dieuchuyen = false;
-    //    if (record[0].get('loaiPhieu') == '-1') {
-    //        dieuchuyen = true;
-    //        title = app.localize("CMMSDMKhoXemPhieuDieuChuyen");
-    //    }
-    //    var storeKho = app.gplatformutils.deepCloneStore(me.storeinfo.storeKhoNhapXuat);
-    //    var wnd = Ext.create('Admin.view.phieunhapxuatkho.CNPhieuXuatKho', {
-    //        title: title,
-    //        viewModel: {
-    //            data: {
-    //                storeKho: storeKho,
-    //                dieuchuyen: dieuchuyen,
-    //                recordPhieu: record[0],
-    //                fnSauKhiLoad: function () {
-    //                    me.onTimKiemXuatKho();
-    //                    // me.loadChiTietPhieuXuat(record[0].data.id);
-    //                }
-    //            }
-    //        }
-    //    });
-    //    wnd.show();
-    //},
+    onSuaPhieuXuatKho: function () {
+        var me = this;
+        var nodesSelect = me.ref.cbkhoXuat.getSelection();
+        var title = 'Sửa phiếu xuất kho' + ": " + nodesSelect.data.displayName;
+        var record = me.ref.dsPhieuXuatKho.getSelectionModel().getSelection();
+        var dieuchuyen = false;
+        if (record[0].get('type') == '-1') {
+            dieuchuyen = true;
+            title = 'Xem chi tiết phiếu điều chuyển';
+        }
+        var storeKho = app.mUtils.deepCloneStore(me.storeinfo.storeKhoNhapXuat);
+        var wnd = Ext.create('Admin.view.phieunhapxuatkho.CNPhieuXuatKho', {
+            title: title,
+            viewModel: {
+                data: {
+                    storeKho: storeKho,
+                    dieuchuyen: dieuchuyen,
+                    recordPhieu: record[0],
+                    fnSauKhiLoad: function () {
+                        me.onTimKiemXuatKho();
+                        // me.loadChiTietPhieuXuat(record[0].data.id);
+                    }
+                }
+            }
+        });
+        wnd.show();
+    },
 
     onChangeGridPhieuXuat: function (grid, selected, eOpts) {
         var me = this;

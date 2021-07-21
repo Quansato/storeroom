@@ -82,7 +82,7 @@ Ext.define("Admin.view.dashboard.dashboard", {
         margin: '5 5 5 5',
         userCls: 'big-40 small-100',
         height: 100,
-        title: 'Doanh số xuất kho',
+        title: 'Giá trị xuất kho',
         bodyPadding: 15,
         cls: 'shadow',
         ui: 'light',
@@ -169,7 +169,7 @@ Ext.define("Admin.view.dashboard.dashboard", {
             xtype: 'gridcolumn',
             text: 'Tình trạng đơn',
             dataIndex: 'status',
-            width: 200  ,
+            width: 250,
             renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                 if (value == null || value == 0) {
                     return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell unassigned">' + 'Chờ duyệt' + '</div>'
@@ -417,7 +417,7 @@ Ext.define("Admin.view.dashboard.dashboardController", {
                     },
                     title: {
                         display: true,
-                        text: 'Chart.js Line Chart'
+                        text: 'Trạng thái vật tư'
                     }
                 }
             },

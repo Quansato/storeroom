@@ -60,6 +60,13 @@ namespace storeroom.WebApp.Controllers
             return Ok(result);
         }
 
+        [HttpPut("status")]
+        public async Task<IActionResult> UpdateStatus(int Id,int Stt)
+        {
+            var result = await _purchaseOrderService.UpdateStatus(Id,Stt);
+            return Ok(result);
+        }
+
         [HttpDelete("deleteMultiple/{PurchaseOrderId}")]
         public async Task<IActionResult> DeleteMaterial(int PurchaseOrderId)
         {

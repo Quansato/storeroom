@@ -301,10 +301,35 @@ namespace storeroom.Application.Catalog.Materials
                 query = query.Where(x => x.a.StoreroomId == request.StoreroomId);
             }
 
+            if (request.Quantity.HasValue)
+            {
+                query = query.Where(x => x.a.Quantity == request.Quantity);
+            }
+
             if (!string.IsNullOrEmpty(request.MaterialCode))
             {
                 query = query.Where(x => x.c.MaterialCode == request.MaterialCode);
             }
+
+            if (!string.IsNullOrEmpty(request.DisplayName))
+            {
+                query = query.Where(x => x.c.DisplayName == request.DisplayName);
+            }
+
+            if (!string.IsNullOrEmpty(request.Operator))
+            {
+                /*switch (request.Operator)
+                {
+
+                    case '>'.ToString():
+                        query = query.Where(x => x.a.Quantity > request.Quantity);
+                        break;
+                    case '>='.ToString(:
+                        query = query.Where(x => x.a.Quantity >= request.Quantity);
+                        break;
+                }*/
+            }
+
             //3. Paging
             int totalRow = await query.CountAsync();
 
@@ -317,7 +342,7 @@ namespace storeroom.Application.Catalog.Materials
                            MaterialId = x.a.MaterialId,
                            MaterialCode = x.c.MaterialCode,
                            DisplayName = x.c.DisplayName,
-                           Price=x.c.Price,
+                           Price = x.c.Price,
                            UnitName = x.b.DisplayName,
                            Quantity = x.a.Quantity,
                            QuantityMax = x.a.QuantityMax,

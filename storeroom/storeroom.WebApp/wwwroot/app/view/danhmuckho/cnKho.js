@@ -52,7 +52,7 @@ Ext.define('Admin.view.danhmuckho.cnKho', {
                 labelWidth: 110,
                 flex: 1,
                 bind: {
-                    value: '{record.tenNguoiDaiDien}'
+                    value: '{record.userName}'
                 }
             }, {
                 margin: '0 0 0 0',
@@ -308,7 +308,7 @@ Ext.define('Admin.view.danhmuckho.cnKhoController', {
                 data: {
                     fnSauKhiChon: function (result) {
                         console.log(result.get("tenNguoiDaiDien"))
-                        record.set("tenNguoiDaiDien", result.get("tenNguoiDaiDien"));
+                        record.set("userName", result.get("tenNguoiDaiDien"));
                         record.set("userId", result.get("userId"));
                         console.log(record)
                     }
@@ -478,7 +478,7 @@ Ext.define('Admin.view.danhmuckho.cnKhoController', {
         var me = this;
         var frm = me.ref.frmKho;
         if (!frm.getForm().isValid()) {
-            toastr.warning("Nhaapj ddaayf ddur thoong tin");
+            toastr.warning("Nhập đầy đủ thông tin");
             return;
         }
         var view = me.getView();

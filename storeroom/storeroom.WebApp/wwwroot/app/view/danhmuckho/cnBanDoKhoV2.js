@@ -121,7 +121,7 @@ Ext.define("Admin.view.danhmuckho.cnBanDoKhoV2Controller", {
             token: tokenVN
         }).addTo(map);
 
-        if (record.get("x") != null) {
+        if (record.get("x") != null && record.get("x") != 0) {
             console.log(record.get("x"))
             ttKho = record.get('status') == false ? 'Không hoạt động' : 'Hoạt động';
             html = '<b>Tên kho:</b> ' + record.get('displayName') + '</br>' +
@@ -168,8 +168,8 @@ Ext.define("Admin.view.danhmuckho.cnBanDoKhoV2Controller", {
         map.addControl(new mapboxgl.NavigationControl(), "top-left");
 
         //// create DOM element for the marker
-        //var el = document.createElement('div');
-        //el.id = 'marker';
+        var el = document.createElement('div');
+        el.id = 'marker';
         map.addControl(new mapboxgl.GeolocateControl({
             positionOptions: {
                 enableHighAccuracy: true

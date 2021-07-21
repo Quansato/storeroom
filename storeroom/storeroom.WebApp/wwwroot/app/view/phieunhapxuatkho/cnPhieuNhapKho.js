@@ -247,7 +247,7 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
                 xtype: 'fieldset',
                 title: 'Tìm kiếm vật tư',
                 padding: '0 5 5 5',
-                margin: 0,
+                margin: '-10 0 0 0',
                 flex: 1,
                 layout: {
                     type: 'vbox',
@@ -917,7 +917,7 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
         var grid = me.ref.dsPhieuNhapKhoChiTiet;
         var rows = grid.getStore().getRange();
         if (rows.length == 0) {
-            toastr.warning("VT không đưuocj để trống");
+            toastr.warning("VT không được để trống");
             return;
         }
         for (var i = 0; i < rows.length; i++) {
@@ -987,7 +987,6 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
                 var fnSauKhiLoad = me.getViewModel().data.fnSauKhiLoad;
                 me.getView().setLoading(true);
                 var url = "/api/Input";
-                me.getView().setLoading(true);
                 app.mUtils.fnPUTAjax(url, data, function (res) {
                     console.log(res)
                     me.getView().setLoading(false);

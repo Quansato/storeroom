@@ -1254,7 +1254,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         var record = Ext.create('Admin.model.mKhoChuyenTrangThai');
         record.set('id', 0);
         record.set('maPhieu', nodesSelect[0].data.id);
-        //record.set('tenNguoiThucHien', app.session.user.name);
+        record.set('tenNguoiThucHien','Quản trị');
         //record.set('nguoiThucHien', app.session.user.id);
         record.set('trangThaiCu', nodesSelect[0].data.tinhTrangDon == null || nodesSelect[0].data.tinhTrangDon == "" ? 0 : nodesSelect[0].data.tinhTrangDon);
         var dataTT = []

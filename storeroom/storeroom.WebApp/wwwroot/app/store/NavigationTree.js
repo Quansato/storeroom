@@ -66,14 +66,14 @@
                 routeId: 'dsCMMSKhoDMVatTu',
                 leaf: true
             },
-            {
+            /*{
                 text: 'Bản đồ kho',
                 iconCls: 'x-fa fa-globe',
                 rowCls: 'nav-tree-badge',
                 viewType: 'dsBanDoKho',
                 routeId: 'dsBanDoKho',
                 leaf: true
-            },
+            },*/
             {
                 text: 'Quản trị',
                 iconCls: 'x-fa fa-users',

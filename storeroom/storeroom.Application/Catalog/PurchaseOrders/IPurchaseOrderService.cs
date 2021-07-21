@@ -71,5 +71,7 @@ namespace storeroom.Application.Catalog.PurchaseOrders
         /// <returns></returns>
         Task<PagedResult<MaterialPurchaseOrderViewModel>> GetMaterialByPurchaseId(int PurchaseId);
 
+        Task<int> UpdateStatus(int Id,int Stt);
+
     }
 }

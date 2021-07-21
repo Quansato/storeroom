@@ -59,7 +59,7 @@ Ext.define('Admin.view.users.dsUsers', {
             {
                 xtype: 'gridcolumn',
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                    var text = "<img src='/img/default-profile-picture.png' alt='Profile Pic' height='40px' width='40px'>";
+                    var text = "<img src='https://png.pngtree.com/png-clipart/20190903/original/pngtree-couple-boy-cute-avatar-png-image_4445471.jpg' alt='Profile Pic' height='40px' width='40px'>";
                     if (record.get('profilePictureId')) {
                         text = "<img src='/Profile/GetProfilePictureById?id=" + record.get('profilePictureId') + "' alt='Profile Pic' height='40px' width='40px'>";
                     }

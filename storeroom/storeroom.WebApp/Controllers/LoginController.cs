@@ -79,13 +79,6 @@ namespace storeroom.WebApp.Controllers
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         userPrincipal,
                         authProperties);
-            ObjectCache cache = MemoryCache.Default;
-
-
-                // Store data in the cache    
-                CacheItemPolicy cacheItemPolicy = new CacheItemPolicy();
-                cacheItemPolicy.AbsoluteExpiration = DateTime.Now.AddHours(1.0);
-                cache.Add(CacheKey, userPrincipal, cacheItemPolicy);
             return RedirectToAction("Index", "Home");
         }
 

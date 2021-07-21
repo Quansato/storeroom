@@ -779,6 +779,12 @@ Ext.define('Admin.view.quanlykhovattu.dsQuanLyKhoVatTuController', {
         if (recordTK.get('displayName')) {
             filter.displayName = recordTK.get('displayName');
         }
+        if (recordTK.get('quantity')) {
+            filter.quantity = recordTK.get('Quantity');
+        }
+        if (recordTK.get('congthuc')) {
+            filter.operator = recordTK.get('congthuc');
+        }
         //if (recordTK.get('congthuc')) {
         //    filter.push({ name: "paramValue", value: recordTK.get('congthuc') });
         //}
