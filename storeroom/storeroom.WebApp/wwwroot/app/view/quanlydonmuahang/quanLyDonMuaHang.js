@@ -120,6 +120,8 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                         return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell completed">' + 'Hoàn thành' + '</div>'
                     } else if (value == 2) {
                         return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell khongduyet">' + 'Từ chối' + '</div>'
+                    } else if (value == 3) {
+                        return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell phieudong">' + 'Phiếu đóng' + '</div>'
                     }
                 }
             }],
@@ -180,7 +182,8 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                             data: [{ value: "tatca", name: 'Tất cả' },
                             { value: "0", name: 'Chờ duyệt' },
                             { value: "1", name: 'Hoàn thành' },
-                            { value: "2", name: 'Từ chối' }]
+                            { value: "2", name: 'Từ chối' },
+                            { value: "3", name: 'Phiếu đóng' }]
                         }),
                         triggerAction: 'all',
                         queryMode: 'local',
@@ -339,6 +342,9 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                     xtype: 'button',
                     iconCls: 'fa fa-pencil',
                     reference: 'btnSuaDonMuaHang',
+                    bind: {
+                        disabled: '{selectionDonHang.status == 3}'
+                    },
                     //hidden: !(abp.auth.hasPermission('CMMS.Inventory.MuaHang.Edit') || abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager')),
                     text: 'Sửa',
                     ui: 'soft-blue',
@@ -364,7 +370,10 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                             reference: 'btnChuyenTrangThai',
                             text: 'Chuyển trạng thái',
                             iconCls: 'x-fa fa-plus',
-                            //hidden: !(abp.auth.hasPermission('CMMS.Inventory.MuaHang.Manager')),
+                            bind: {
+                                disabled:'{selectionDonHang.status == 1}' || '{ selectionDonHang.status == 3 }'
+                            },
+                            hidden: !(app.session.isAdmin),
                             ui: 'soft-blue',
                             tooltip: 'Chuyển trạng thái phiếu',
                             handler: 'onChuyenTrangThai'
@@ -375,9 +384,9 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
                             iconCls: 'x-fa fa-check-circle-o',
                             ui: 'soft-blue',
                             bind: {
-                                disabled: '{!recordTK.kho>0}' && '{selectionDonHang.tinhTrangDon!=1}'
+                                disabled:'{selectionDonHang.status!=1}' || '{ selectionDonHang.status == 3 }'
                             },
-                            //hidden: !(abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Manager')),
+                            hidden: !(app.session.isAdmin),
                             disabled: true,
                             tooltip: 'Phiếu nhập kho',
                             reference: 'btnPhieuNhapKho',
@@ -446,6 +455,7 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHang', {
         ui: 'light',
         title: 'Đề xuất mua hàng',
         iconCls: 'fa fa-th-list',
+        hidden: true,
         layout: {
             type: 'vbox',
             align: 'stretch'
@@ -1048,12 +1058,12 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         var filter = {};
         me.selectDonHang = false;
         if (recordTK.get('storeroomId')) {
-            filter.storeroomId =recordTK.get('storeroomId')
+            filter.storeroomId = recordTK.get('storeroomId')
         }
         if (recordTK.get('code')) {
-            filter.code=recordTK.get('code')
+            filter.code = recordTK.get('code')
         }
-        if (recordTK.get('status')&&recordTK.get('status')!= 'tatca') {
+        if (recordTK.get('status') && recordTK.get('status') != 'tatca') {
             filter.status = recordTK.get('status')
         }
         //if (recordTK.get('sophieu')) {
@@ -1222,39 +1232,13 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         wnd.show();
     },
 
-    //onHuy: function () {
-    //    var me = this;
-    //    var grid = me.ref.dsDonHang;
-    //    var rowselected = grid.getSelectionModel().getSelection();
-    //    if (rowselected[0].data.tinhTrangDon != 0) {
-    //        abp.notify.info(app.localize('CMMSDMKhoPhieuTrangThaiChoDuyetMoiDuocPhepXoa'));
-    //        return;
-    //    }
-    //    var store = me.storeinfo.storeDonHang;
-    //    abp.message.confirm(
-    //        app.localize('CMMSDMKhoDonHang') + ":" + " " + rowselected[0].data.soDonHang,
-    //        app.localize('ExtgDataManagerAreYouSure'),
-    //        function (isConfirmed) {
-    //            if (isConfirmed) {
-    //                _cMMSKhoDonMuaHang.delete({ id: rowselected[0].get('id') }).done(function (result) {
-    //                    me.onTimKiemDonHang();
-    //                    me.getView().setLoading(false);
-    //                    abp.notify.success(app.localize('SavedSuccessfully'));
-    //                }).fail(function (data) {
-    //                    me.getView().setLoading(false);
-    //                });
-    //            }
-    //        }
-    //    );
-    //},
-
     onChuyenTrangThai: function () {
         var me = this;
         var nodesSelect = me.ref.dsDonHang.getSelectionModel().getSelection();
         var record = Ext.create('Admin.model.mKhoChuyenTrangThai');
         record.set('id', 0);
         record.set('maPhieu', nodesSelect[0].data.id);
-        record.set('tenNguoiThucHien','Quản trị');
+        record.set('tenNguoiThucHien', 'Quản trị');
         //record.set('nguoiThucHien', app.session.user.id);
         record.set('trangThaiCu', nodesSelect[0].data.tinhTrangDon == null || nodesSelect[0].data.tinhTrangDon == "" ? 0 : nodesSelect[0].data.tinhTrangDon);
         var dataTT = []
@@ -1300,204 +1284,89 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
     //    window.location.href = url;
     //},
 
-    //onPhieuNhapKho: function () {
-    //    var me = this;
-    //    var grid = me.ref.dsDonHang;
-    //    var rowselected = grid.getSelectionModel().getSelection();
-    //    if (rowselected[0].get('maCha') == rowselected[0].get('id')) {
-    //        abp.notify.info(app.localize('CMMSDMKhoDonMuaHangDaNhapKho'));
-    //        return;
-    //    }
-    //    var record = Ext.create('Admin.model.mPhieuNhapXuatChiTiet');
-    //    record.set('id', 0);
-    //    record.set('ngayHachToan', new Date());
-    //    record.set('ngayChungTu', new Date());
-    //    record.set('maKhoNhap', rowselected[0].get('maKho'));
-    //    record.set('phanLoai', 'nhapkho');
-    //    record.set('maPhieuCha', rowselected[0].get('id'));
-    //    record.set('nguoiNhan', rowselected[0].get('nguoiMua'));
-    //    var storesVM = me.storeinfo.storeDonHangChiTiet;
-    //    var dataVatTu = [];
-    //    var data = storesVM.data.items;
-    //    var listid = "";
-    //    for (var i = 0; i < data.length; i++) {
-    //        var obj = {};
-    //        obj['maVatTu'] = data[i].data.maVatTu;
-    //        obj['vatTu'] = data[i].data.vatTu;
-    //        obj['tenVatTu'] = data[i].data.tenVatTu;
-    //        obj['tenVatTu1'] = data[i].get('tenVatTu1');
-    //        obj['soLuongThuc'] = data[i].data.soLuongThuc;
-    //        obj['soLuong'] = data[i].data.soLuongThuc;
-    //        obj['donGia'] = data[i].data.donGia;
-    //        obj['thanhTien'] = data[i].data.thanhTien;
-    //        obj['donViTinhThuc'] = data[i].data.donViTinhThuc;
-    //        dataVatTu.push(obj);
-    //        if (listid != "") listid += ","
-    //        listid += data[i].data.maVatTu;
-    //    }
-    //    var url = abp.appPath + "api/services/app/CMMSKhoVatTu/GetVatTuKhoIsdeleteKho?ListIdNotIn=" + listid;
-    //    app.gplatformutils.fnGETAjax(url, function (resultData) {
-    //        var textThongBao = "";
-    //        var lisIDVT = [];
-    //        if (resultData.result.items.length == 0) {
-    //            abp.notify.info(app.localize('CMMSDMKhoVatTuBiXoa'))
-    //            return
-    //        }
-    //        for (var i = 0; i < resultData.result.items.length; i++) {
-    //            lisIDVT.push(resultData.result.items[i].id);
-    //        }
-    //        for (var i = 0; i < dataVatTu.length; i++) {
-    //            if (lisIDVT.indexOf(dataVatTu[i].maVatTu) == -1) {
-    //                textThongBao = app.localize('CMMSDMKhoVatTu') + " " + dataVatTu[i].tenVatTu1 + " " + app.localize('CMMSDMKhoDaBiXoa')
-    //                break;
-    //            }
-    //        }
-    //        if (textThongBao != "") {
-    //            abp.notify.info(textThongBao)
-    //            return;
-    //        }
-    //        var title = "Phiếu nhập kho ";
-    //        var wnd = Ext.create('Admin.view.phieunhapxuatkho.cnPhieuNhapKho', {
-    //            title: title,
-    //            viewModel: {
-    //                data: {
-    //                    dataVatTu: dataVatTu,
-    //                    recordPhieu: record,
-    //                    donmuahang: true,
-    //                    fnSauKhiLoad: function () {
-    //                    }
-    //                }
-    //            }
-    //        });
-    //        wnd.show();
-    //    });
-    //},
-
-    //// Đề xuất mua hàng
-    //onTimKiemDonDeXuatDonHang: function () {
-    //    var me = this;
-    //    me.storeinfo.storeDonDeXuatMuaHangChiTiet.loadData([]);
-    //    me.loadDeXuatDonHang();
-    //},
-
-    //specialkeyDX: function (field, e) {
-    //    var me = this;
-    //    if (e.getKey() == e.ENTER) {
-    //        me.loadDeXuatDonHang();
-    //    }
-    //},
-
-    //onChangeGridDonDeXuatMuaHang: function (grid, selected, eOpts) {
-    //    var me = this;
-    //    var storeDH = me.storeinfo.storeDonDeXuatMuaHangChiTiet;
-    //    me.ref.btnSuaPhieuDeXuat.setDisabled(true);
-    //    me.ref.btnHuyPhieuDeXuat.setDisabled(true);
-    //    me.ref.btnChuyenTrangThaiDX.setDisabled(true);
-    //    me.ref.btnInDX.setDisabled(true);
-    //    if (selected.length == 0) {
-    //        storeDH.loadData([]);
-    //        return;
-    //    } else {
-    //        me.ref.btnSuaPhieuDeXuat.setDisabled(false);
-    //        me.ref.btnHuyPhieuDeXuat.setDisabled(false);
-    //        me.ref.btnChuyenTrangThaiDX.setDisabled(false);
-    //        me.ref.btnInDX.setDisabled(false);
-    //    }
-    //    me.ref.btnHuyPhieuDeXuat.setVisible(true);
-    //    me.ref.btnSuaPhieuDeXuat.setText(app.localize('Edit'))
-    //    if (selected[0].get('trangThai') == 1) {
-    //        me.ref.btnSuaPhieuDeXuat.setText(app.localize('CMMSCongViec_Xem'))
-    //        me.ref.btnHuyPhieuDeXuat.setVisible(false);
-    //    }
-    //    me.loadChiTietPhieuDeXuat(selected[0].data.id);
-    //},
-
-    //onTimPhieuDong: function () {
-    //    var me = this;
-    //    me.loadDeXuatDonHang(true);
-    //},
-
-    //loadDeXuatDonHang: function (phieudong) {
-    //    var me = this;
-    //    var recordTKDX = me.getViewModel().data.recordTKDX;
-    //    var filter = [];
-    //    if (recordTKDX.get('sophieu')) {
-    //        filter.push({ name: "filter", value: recordTKDX.get('sophieu') });
-    //    }
-    //    if (recordTKDX.get('kho')) {
-    //        filter.push({ name: "MaKho", value: recordTKDX.get('kho') });
-    //    }
-    //    if (phieudong != true) {
-    //        filter.push({ name: "TrangThaiDong", value: 3 });
-    //        if (recordTKDX.get('tinhtrangdon') && recordTKDX.get('tinhtrangdon') != 'tatca') {
-    //            filter.push({ name: "TrangThai", value: recordTKDX.get('tinhtrangdon') });
-    //        }
-    //    } else {
-    //        filter.push({ name: "TrangThai", value: 3 });
-    //    }
-    //    var dStart = Ext.Date.format(new Date(me.sDATECreate), 'Y/m/d 00:00:00.000');
-    //    var dEnd = Ext.Date.format(new Date(me.eDATECreate), 'Y/m/d 23:59:59.999');
-    //    if (me.sDATECreate != "") {
-    //        filter.push({ name: "NgayDeXuatStart", value: dStart });
-    //    }
-    //    if (me.eDATECreate != "") {
-    //        filter.push({ name: "NgayDeXuatEnd", value: dEnd });
-    //    }
-    //    filter.push({ name: "sorting", value: "item.soPhieu desc" });
-    //    var store = me.storeinfo.storeDonDeXuatMuaHang;
-    //    var query = abp.utils.buildQueryString(filter);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoDeXuatMuaHang/GetAll" + query;
-    //    store.proxy.api.read = url;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            if (records.length == 0) {
-    //                me.getViewModel().set("selectionDonDeXuatMuaHang", null);
-    //                var storeDonDeXuatMuaHangChiTiet = me.storeinfo.storeDonDeXuatMuaHangChiTiet;
-    //                storeDonDeXuatMuaHangChiTiet.removeAll();
-    //            } else {
-    //                setTimeout(function () {
-    //                    me.ref.dsDonDeXuatHang.getSelectionModel().select(0);
-    //                    if (me.ref.dsDonDeXuatHang.getSelectionModel().getSelection().length > 0) {
-    //                        me.loadChiTietPhieuDeXuat(me.ref.dsDonDeXuatHang.getSelectionModel().getSelection()[0].data.id);
-    //                    }
-    //                }, 100);
-    //            }
-    //        }
-    //    });
-    //},
-
-    //loadChiTietPhieuDeXuat: function (maPhieu) {
-    //    var me = this;
-    //    var store = me.storeinfo.storeDonDeXuatMuaHangChiTiet;
-    //    if (maPhieu == null || maPhieu == '') {
-    //        store.loadData([]);
-    //        return;
-    //    }
-    //    var filter = [{ name: 'maPhieu', value: maPhieu }];
-    //    var query = abp.utils.buildQueryString(filter);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoDeXuatMuaHangChiTiet/GetAll" + query;
-    //    store.proxy.api.read = url;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //        }
-    //    });
-    //},
+    onPhieuNhapKho: function () {
+        var me = this;
+        var grid = me.ref.dsDonHang;
+        var rowselected = grid.getSelectionModel().getSelection();
+        if (rowselected[0].get('status') != 1) {
+            toastr.warning('Phiếu này không thể thực hiện nhập kho!');
+            return;
+        }
+        var record = Ext.create('Admin.model.mPhieuNhapXuatChiTiet');
+        record.set('id', 0);
+        record.set('inputCode', 'P' + new Date().getTime())
+        record.set('dateInput', new Date());
+        record.set('dateStatus', new Date());
+        record.set('storeroomId', rowselected[0].get('storeroomId'));
+        record.set('shipper', 'Nhân viên')
+        record.set('deliveryUnit', 'Công ty vận tải Kiến Vàng')
+        record.set('phanLoai', 'nhapkho');
+        record.set('userId', rowselected[0].get('userId'));
+        var storesVM = me.storeinfo.storeDonHangChiTiet;
+        var dataVatTu = [];
+        var data = storesVM.data.items;
+        var listid = "";
+        for (var i = 0; i < data.length; i++) {
+            var obj = {};
+            obj['materialCode'] = data[i].data.materialCode;
+            obj['materialName'] = data[i].data.materialName;
+            obj['displayName'] = data[i].data.materialName;
+            obj['materialId'] = data[i].data.materialId;
+            obj['quantity'] = data[i].get('quantity');
+            obj['price'] = data[i].data.price;
+            obj['storeroomId'] = rowselected[0].get('storeroomId');
+            dataVatTu.push(obj);
+            if (listid != "") listid += ","
+            listid += data[i].data.maVatTu;
+        }
+        var dataToSave = record.data;
+        dataToSave.materialInput = dataVatTu;
+        console.log(dataToSave)
+        var url = "api/Material/GetMaterialToAdd?page=1&start=0&limit=25&StoreroomId=" + dataToSave.storeroomId;
+        app.mUtils.fnGETAjax(url, function (response) {
+            var notify = [];
+            var material = response.items.map(x => x.id);
+            dataToSave.materialInput.forEach(function (item) {
+                if (material.includes(item.materialId)) {
+                    notify.push(item.materialName)
+                }
+            })
+            if (notify.length != 0) {
+                toastr.warning(notify.join(',') + 'chưa có trong kho vật tư')
+                return;
+            }
+            me.getView().setLoading("Đang tiến hành nhập kho");
+            var url = "/api/Input";
+            app.mUtils.fnPOSTAjax(url, dataToSave, function (res) {
+                console.log(res);
+                if (res == -1) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Oops...',
+                        text: 'Mã phiếu đã tồn tại!',
+                    })
+                    me.getView().setLoading(false);
+                    return;
+                }
+                var urlStt = 'api/PurchaseOrder/status/' + rowselected[0].id + '/3'
+                app.mUtils.fnPUTAjax(urlStt, obj, function (response) {
+                    setTimeout(function () {
+                        me.getView().setLoading(false);
+                        toastr.success("Nhập kho thành công");
+                        me.onTimKiemDonHang()
+                    }, 2000)
+                })
+                //
+                dataToSave.materialInput.forEach(function (el) {
+                    var url = "/api/Material/materialStoreroom/quantity"
+                    app.mUtils.fnPUTAjax(url, el, function (response) {
+                        console.log(response)
+                    })
+                })
+            });
+            console.log(response)
+        })
+    },
 
     onThemDonDeXuatHang: function () {
         var me = this;
@@ -1523,137 +1392,6 @@ Ext.define('Admin.view.quanlydonmuahang.quanLyDonMuaHangController', {
         });
         wnd.show();
     },
-
-    //onChiTietPhieuDeXuatDonHang: function (id) {
-    //    var me = this;
-    //    var title = app.localize("CMMSDMKhoSuaDonDeXuatMuaHang");
-    //    var storeKho = app.gplatformutils.deepCloneStore(me.storeinfo.storeKhoNhap);
-    //    var recordPhieu = Ext.create('Admin.model.mDonDeXuatMuaHang');
-    //    abp.services.app.cMMSKhoDeXuatMuaHang
-    //        .getDetail({ id: id })
-    //        .done(function (result) {
-    //            recordPhieu.data = result;
-    //            if (result.ngayDeXuat) {
-    //                result.ngayDeXuat = new Date(result.ngayDeXuat);
-    //            }
-    //            recordPhieu.commit();
-    //            var wnd = Ext.create('Admin.view.quanlydonmuahang.CNDonDeXuatHang', {
-    //                title: title,
-    //                viewModel: {
-    //                    data: {
-    //                        storeKho: storeKho,
-    //                        recordPhieu: recordPhieu,
-    //                        fnSauKhiLoad: function () {
-    //                            me.loadDeXuatDonHang();
-    //                        }
-    //                    }
-    //                }
-    //            });
-    //            wnd.show();
-    //        });
-    //},
-
-    //onSuaPhieuDeXuatDonHang: function () {
-    //    var me = this;
-    //    var title = app.localize("CMMSDMKhoSuaDonDeXuatMuaHang");
-    //    var record = me.ref.dsDonDeXuatHang.getSelectionModel().getSelection();
-    //    var storeKho = app.gplatformutils.deepCloneStore(me.storeinfo.storeKhoNhap);
-    //    var wnd = Ext.create('Admin.view.quanlydonmuahang.CNDonDeXuatHang', {
-    //        title: title,
-    //        viewModel: {
-    //            data: {
-    //                storeKho: storeKho,
-    //                recordPhieu: record[0],
-    //                fnSauKhiLoad: function () {
-    //                    me.loadDeXuatDonHang();
-    //                }
-    //            }
-    //        }
-    //    });
-    //    wnd.show();
-    //},
-
-    //onHuyDeXuat: function () {
-    //    var me = this;
-    //    var grid = me.ref.dsDonDeXuatHang;
-    //    var rowselected = grid.getSelectionModel().getSelection();
-    //    if (rowselected[0].data.trangThai != 0) {
-    //        abp.notify.info(app.localize('CMMSDMKhoPhieuTrangThaiChoDuyetMoiDuocPhepXoa'));
-    //        return;
-    //    }
-    //    var store = me.storeinfo.storeDonHang;
-    //    abp.message.confirm(
-    //        app.localize('CMMSDMKhoDonDeXuatMuaHang') + ":" + " " + rowselected[0].data.soDonHang,
-    //        app.localize('ExtgDataManagerAreYouSure'),
-    //        function (isConfirmed) {
-    //            if (isConfirmed) {
-    //                _cMMSKhoPhieuDeXuatMuaHang.delete({ id: rowselected[0].get('id') }).done(function (result) {
-    //                    me.loadDeXuatDonHang();
-    //                    me.getView().setLoading(false);
-    //                    abp.notify.success(app.localize('SavedSuccessfully'));
-    //                }).fail(function (data) {
-    //                    me.getView().setLoading(false);
-    //                });
-    //            }
-    //        }
-    //    );
-    //},
-
-    //onTaoDonMuaHang: function () {
-    //    var me = this;
-    //    var grid = me.ref.dsDonDeXuatHang;
-    //    var rowselected = grid.getSelectionModel().getSelection();
-    //    var record = Ext.create('Admin.model.mDonHang');
-    //    record.set('id', 0);
-    //    record.set('thoiGian', new Date());
-    //    record.set('tinhTrangDon', '0');
-    //    record.set('maKho', rowselected[0].get('maKho'));
-    //    record.set('phanLoai', 'donhang');
-    //    var storesVM = me.storeinfo.storeDonDeXuatMuaHangChiTiet;
-    //    var dataVatTu = [];
-    //    var data = storesVM.data.items;
-    //    for (var i = 0; i < data.length; i++) {
-    //        var obj = {};
-    //        obj['maVatTu'] = data[i].data.maVatTu;
-    //        obj['vatTu'] = data[i].data.vatTu;
-    //        obj['tenVatTu'] = data[i].data.tenVatTu;
-    //        obj['tenVatTu1'] = data[i].get('tenVatTu1');
-    //        obj['soLuongThuc'] = data[i].data.soLuongThuc;
-    //        obj['soLuong'] = data[i].data.soLuongThuc;
-    //        obj['donGia'] = data[i].data.donGia;
-    //        obj['thanhTien'] = data[i].data.thanhTien;
-    //        obj['donViTinhThuc'] = data[i].data.donViTinhThuc;
-    //        dataVatTu.push(obj);
-    //    }
-    //    var title = app.localize('CMMSDMKhoThemDonMuaHang');
-    //    var storeKho = app.gplatformutils.deepCloneStore(me.storeinfo.storeKhoNhap);
-    //    var input = {
-    //        filter: '',
-    //        maxResultCount: 1000
-    //    };
-    //    _dmKhoanChiServices.getAll(input).done(function (result) {
-    //        var arrayResource = result.items;
-    //        if (result.length == 0) {
-    //            return;
-    //        }
-    //        var dataTreeKhoanChi = app.gplatformutils.getTreeDataFromServer(arrayResource, "ma", "maCha", "id");
-    //        var wnd = Ext.create('Admin.view.quanlydonmuahang.CNDonHang', {
-    //            title: title,
-    //            viewModel: {
-    //                data: {
-    //                    dataVatTu: dataVatTu,
-    //                    dataTreeKhoanChi: dataTreeKhoanChi,
-    //                    storeKho: storeKho,
-    //                    recordPhieu: record,
-    //                    fnSauKhiLoad: function () {
-    //                        me.loadDeXuatDonHang();
-    //                    }
-    //                }
-    //            }
-    //        });
-    //        wnd.show();
-    //    });
-    //},
 
     onChuyenTrangThaiDeXuat: function () {
         var me = this;

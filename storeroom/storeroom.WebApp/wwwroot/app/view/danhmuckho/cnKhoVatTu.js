@@ -262,7 +262,27 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTu", {
                             ]
                         })
                     }]
-                }, {
+                    },
+                    {
+                        xtype: "fieldcontainer",
+                        layout: "hbox",
+                        defaults: {
+                            labelWidth: 150,
+                            labelAlign: "right",
+                            flex: 1
+                        },
+                        items: [{
+                            xtype: "textfield",
+                            name: "price",
+                            fieldLabel: 'Sản xuất',
+                            bind: "{record.proce}"
+                        }, {
+                            xtype: "textfield",
+                            fieldLabel: 'Model',
+                            name: "yearManufacture",
+                            bind: "{record.model}"
+                        }]
+                    },{
                     xtype: "fieldcontainer",
                     layout: "hbox",
                     defaults: {
@@ -662,9 +682,6 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
         me.storeInfo = me.getViewModel().storeInfo;
         me.fnLoadHangSanXuat();
         me.fnLoadNuocSanXuat();
-        //me.fnLoadVatTuTT();
-        //me.refs.dtvHinhAnh.getStore().loadData([]);
-        //me.onLoadFile();
         var record = me.getViewModel().get("record");
         if (record.get('id') > 0) {
             var qrcode = new QRCode("idqrcodeVT", {
@@ -682,6 +699,9 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
         //me.onTimKiemKho();
     },
 
+    /**
+     * Load hãng sx
+     * */
     fnLoadHangSanXuat: function () {
         var me = this;
         var store = me.storeInfo.sHangSanXuat;
@@ -705,6 +725,9 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
         });
     },
 
+    /**
+     * Load nước sản xuất
+     * */
     fnLoadNuocSanXuat: function () {
         var me = this;
         var store = me.storeInfo.sNuocSanXuat;
@@ -748,37 +771,6 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
         }
     },
 
-    //fnLoadVatTuTT: function () {
-    //    var me = this;
-    //    var record = me.getViewModel().get("record");
-    //    if (record.get("id") == 0) return;
-    //    var query = abp.utils.buildQueryString([
-    //        { name: "maVatTu", value: record.get("id") }
-    //    ]);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoVatTu/GetVatTuThayThe" + query;
-    //    var grid = me.refs.gridThayThe;
-    //    grid.setLoading(true);
-    //    var store = me.storeInfo.sVatTu;
-    //    store.proxy.api.read = url;
-    //    store.pageSize = 500;
-    //    store.proxy.pageParam = undefined;
-    //    store.proxy.limitParam = undefined;
-    //    store.proxy.startParam = undefined;
-    //    store.load({
-    //        params: {
-    //            skipCount: 0,
-    //            maxResultCount: store.pageSize
-    //        },
-    //        scope: this,
-    //        callback: function (records, operation, success) {
-    //            grid.setLoading(false);
-    //            if (records == null) {
-    //                store.removeAll();
-    //            }
-    //        }
-    //    });
-    //},
-
     onChonNhom: function () {
         var me = this;
         var record = me.getViewModel().get("record");
@@ -795,96 +787,13 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
         }).show();
     },
 
+    /**
+     * Lưu và thêm mới
+     * */
     onSaveAndNew: function () {
         var me = this;
         me.fnSave(me.fnNewRecord);
     },
-
-    //onLoadFile: function () {
-    //    var me = this;
-    //    var dataStoreImg = [];
-    //    var storeImage = me.refs.dtvHinhAnh.getStore();
-    //    var record = me.getViewModel().get("record");
-    //    if (record.get("id") == 0) {
-    //        dataStoreImg.push({
-    //            name: 'no-image',
-    //            fullname: 'no-image.png',
-    //            url: '/gPlatform/Resources/images/no-image-available.png',
-    //            path: ''
-    //        });
-    //        storeImage.loadData(dataStoreImg);
-    //        return
-    //    };
-    //    var pathFolder = 'khodata/CMMSKhoVatTu/' + record.get('id') + '/tailieu';
-    //    if (record.get("taiLieu") && record.get("taiLieu") != "") {
-    //        pathFolder = record.get("taiLieu");
-    //    }
-    //    abp.services.app.fileManager.getFileInFolder({ path: pathFolder }
-    //    ).done(function (result) {
-    //        dataStoreImg = [];
-    //        var lstFile = result.items;
-    //        var arrTypeImg = ['.PNG', '.JPG', '.GIF', ".JPEG", ".TIFF", ".BMP"];
-    //        var j = 0;
-    //        for (var i = 0; i < lstFile.length; i++) {
-    //            recordimg = lstFile[i];
-    //            if (j == 4) break;
-    //            if (arrTypeImg.indexOf(recordimg.fileType.toUpperCase()) != -1) {
-    //                j++;
-    //                dataStoreImg.push({
-    //                    name: recordimg.name,
-    //                    fullname: recordimg.fullName,
-    //                    url: app.gplatformconsts.URLFileStatics + recordimg.path,
-    //                    path: recordimg.path
-    //                });
-    //            }
-    //            else if (recordimg.fileType.toUpperCase() == ".DOC" || recordimg.fileType.toUpperCase() == ".DOCX") {
-    //                j++;
-    //                dataStoreImg.push({
-    //                    name: recordimg.name,
-    //                    fullname: recordimg.fullName,
-    //                    url: '/gPlatform/Resources/images/word.png',
-    //                    path: recordimg.path
-    //                });
-    //            }
-    //            else if (recordimg.fileType.toUpperCase() == ".XLS" || recordimg.fileType.toUpperCase() == ".XLSX") {
-    //                j++;
-    //                dataStoreImg.push({
-    //                    name: recordimg.name,
-    //                    fullname: recordimg.fullName,
-    //                    url: '/gPlatform/Resources/images/excel.png',
-    //                    path: recordimg.path
-    //                });
-    //            }
-    //            else if (recordimg.fileType.toUpperCase() == ".PDF") {
-    //                j++;
-    //                dataStoreImg.push({
-    //                    name: recordimg.name,
-    //                    fullname: recordimg.fullName,
-    //                    url: '/gPlatform/Resources/images/pdf.png',
-    //                    path: recordimg.path
-    //                });
-    //            }
-    //            else {
-    //                j++;
-    //                dataStoreImg.push({
-    //                    name: recordimg.name,
-    //                    fullname: recordimg.fullName,
-    //                    url: '/gPlatform/Resources/images/filedoc.png',
-    //                    path: recordimg.path
-    //                });
-    //            }
-    //        }
-    //        if (dataStoreImg.length == 0) {
-    //            dataStoreImg.push({
-    //                name: 'no-image',
-    //                fullname: 'no-image.png',
-    //                url: '/gPlatform/Resources/images/no-image-available.png',
-    //                path: ''
-    //            });
-    //        }
-    //        storeImage.loadData(dataStoreImg);
-    //    });
-    //},
 
     fnNewRecord: function (me) {
         var record = me.getViewModel().get("record");
@@ -934,6 +843,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
                     toastr.success("Thêm mới vật tư thành công")
                     if (fnSauKhiSave) fnSauKhiSave()
                     view.setLoading(false);
+                    me.getView().close();
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -950,6 +860,7 @@ Ext.define("Admin.view.danhmuckho.cnKhoVatTuController", {
                     toastr.success("Cập nhật vật tư thành công")
                     if (fnSauKhiSave) fnSauKhiSave()
                     view.setLoading(false);
+                    me.getView().close();
                 } else {
                     Swal.fire({
                         icon: 'error',

@@ -264,12 +264,13 @@ Ext.define('Admin.view.quanlydonmuahang.CNThayDoiTrangThaiController', {
             }
 
             me.getView().setLoading(true);
-            var url = 'api/PurchaseOrder/status'
+            var url = 'api/PurchaseOrder/status/' + obj.Id + '/' + obj.Stt
             app.mUtils.fnPUTAjax(url, obj, function (response) {
+                me.getView().setLoading(false);
                 if (response == 1) {
                     toastr.success('Chuyển trạng thái phiếu thành công')
                     fnSauKhiLoad();
-                    me.getView.close();
+                    me.getView().close();
                 }
             })
 

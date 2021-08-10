@@ -12,5 +12,7 @@ namespace storeroom.Application.Catalog.Dashboard.Dtos
         public List<PurchaseOrderVm> PurchaseOrders { get; set; }
         public decimal TotalReveneuOutput { get; set; }
         public MaterialStatus MaterialStatus { get; set; }
+        public int[] Input { get; set; }
+        public int[] Output { get; set; }
     }
 }

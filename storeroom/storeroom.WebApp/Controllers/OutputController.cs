@@ -56,5 +56,12 @@ namespace storeroom.WebApp.Controllers
             var result = await _outputService.UpdateDetail(request);
             return Ok(result);
         }
+
+        [HttpDelete("deleteMultiple/{OutputId}")]
+        public async Task<IActionResult> DeleteMaterial(int OutputId)
+        {
+            var result = await _outputService.DeleteDetail(OutputId);
+            return Ok(result);
+        }
     }
 }

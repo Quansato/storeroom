@@ -104,10 +104,11 @@ Ext.define('Admin.view.users.dsUsers', {
                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                     var text = '';
                     var result = record.get('roles');
-                    for (var i = 0; i < result.length; i++) {
-                        if (text != "") text += ","
-                        text += result[i].roleName;
-                    }
+                    text = result.join(', ');
+                    ////for (var i = 0; i < result.length; i++) {
+                    ////    if (text != "") text += ","
+                    ////    text += result[i].roleName;
+                    ////}
                     return text;
                 }
             }, {
@@ -449,14 +450,14 @@ Ext.define('Admin.view.users.dsUsersController', {
         record.set('id', 0);
         //var _userService = abp.services.app.userNew;
         //_userService.getUserForEdit({}).done(function (result) {
-            //record.set('password', '');
-            //record.set('roles', result.roles);
-            //record.set('SetRandomPassword', false);
-            //record.set('shouldChangePasswordOnNextLogin', true);
-            //record.set('sendActivationEmail', true);
-            //record.set('isActive', true);
-            //record.set('isTwoFactorEnabled', true);
-            //record.set('isLockoutEnabled', true);
+            record.set('password', '');
+            record.set('roles', ["Admin"]);
+            record.set('SetRandomPassword', false);
+            record.set('shouldChangePasswordOnNextLogin', true);
+            record.set('sendActivationEmail', true);
+            record.set('isActive', true);
+            record.set('isTwoFactorEnabled', true);
+            record.set('isLockoutEnabled', true);
             //record.set('organizationUnits', result.allOrganizationUnits);
             //record.set('memberedOrganizationUnits', result.memberedOrganizationUnits);
             var wnd = Ext.create('Admin.view.users.cnUsers', {

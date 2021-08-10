@@ -360,7 +360,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                         //    disabled: '{!recordTKXK.kho>0}'
                         //},
                         text: 'Thêm phiếu điều chuyển',
-                        //hidden: !(abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Edit') || abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Manager')),
+                        hidden: !(app.session.isAdmin),
                         ui: 'soft-blue',
                         tooltip: 'Thêm phiếu điều chuyển',
                         handler: 'onThemPhieuDieuChuyen'
@@ -384,7 +384,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                         bind: {
                             disabled: '{!selectionXuatKho}'
                         },
-                        //hidden: !(abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Edit') || abp.auth.hasPermission('CMMS.Inventory.NhapXuat.Manager')),
+                        hidden: !(app.session.isAdmin),
                         reference: 'btnHuyPhieuXuat',
                         text: 'Xoá',
                         ui: 'soft-red',
@@ -593,7 +593,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKho', {
                     }, {
                         xtype: 'textfield',
                         fieldLabel: 'Số phiếu',
-                        bind: '{recordTK.sophieu}',
+                        bind: '{recordTK.inputCode}',
                         labelWidth: 65,
                         flex: 1,
                         cls: "EnterToTab",
@@ -1060,7 +1060,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
             filter.storeroomId = recordTK.get('storeroomId');
         }
         if (recordTK.get('inputCode')) {
-            filter.outputCode = recordTK.get('inputCode')
+            filter.inputCode = recordTK.get('inputCode')
         }
         if (recordTK.get('loaingay') != undefined) {
             filter.status = recordTK.get('loaingay')
@@ -1068,6 +1068,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
             filter.endDate = $("#reportrange2").data('daterangepicker').endDate.format('YYYY-MM-DD')
         }
         var query = app.mUtils.fnBuildQueryString(filter);
+        console.log(query)
         var store = me.storeinfo.storePhieuNhapKho;
         var url = "api/Input?page=1&start=0&limit=25&" + query;
         store.proxy.api.read = url;
@@ -1199,20 +1200,32 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         })
     },
 
-    //onInPhieu: function () {
-    //    var me = this;
-    //    var record = me.ref.dsPhieuNhapKho.getSelectionModel().getSelection();
-    //    var url = abp.appPath + "CMMSImportExport/InPhieuNhapKho?id=" + record[0].get('id');;
-    //    window.location.href = url;
-    //},
+    onInPhieu: function () {
+        var me = this; 
+        Swal.fire({
+            icon: 'info',
+            title: 'Thông báo',
+            text: 'Tính năng đang trong quá trình thi công',
+        })
+        return
+        var record = me.ref.dsPhieuNhapKho.getSelectionModel().getSelection();
+        var url = abp.appPath + "CMMSImportExport/InPhieuNhapKho?id=" + record[0].get('id');;
+        window.location.href = url;
+    },
 
-    ////Phiếu xuất
-    //onInPhieuXuat: function () {
-    //    var me = this;
-    //    var record = me.ref.dsPhieuXuatKho.getSelectionModel().getSelection();
-    //    var url = abp.appPath + "CMMSImportExport/InPhieuXuatKho?id=" + record[0].get('id');;
-    //    window.location.href = url;
-    //},
+    //Phiếu xuất
+    onInPhieuXuat: function () {
+        var me = this;
+        Swal.fire({
+            icon: 'info',
+            title: 'Thông báo',
+            text: 'Tính năng đang trong quá trình thi công',
+        })
+        return
+        var record = me.ref.dsPhieuXuatKho.getSelectionModel().getSelection();
+        var url = abp.appPath + "CMMSImportExport/InPhieuXuatKho?id=" + record[0].get('id');;
+        window.location.href = url;
+    },
 
     onTimKiemXuatKho: function () {
         var me = this;
@@ -1235,7 +1248,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         if (me.ref.cbkhoXuat.getValue() != 0) {
             filter.storeroomId = me.ref.cbkhoXuat.getValue();
         }
-        if (recordTKXK.outputCode) {
+        if (recordTKXK.get('outputCode')) {
             filter.outputCode = recordTKXK.get('outputCode')
         }
         if (recordTKXK.get('loaingay') != undefined) {
@@ -1246,6 +1259,7 @@ Ext.define('Admin.view.phieunhapxuatkho.quanLyPhieuNhapKhoController', {
         console.log($("#reportrange").data('daterangepicker').startDate.format('YYYY-MM-DD'));
         var store = me.storeinfo.storePhieuXuatKho;
         var query = app.mUtils.fnBuildQueryString(filter);
+        console.log(query)
         var url = "api/Output?page=1&start=0&limit=25&" + query;
         store.proxy.api.read = url;
         store.pageSize = 500;

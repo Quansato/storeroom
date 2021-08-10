@@ -23,6 +23,10 @@ namespace storeroom.Data.Entities
         public string Specification { get; set; }
         public string QRCode { get; set; }
         public string Description { get; set; }
+        //Sản xuất
+        public string Proce { get; set; }
+        // Model
+        public string Model { get; set; }
 
         public List<MaterialInput> MaterialInputs { get; set; }
         public List<MaterialOutput> MaterialOutputs { get; set; }

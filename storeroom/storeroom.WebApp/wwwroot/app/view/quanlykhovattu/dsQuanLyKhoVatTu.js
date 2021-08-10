@@ -315,7 +315,7 @@ Ext.define('Admin.view.quanlykhovattu.dsQuanLyKhoVatTu', {
                                         value: '{recordTK.congthuc}'
                                     },
                                     labelWidth: 60,
-                                    width: 120,
+                                    width: 150,
                                     fieldLabel: 'Số lượng',
                                     store: Ext.create('Ext.data.Store', {
                                         fields: ['text', 'value'],
@@ -776,11 +776,11 @@ Ext.define('Admin.view.quanlykhovattu.dsQuanLyKhoVatTuController', {
         if (recordTK.get('materialCode')) {
             filter.materialCode = recordTK.get('materialCode');
         }
-        if (recordTK.get('displayName')) {
-            filter.displayName = recordTK.get('displayName');
+        if (recordTK.get('materialName')) {
+            filter.displayName = recordTK.get('materialName');
         }
         if (recordTK.get('quantity')) {
-            filter.quantity = recordTK.get('Quantity');
+            filter.quantity = recordTK.get('quantity');
         }
         if (recordTK.get('congthuc')) {
             filter.operator = recordTK.get('congthuc');

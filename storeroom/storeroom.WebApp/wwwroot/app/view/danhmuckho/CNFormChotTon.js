@@ -379,11 +379,11 @@ Ext.define('Admin.view.danhmuckho.CNFormChotTonController', {
                     store.removeAll();
                 } else {
                     console.log(store.data.items)
-                    for (var record of store.data.items) {
+                    /*for (var record of store.data.items) {
                         console.log(record);
                         record.set('date', Ext.Date.format(me.ref.dateNam.getValue(), 'Y/m/d'))
                         record.set('quantityReal', record.get('quantity'))
-                    }
+                    }*/
                     if (dataExcel)
                         for (var i = 0; i < dataExcel.length; i++) {
                             var recordsCL = store.queryBy(function (record, id) {

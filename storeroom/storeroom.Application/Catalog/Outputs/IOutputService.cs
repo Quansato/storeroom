@@ -17,5 +17,6 @@ namespace storeroom.Application.Catalog.Outputs
         Task<PagedResult<OutputViewModel>> GetAllPaging(OutputSearchRequest request);
         Task<PagedResult<OutputViewModel>> GetAll();
         Task<PagedResult<MaterialOutputViewModel>> GetMaterialByOutputId(int OutputId);
+        Task<int> DeleteDetail(int OutputId);
     }
 }

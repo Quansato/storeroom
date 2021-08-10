@@ -120,7 +120,7 @@ namespace storeroom.Application.Catalog.PurchaseOrders
                            Priority=x.a.Priority,
                            UserId = x.a.UserId,
                            UserName = x.d.FirstName + ' ' + x.d.LastName
-                       }).ToListAsync();
+                       }).OrderByDescending(x => x.Date).ToListAsync();
             //4. Select and projection
             var pagedResult = new PagedResult<PurchaseOrderViewModel>()
             {
@@ -148,7 +148,7 @@ namespace storeroom.Application.Catalog.PurchaseOrders
                 PurchaseOrderId=PurchaseId,
                 Unit = x.c.DisplayName,
                 MaterialId = x.a.MaterialId,
-                MaterialName = x.b.Description,
+                MaterialName = x.b.DisplayName,
                 MaterialCode = x.b.MaterialCode,
                 Quantity = x.a.Quantity,
                 Price = x.a.Price,

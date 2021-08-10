@@ -83,6 +83,12 @@ namespace storeroom.Application.Catalog.Users
                            UserId = x.Id,
                            UserName = x.UserName
                        }).ToListAsync();
+            foreach(var item in data)
+            {
+                var user = await _userManager.FindByIdAsync(item.UserId.ToString());
+                var Roles = await _userManager.GetRolesAsync(user);
+                item.Roles = Roles;
+            }
             //4. Select and projection
             var pagedResult = new PagedResult<UserViewModel>()
             {
@@ -142,9 +148,9 @@ namespace storeroom.Application.Catalog.Users
             return data;
         }
 
-        public async Task<ApiResult<bool>> RoleAssign(Guid Id, RoleAssignRequest request)
+        public async Task<ApiResult<bool>> RoleAssign(string userName, RoleAssignRequest request)
         {
-            var user = await _userManager.FindByIdAsync(Id.ToString());
+            var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
             {
                 return new ApiErrorResult<bool>("Tài khoản không tồn tại");

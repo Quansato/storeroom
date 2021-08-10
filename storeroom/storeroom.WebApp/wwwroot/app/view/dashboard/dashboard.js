@@ -35,7 +35,7 @@ Ext.define("Admin.view.dashboard.dashboard", {
         userCls: 'big-60 small-100',
         height: 420,
         cls: 'shadow',
-        title: 'Chi phí ước tính',
+        title: 'Vật tư xuất, nhập kho',
         ui: 'light',
         iconCls: 'x-fa fa-bar-chart-o',
         items: [{
@@ -177,6 +177,8 @@ Ext.define("Admin.view.dashboard.dashboard", {
                     return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell completed">' + 'Hoàn thành' + '</div>'
                 } else if (value == 2) {
                     return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell khongduyet">' + 'Từ chối' + '</div>'
+                } else if (value == 3) {
+                    return '<div style="float: none;min-width:90px;" class="status assignment metadata-cell phieudong">' + 'Phiếu đóng' + '</div>'
                 }
             }
         }],
@@ -228,7 +230,7 @@ Ext.define("Admin.view.dashboard.dashboardController", {
         console.log(JSON.parse(sessionStorage.getItem('data')))
         app.mUtils.fnGETAjax('api/Dashboard', function (response) {
             me.data = response
-            document.getElementById('value').innerHTML = me.data.totalReveneuOutput + 'VNĐ'
+            document.getElementById('value').innerHTML = app.mUtils.fnFormatCurrency(me.data.totalReveneuOutput) + 'VNĐ'
             document.getElementById('material').innerHTML = me.data.totalMaterial
             me.storeInfo.storeDonHang.loadData(me.data.purchaseOrders)
 
@@ -281,19 +283,22 @@ Ext.define("Admin.view.dashboard.dashboardController", {
             'November',
             'December'
         ];
+        const dataPie = JSON.parse(sessionStorage.getItem('data'));
+        var input = dataPie.input;
+        var output = dataPie.output;
         const DATA_COUNT = 7;
         const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
         const data = {
             labels: labels,
             datasets: [{
-                label: 'My First Dataset',
-                data: [65, 59, 80, 81, 56, 55, 40],
+                label: 'Nhập kho',
+                data: input,
                 backgroundColor: '#6610f2',
                 borderWidth: 1
             },
             {
-                label: 'My First Dataset2',
-                data: [65, 59, 80, 81, 56, 55, 40],
+                label: 'Xuất kho',
+                data: output,
                 backgroundColor: 'orange',
                 borderWidth: 1
             }]

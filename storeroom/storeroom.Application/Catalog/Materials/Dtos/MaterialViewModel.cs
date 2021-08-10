@@ -27,5 +27,7 @@ namespace storeroom.Application.Catalog.Materials.Dtos
         public string Img { get; set; }
         public string Specification { get; set; }
         public string QRCode { get; set; }
+        public string Proce { get; set; }
+        public string Model { get; set; }
     }
 }

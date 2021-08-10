@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace storeroom.Application.Catalog.Dashboard
@@ -68,14 +69,46 @@ namespace storeroom.Application.Catalog.Dashboard
                                         UserName = x.d.FirstName + ' ' + x.d.LastName
                                     }).ToList();
 
-            var dataOutput = (from a in _context.MaterialPurchaseOrders
+            var dataOutput = (from a in _context.MaterialOutputs
                               join b in _context.Materials on a.MaterialId equals b.Id
                               join c in _context.Units on b.UnitId equals c.Id
-                              select new { a, b, c })
-                            .Select(x =>x.a.Quantity * x.b.Price);
-            foreach(var dO in dataOutput)
+                              join d in _context.Outputs on a.OutputId equals d.Id
+                              select new { a, b, c, d }).Where(x => x.d.DateOutput.Year == DateTime.Now.Year)
+                            .Select(x => x.a.Quantity * x.b.Price);
+            foreach (var dO in dataOutput)
             {
                 data.TotalReveneuOutput += dO;
+            }
+            var dataInput = (from a in _context.MaterialInputs
+                             join b in _context.Materials on a.MaterialId equals b.Id
+                             join c in _context.Units on b.UnitId equals c.Id
+                             join d in _context.Inputs on a.InputId equals d.Id
+                             select new { a, b, c, d }).Where(x => x.d.DateInput.Year == DateTime.Now.Year)
+                            .Select(x => new
+                            {
+                                Quantity = x.a.Quantity,
+                                Date = x.d.DateInput
+                            });
+            data.Input = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            data.Output = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            foreach (var dO in dataInput)
+            {
+                data.Input[Convert.ToInt32(dO.Date.Month)] += dO.Quantity;
+            }
+            var dataOutput2 = (from a in _context.MaterialOutputs
+                               join b in _context.Materials on a.MaterialId equals b.Id
+                               join c in _context.Units on b.UnitId equals c.Id
+                               join d in _context.Outputs on a.OutputId equals d.Id
+                               select new { a, b, c, d }).Where(x => x.d.DateOutput.Year == DateTime.Now.Year)
+                            .Select(x => new
+                            {
+                                Quantity = x.a.Quantity,
+                                Date = x.d.DateOutput
+                            });
+            foreach (var dO in dataOutput2)
+
+            {
+                data.Output[Convert.ToInt32(dO.Date.Month) - 1] += dO.Quantity;
             }
             data.PurchaseOrders = dataPO;
             data.Materials = materials;

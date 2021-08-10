@@ -9,9 +9,9 @@
         isEmailConfirmed: null
     },
     stores: {
-        storeTreeRoles: { type: 'sTreeRoles' },
+        //storeTreeRoles: { type: 'sTreeRoles' },
         storeQuyen: { type: 'sdsQuyen' },
-        storeQuyenKT: { type: 'sdsQuyen' }
+        //storeQuyenKT: { type: 'sdsQuyen' }
     }
 });
 var cnUsers = null;
@@ -84,19 +84,19 @@ Ext.define('Admin.view.users.cnUsers', {
                                         fieldLabel: 'Tên',
                                         margin: '5 5 5 5',
                                         labelAlign: 'right',
-                                        bind: '{record.name}',
+                                        bind: '{record.lastName}',
                                         labelWidth: 130,
                                         allowBlank: false,
                                         blankText: 'Tên không được để trống'
                                     }, {
-                                        fieldLabel: 'Họ', 
+                                        fieldLabel: 'Họ',
                                         xtype: 'textfield',
                                         labelAlign: 'right',
                                         labelWidth: 130,
                                         margin: '5 5 5 5',
                                         allowBlank: false,
                                         blankText: 'Họ không được để trống',
-                                        bind: '{record.surname}'
+                                        bind: '{record.firstName}'
                                     }]
                                 }]
                             },
@@ -150,7 +150,7 @@ Ext.define('Admin.view.users.cnUsers', {
                                     {
                                         xtype: 'checkboxfield',
                                         hidden: true,
-                                        boxLabel: app.localize('ChangePassword'),
+                                        boxLabel: 'Đổi mật khẩu',
                                         reference: 'cboChangePass',
                                         margin: '0 0 0 140',
                                         listeners: {
@@ -197,7 +197,7 @@ Ext.define('Admin.view.users.cnUsers', {
                                     maxLength: 256,
                                     fieldLabel: 'Nhập lại mật khẩu',
                                     emptyText: 'Nhập lại mật khẩu',
-                                    bind: '{record.passwordRepeat}',
+                                    bind: '{record.confirmPassword}',
                                     listeners: {
                                         blur: 'onBlur'
                                     }
@@ -288,14 +288,14 @@ Ext.define('Admin.view.users.cnUsers', {
                                     }]
                             }*/]
                     },
-                    /*{
+                    {
                         xtype: 'panel',
                         layout: {
                             type: 'vbox',
                             align: 'stretch'
                         },
                         reference: 'panelQuyen',
-                        title: app.localize('Roles'),
+                        title: "Vai trò",
                         items: [{
                             xtype: 'grid',
                             reference: 'gridQuyen',
@@ -318,16 +318,16 @@ Ext.define('Admin.view.users.cnUsers', {
                                 }
                             }, {
                                 xtype: 'gridcolumn',
-                                text: app.localize('Roles'),
+                                text: "Vai trò",
                                 minWidth: 200,
                                 flex: 1,
                                 cellWrap: true,
                                 align: 'left',
                                 style: 'text-align:center',
-                                dataIndex: 'displayName'
+                                dataIndex: 'description'
                             }],
                             viewConfig: {
-                                emptyText: app.localize('ExtNoData'),
+                                emptyText: "Không có dữ liệu",
                                 stripeRows: true,
                                 listeners: {
                                     beforerefresh: function (view) {
@@ -344,7 +344,7 @@ Ext.define('Admin.view.users.cnUsers', {
                                 }
                             }
                         },
-                        {
+                        /*{
                             xtype: 'grid',
                             ui: 'light',
                             reference: 'gridQuyenKeThua',
@@ -398,9 +398,9 @@ Ext.define('Admin.view.users.cnUsers', {
                                     }
                                 }
                             }
-                        }]
+                        }*/]
                     },
-                    {
+                    /*{
                         border: false,
                         region: 'center',
                         title: app.localize('OrganizationUnits'),
@@ -524,6 +524,7 @@ Ext.define('Admin.view.users.cnUsersController', {
     ref: null,
     viewTab: false,
     storeinfo: null,
+    listRoles: [],
     init: function () {
         var me = this;
         me.ref = me.getReferences();
@@ -545,7 +546,21 @@ Ext.define('Admin.view.users.cnUsersController', {
             //Bổ sung nếu sửa -> Thì không cho sửa UserName
             me.ref.txtUserName.setReadOnly(true);
         } else {
-
+            var url = "https://localhost:44390/api/User/roles/getAll";
+            me.storeinfo.storeQuyen.proxy.api.read = url;
+            me.storeinfo.storeQuyen.pageSize = 500;
+            me.storeinfo.storeQuyen.proxy.pageParam = undefined;
+            me.storeinfo.storeQuyen.proxy.limitParam = undefined;
+            me.storeinfo.storeQuyen.proxy.startParam = undefined;
+            me.storeinfo.storeQuyen.load({
+                scope: this,
+                callback: function (records, operation, success) {
+                    me.listRoles = records.map(x=>x.data);
+                    if (records == null) {
+                        store.removeAll();s
+                    }
+                }
+            });
         }
         var count = 0;
         var listRole = [];
@@ -586,16 +601,15 @@ Ext.define('Admin.view.users.cnUsersController', {
                 listRole.push(obj);
             }
         }
-        me.ref.panelQuyen.setTitle(app.localize('Roles') + " " + '<span _ngcontent-wcp-c39="" class="kt-badge kt-badge--success kt-badge--inline ng-star-inserted">' + count + '</span>');
+        /*me.ref.panelQuyen.setTitle(app.localize('Roles') + " " + '<span _ngcontent-wcp-c39="" class="kt-badge kt-badge--success kt-badge--inline ng-star-inserted">' + count + '</span>');
         me.storeinfo.storeQuyen.loadData(listRole);
-        me.storeinfo.storeQuyenKT.loadData(listRoleKT);
+        me.storeinfo.storeQuyenKT.loadData(listRoleKT);*/
         //Hiển thị ảnh đại diện của người dùng
         var panelImag = me.ref.panelImag;
         if (record.get('profilePictureId')) {
             panelImag.setHtml('<img src="/Profile/GetProfilePictureById?id=' + record.get('profilePictureId') + '" style="height:108px;width:110px"  class="img-thumbnail img-rounded user-edit-dialog-profile-image">');
         }
 
-        me.getTreeDataFromServer(record.get('organizationUnits'), record.get('memberedOrganizationUnits'));
         if (record.get('id') == 0) {
             setTimeout(function () {
                 record.set('password', "");
@@ -720,7 +734,7 @@ Ext.define('Admin.view.users.cnUsersController', {
         var me = this;
         me.ref.labelPasswordRepeat.setVisible(false)
         var record = me.getViewModel().data.record;
-        if (record.get('password') != record.get('passwordRepeat')) {
+        if (record.get('password') != record.get('confirmPassword')) {
             me.ref.labelPasswordRepeat.setVisible(true);
             me.ref.PasswordRepeat.allowBlank = false;
             var text = '<div style="font-weight: 400;font-size: 80%;color: #fd397a;width: 100%;margin-left: 130px;">' + app.localize('PasswordsDontMatch') + '.</div>';
@@ -734,14 +748,9 @@ Ext.define('Admin.view.users.cnUsersController', {
         var me = this;
         var form = me.ref.frmUsers;
         if (!form.getForm().isValid()) {
-            abp.notify.warn(app.localize("Info_isValid"));
+            toastr.warning("Vui lòng nhập đầy đủ thông tin")
             return;
         }
-        var trpanel = me.ref.treePermis;
-        var _userService = abp.services.app.userNew;
-        var nodeRoot = trpanel.getRootNode();
-        var grantedPermissionNames = [];
-        me.getChildNodeTree(nodeRoot, grantedPermissionNames);
         var grvQuyen = me.ref.gridQuyen;
         var selectedRole = grvQuyen.getSelectionModel().getSelection();
         var record = me.getViewModel().data.record;
@@ -764,23 +773,25 @@ Ext.define('Admin.view.users.cnUsersController', {
             user.Password = record.get('password');
             user.PasswordRepeat = record.get('passwordRepeat');
         }
-        //if (record.get('shouldChangePasswordOnNextLogin')) {
-        user['shouldChangePasswordOnNextLogin'] = record.get('shouldChangePasswordOnNextLogin');
-        // }
-        //  if (record.get('sendActivationEmail')) {
-        user['SendActivationEmail'] = record.get('sendActivationEmail');
-        // }
-        // if (record.get('isActive')) {
-        user['IsActive'] = record.get('isActive');
-        // }
-        // if (record.get('isLockoutEnabled')) {
-        user['IsLockoutEnabled'] = record.get('isLockoutEnabled');
-        // }
+
         var assignedRoleNames = [];
         if (me.viewTab) {
             for (var i = 0; i < selectedRole.length; i++) {
                 assignedRoleNames.push(selectedRole[i].get('name'));
             }
+            for (var i = 0; i < me.listRoles.length; i++) {
+                if (assignedRoleNames.includes(me.listRoles[i].name)) {
+                    me.listRoles[i].selected = true;
+                }
+            }
+            console.log(me.listRoles)
+            var url = 'https://localhost:44390/api/User/register';
+            app.mUtils.fnPOSTAjax(url, record.data, function () {
+                var urlRoles = 'https://localhost:44390/api/User/' + record.get('userName') + '/roles';
+                app.mUtils.fnPOSTAjax(urlRoles, me.listRoles, function () {
+
+                })
+            })
         } else {
             for (var i = 0; i < record.get('roles').length; i++) {
                 if (record.get('roles')[i].isAssigned == true && record.get('roles')[i].inheritedFromOrganizationUnit == false) {
@@ -795,20 +806,7 @@ Ext.define('Admin.view.users.cnUsersController', {
             assignedRoleNames: assignedRoleNames,
             organizationUnits: organizationUnits
         }
-        if (record.get('id') == 0) {
-            obj['SetRandomPassword'] = record.get('SetRandomPassword');
-            obj['sendActivationEmail'] = record.get('sendActivationEmail');
-        }
         me.getView().setLoading(true);
-        _userService.createOrUpdateUser(obj).done(function () {
-            abp.notify.success(app.localize('SavedSuccessfully'));
-            me.getView().setLoading(false);
-            if (fnSauKhiLoad)
-                fnSauKhiLoad();
-            me.getView().close();
-        }).fail(function (err) {
-            me.getView().setLoading(false);
-        });
     },
 
     getChildNodeTree: function (node, arrayData) {

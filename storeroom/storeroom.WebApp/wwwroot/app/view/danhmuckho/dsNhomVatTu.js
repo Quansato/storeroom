@@ -297,7 +297,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                     reference: "btnAdd",
                     text: 'Thêm',
                     ui: "soft-blue",
-                    //hidden: !(abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Edit') || abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Manager')),
+                    hidden: !(app.session.isAdmin),
                     tooltip: 'Thêm',
                     handler: "onAdd"
                 }, {
@@ -307,7 +307,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                     bind: { disabled: "{!rSelectVatTu}" },
                     text: 'Sửa',
                     ui: "soft-blue",
-                    //hidden: !(abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Edit') || abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Manager')),
+                    hidden: !(app.session.isAdmin),
                     tooltip: 'Sửa',
                     handler: "onUpdate"
                 }, {
@@ -317,7 +317,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                     bind: { disabled: "{!rSelectVatTu}" },
                     text: 'Xoá',
                     ui: "soft-red",
-                    //hidden: !(abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Edit') || abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Manager')),
+                    hidden: !(app.session.isAdmin),
                     tooltip: 'Xoá',
                     handler: "onDelete"
                 }, {
@@ -334,19 +334,6 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTu", {
                             ui: 'blue',
                             //hidden: !(abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Edit') || abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Manager')),
                             handler: "onXuatExcel"
-                        }, {
-                            iconCls: "x-fa fa-file-excel-o",
-                            text: 'Xuất danh sách mã QR',
-                            ui: "soft-blue",
-                            //hidden: !(abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Edit') || abp.auth.hasPermission('CMMS.Inventory.DanhMuc.Manager')),
-                            handler: "onXuatExcelQR"
-                        }, {
-                            xtype: 'menuseparator'
-                        }, {
-                            text: 'Nhập vật tư từ excel',
-                            iconCls: 'x-fa fa-database',
-                            ui: 'blue',
-                            handler: 'onImportDanhSach'
                         }]
                     })
                 }, "->", {
@@ -461,7 +448,7 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
                 data: {
                     record: record,
                     fnSauKhiSave: function () {
-                        //me.onSearch();
+                        me.onSearch();
                     }
                 }
             }
@@ -511,8 +498,8 @@ Ext.define("Admin.view.danhmuckho.dsNhomVatTuController", {
                         } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Oops...',
-                                text: 'Xoá dữ liệu thất bại!',
+                                title: 'Cảnh báo',
+                                text: 'Không thể xoá vật tư do đang có dữ liệu liên quan',
                             })
                         }
                         me.onSearch()

@@ -87,12 +87,14 @@
     <script>
         $('.btn').click(function () {
             sessionStorage.clear();
+            localStorage.clear();
             $.ajax({
                 type: "GET",
                 dataType: "json",
                 url: 'https://localhost:44356/api/Dashboard',
                 success: function (responseData) {
                     sessionStorage.setItem("data", JSON.stringify(responseData))
+                    localStorage.setItem("data", JSON.stringify(responseData))
                 },
                 complete: function () {
                     if (fnComplete) fnComplete();

@@ -39,7 +39,8 @@ namespace storeroom.Application.Catalog.Outputs
                     CreationTime = DateTime.Now,
                     UserId = request.UserId,
                     Type = request.Type,
-                    MaterialOutputs = request.MaterialOutput
+                    MaterialOutputs = request.MaterialOutput,
+                    Description = request.Description
                     //Date = request.Date,
                     //Status = request.Status,
                     //SuplierId = request.SuplierId,
@@ -61,7 +62,8 @@ namespace storeroom.Application.Catalog.Outputs
                     DateOutput = request.DateOutput,
                     DateDocument = request.DateDocument,
                     UserId = request.UserId,
-                    MaterialOutputs = request.MaterialOutput
+                    MaterialOutputs = request.MaterialOutput,
+                    Description=request.Description
                 };
                 _context.Outputs.Add(output);
             }
@@ -78,6 +80,12 @@ namespace storeroom.Application.Catalog.Outputs
             var output = await _context.Outputs.FindAsync(OutputId);
             if (output == null) throw new StoreroomException($"Cannot find a output: {OutputId}");
             _context.Outputs.Remove(output);
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteDetail(int OutputId)
+        {
+            _context.MaterialOutputs.RemoveRange(_context.MaterialOutputs.Where(x => x.OutputId == OutputId));
             return await _context.SaveChangesAsync();
         }
 
@@ -104,7 +112,7 @@ namespace storeroom.Application.Catalog.Outputs
             }
             if (!string.IsNullOrEmpty(request.OutputCode))
             {
-                query = query.Where(x => x.a.OutputCode == request.OutputCode);
+                query = query.Where(x => x.a.OutputCode.Contains(request.OutputCode));
             }
             if (request.Status.HasValue)
             {
@@ -138,9 +146,10 @@ namespace storeroom.Application.Catalog.Outputs
                            DateOutput = x.a.DateOutput,
                            DateDocument = x.a.DateDocument,
                            UserId = x.a.UserId,
-                           UserName = x.c.UserName,
+                           UserName = x.c.FirstName + ' ' + x.c.LastName,
+                           Description= x.a.Description
                            //MaterialOutputs = request.MaterialOutput
-                       }).ToListAsync();
+                       }).OrderByDescending(x=>x.DateOutput).ToListAsync();
             //4. Select and projection
             var pagedResult = new PagedResult<OutputViewModel>()
             {
@@ -168,7 +177,7 @@ namespace storeroom.Application.Catalog.Outputs
                 OutputId = OutputId,
                 Unit = x.c.DisplayName,
                 MaterialId = x.a.MaterialId,
-                MaterialName = x.b.Description,
+                MaterialName = x.b.DisplayName,
                 MaterialCode = x.b.MaterialCode,
                 Quantity = x.a.Quantity,
                 Price = x.a.Price,

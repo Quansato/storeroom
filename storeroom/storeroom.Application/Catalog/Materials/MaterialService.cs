@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using storeroom.Application.Catalog.Materials.Dtos.MStoreroom;
+using Microsoft.AspNetCore.Http;
 
 namespace storeroom.Application.Catalog.Materials
 {
@@ -28,8 +29,8 @@ namespace storeroom.Application.Catalog.Materials
             }
             var material = new Material()
             {
-                MaterialCode = request.MaterialCode,
-                Description = request.Description,
+                MaterialCode = request.QRCode,
+                Description = request.DisplayName,
                 DisplayName = request.DisplayName,
                 Price = request.Price,
                 YearManufacture = request.YearManufacture,
@@ -42,6 +43,8 @@ namespace storeroom.Application.Catalog.Materials
                 Status = request.Status,
                 Img = request.Img,
                 QRCode = request.QRCode,
+                Proce= request.Proce,
+                Model= request.Model,
                 Specification = request.Specification,
             };
             _context.Materials.Add(material);
@@ -64,6 +67,11 @@ namespace storeroom.Application.Catalog.Materials
         }
         public async Task<int> Delete(int MaterialId)
         {
+            var isCannotDelete = await _context.MaterialStorerooms.FirstOrDefaultAsync(x => x.MaterialId == MaterialId);
+            if (isCannotDelete != null)
+            {
+                return -1;
+            }
             var material = await _context.Materials.FindAsync(MaterialId);
             if (material == null) throw new StoreroomException($"Cannot find a material: {MaterialId}");
             _context.Materials.Remove(material);
@@ -154,7 +162,9 @@ namespace storeroom.Application.Catalog.Materials
                            Status = x.a.Status,
                            Img = x.a.Img,
                            Specification = x.a.Specification,
-                           QRCode = x.a.QRCode
+                           QRCode = x.a.QRCode,
+                           Proce= x.a.Proce,
+                           Model = x.a.Model
                        }).ToListAsync();
             //4. Select and projection
             var pagedResult = new PagedResult<MaterialViewModel>()
@@ -231,6 +241,8 @@ namespace storeroom.Application.Catalog.Materials
             material.Img = request.Img;
             material.Specification = request.Specification;
             material.QRCode = request.QRCode;
+            material.Proce = request.Proce;
+            material.Model = request.Model;
 
             return await _context.SaveChangesAsync();
         }
@@ -301,33 +313,42 @@ namespace storeroom.Application.Catalog.Materials
                 query = query.Where(x => x.a.StoreroomId == request.StoreroomId);
             }
 
-            if (request.Quantity.HasValue)
-            {
-                query = query.Where(x => x.a.Quantity == request.Quantity);
-            }
+            //if (request.Quantity.HasValue)
+            //{
+            //    query = query.Where(x => x.a.Quantity == request.Quantity);
+            //}
 
             if (!string.IsNullOrEmpty(request.MaterialCode))
             {
-                query = query.Where(x => x.c.MaterialCode == request.MaterialCode);
+                query = query.Where(x => x.c.MaterialCode.Contains(request.MaterialCode));
             }
 
             if (!string.IsNullOrEmpty(request.DisplayName))
             {
-                query = query.Where(x => x.c.DisplayName == request.DisplayName);
+                query = query.Where(x => x.c.DisplayName.Contains(request.DisplayName));
             }
 
             if (!string.IsNullOrEmpty(request.Operator))
             {
-                /*switch (request.Operator)
+                switch (request.Operator)
                 {
 
-                    case '>'.ToString():
+                    case ">":
                         query = query.Where(x => x.a.Quantity > request.Quantity);
                         break;
-                    case '>='.ToString(:
+                    case ">=":
                         query = query.Where(x => x.a.Quantity >= request.Quantity);
                         break;
-                }*/
+                    case "<":
+                        query = query.Where(x => x.a.Quantity < request.Quantity);
+                        break;
+                    case "<=":
+                        query = query.Where(x => x.a.Quantity <= request.Quantity);
+                        break;
+                    default:
+                        query = query.Where(x => x.a.Quantity == request.Quantity);
+                        break;
+                }
             }
 
             //3. Paging

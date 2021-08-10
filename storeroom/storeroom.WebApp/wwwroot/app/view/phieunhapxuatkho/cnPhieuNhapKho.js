@@ -622,31 +622,6 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
     //    }
     //},
 
-    //onChangeKho: function (combo, record, eOpts) {
-    //    var me = this;
-    //    var record = me.getViewModel().data.recordPhieu;
-    //    me.onLaySoNhap();
-    //    if (combo.getSelection().get('phanLoai') == app.localize('CMMSKhoVatTu') || combo.getSelection().get('phanLoai') == "") {
-    //        // record.set('loaiPhieu', app.localize('CMMSDMKhoPhanLoaiDD'));
-    //        me.ref.cbophanLoai.setReadOnly(false);
-    //    } else {
-    //        // record.set('loaiPhieu', app.localize("CMMSDMKhoPhanLoaiThuHoi"));
-    //        me.ref.cbophanLoai.setReadOnly(true);
-    //    }
-    //    if (record.get('id') == 0) {
-    //        me.getView().setTitle(app.localize('CMMSDMKhoBtnPhieuNhapKho') + ': ' + combo.getRawValue());
-    //    }
-    //},
-
-    //onChangePhanLoai: function (obj, newValue, oldValue, eOpts) {
-    //    var me = this;
-    //    if (obj.getValue() == app.localize("CMMSDMKhoPhanLoaiThuHoi")) {
-    //        me.ref.coluonSoLuongHong.setVisible(true);
-    //    } else {
-    //        me.ref.coluonSoLuongHong.setVisible(false);
-    //    }
-    //},
-
     onloadChiTiet: function () {
         var me = this;
         var record = me.getViewModel().data.recordPhieu;
@@ -685,85 +660,6 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
         })
         //this.onTimKiem();
     },
-
-    //onTimKiem: function (dataPsub) {
-    //    var me = this;
-    //    var record = me.getViewModel().data.recordPhieu;
-    //    if (dataPsub && record.get('soPhieu') == dataPsub.maPhieu) {
-    //        me.ref.textNhapMaVatTu.setValue(dataPsub.maVatTu);
-    //    }
-    //    //if (record.get('id') == 0) {
-    //    //    abp.notify.info(app.localize('CMMSKhoThongBaoLuuPhieu'));
-    //    //    return
-    //    //}
-    //    if (me.ref.textNhapMaVatTu.getValue() == "" || me.ref.textNhapMaVatTu.getValue() == null) {
-    //        abp.notify.info(app.localize('CMMSDMKhoMuaHanhChuaNhapMa'));
-    //        return;
-    //    }
-    //    var filter = [{ name: "laKho", value: true }, { name: "MaVatTu", value: me.ref.textNhapMaVatTu.getValue() }, { name: "MaKho", value: record.get('maKhoNhap') }];
-    //    var query = abp.utils.buildQueryString(filter);
-    //    var url = abp.appPath + "api/services/app/CMMSKhoVatTu/GetVatTuKho" + query;
-    //    app.gplatformutils.fnGETAjax(url, function (data) {
-    //        var ressult = data.result.items;
-    //        if (ressult.length > 0) {
-    //            var storePhieuNhapChiTiet = me.storeinfo.storePhieuNhapChiTiet;
-    //            var recordIn = storePhieuNhapChiTiet.queryBy(function (records, id) {
-    //                return (records.get('maVatTu') == ressult[0].id);
-    //            });
-    //            if (recordIn.items.length > 0) {
-    //                for (var i = 0; i < recordIn.items.length; i++) {
-    //                    var soLuong = recordIn.items[i].get('soLuongThuc') + 1
-    //                    if (dataPsub != null) {
-    //                        var soluongpub = parseInt(dataPsub.soLuong);
-    //                        if (isNaN(soluongpub) == false) {
-    //                            soLuong = recordIn.items[i].get('soLuongThuc') + soluongpub
-    //                        } else {
-    //                            soLuong = recordIn.items[i].get('soLuongThuc');
-    //                        }
-    //                    }
-    //                    recordIn.items[i].set('soLuongThuc', soLuong);
-    //                    recordIn.items[i].set('soLuong', soLuong);
-    //                    var soluongthuc = recordIn.items[i].get('soLuongThuc');
-    //                    var dongia = recordIn.items[i].get('donGia');
-    //                    if (soluongthuc != 0 || soluongthuc != null && dongia && dongia != null) {
-    //                        var tt = soluongthuc * dongia;
-    //                        recordIn.items[i].set('thanhTien', tt);
-    //                    }
-    //                }
-    //            } else {
-    //                var record = Ext.create('Admin.model.mPhieuNhapXuatChiTiet');
-    //                record.set('maVatTu', ressult[0].id);
-    //                record.set('tenVatTu', ressult[0].moTa);
-    //                record.set('vatTu', ressult[0].ma);
-    //                record.set('tenVatTu1', ressult[0].ma + "-" + ressult[0].moTa);
-    //                record.set('donGia', ressult[0].giaTri);
-    //                record.set('soLuongThuc', 1);
-    //                record.set('soLuong', 1);
-    //                if (dataPsub != null) {
-    //                    var soluongpub = parseInt(dataPsub.soLuong)
-    //                    if (isNaN(soluongpub) == false) {
-    //                        record.set('soLuongThuc', dataPsub.soLuong == 0 ? 1 : soluongpub);
-    //                        record.set('soLuong', dataPsub.soLuong == 0 ? 1 : soluongpub);
-    //                    }
-    //                }
-    //                var soluongthuc = record.get('soLuongThuc');
-    //                var dongia = record.get('donGia');
-    //                if ((soluongthuc != 0 || soluongthuc != null) && dongia != null) {
-    //                    var tt = soluongthuc * dongia;
-    //                    record.set('thanhTien', tt);
-    //                }
-    //                record.set('donViTinh', ressult[0].donViPhatHanh);
-    //                record.set('donViTinhThuc', ressult[0].donViPhatHanh);
-    //                record.set('rotating', ressult[0].rotating);
-    //                storePhieuNhapChiTiet.add(record);
-    //            }
-    //            me.ref.textNhapMaVatTu.setValue("");
-    //            abp.notify.success(app.localize('CMMSDMKhoDaThemmotVatTuVaoPhieu'));
-    //        } else {
-    //            abp.notify.warn(app.localize('CMMSDMKhoVatTuKhongTonTai'));
-    //        }
-    //    })
-    //},
 
     onFnCheck: function (machungloai) {
         var me = this;
@@ -1022,27 +918,6 @@ Ext.define('Admin.view.phieunhapxuatkho.cnPhieuNhapKhoController', {
 
         })
 
-        //for (var i = 0; i < rows.length; i++) {
-        //    rows[i].data.maPhieu = record.get('id');
-        //    if (isNaN(rows[i].data.id) == true) {
-        //        me.checkThayDoiChiTiet = true;
-        //        rows[i].data.id = 0;
-        //    }
-        //    lstphieuchitiet.push(rows[i].data);
-        //}
-        //if (me.checkThayDoiChiTiet == false) {
-        //    return
-        //}
-        //_cMMSKhoPhieuNhapXuatChiTiet.chiTietPhieuNhap(lstphieuchitiet, record.get('maKhoNhap')).done(function (result) {
-        //    me.checkThayDoiChiTiet = false;
-        //    me.onloadChiTiet();
-        //    if (thongbao == true) {
-        //        abp.notify.success(app.localize('SavedSuccessfully'));
-        //    }
-        //    if (fnSauKhiLoad)
-        //        fnSauKhiLoad();
-        //}).fail(function (data) {
-        //});
     },
 
     onDongWinDow: function () {

@@ -270,6 +270,7 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHang', {
                         fields: ["ma", "ten"],
                         data: [
                             { ma: 2, ten: 'NCC1' },
+                            { ma: 5, ten: 'Công ty Điện máy Hồng Ngọc' },
                         ]
                     })
                 }, {
@@ -1194,21 +1195,6 @@ Ext.define('Admin.view.quanlydonmuahang.CNDonHangController', {
         //me.getView().setLoading(true);
 
     },
-
-    //onChonKhoanChi: function () {
-    //    var me = this;
-    //    var record = me.getViewModel().get("recordPhieu");
-    //    Ext.create("Admin.view.chondulieu.wdChonDMKhoanChi", {
-    //        viewModel: {
-    //            data: {
-    //                fnSauKhiChon: function (result) {
-    //                    record.set("khoanChi", result.get("id"));
-    //                    record.set("tenKhoanChi", result.get("moTa"));
-    //                }
-    //            }
-    //        }
-    //    }).show();
-    //},
 
     onDongWinDow: function () {
         var me = this;

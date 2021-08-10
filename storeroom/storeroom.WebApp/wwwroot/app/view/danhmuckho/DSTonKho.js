@@ -199,6 +199,7 @@ Ext.define('Admin.view.danhmuckho.DSTonKho', {
                 }, {
                     text: 'Nhập tồn kho từ Excel',
                     iconCls: 'x-fa fa-database',
+                    hidden:true,
                     ui: 'soft-blue',
                     tooltip: 'Nhập tồn kho từ Excel',
                     //handler: 'onImportDanhSach'

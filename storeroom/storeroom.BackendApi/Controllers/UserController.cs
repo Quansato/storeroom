@@ -79,13 +79,13 @@ namespace storeroom.BackendApi.Controllers
             return Ok(user);
         }
 
-        [HttpPut("{id}/roles")]
-        public async Task<IActionResult> RoleAssign(Guid id, [FromBody] RoleAssignRequest request)
+        [HttpPut("{userName}/roles")]
+        public async Task<IActionResult> RoleAssign(string userName, [FromBody] RoleAssignRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _userService.RoleAssign(id, request);
+            var result = await _userService.RoleAssign(userName, request);
             if (!result.IsSuccessed)
             {
                 return BadRequest(result);
@@ -93,7 +93,7 @@ namespace storeroom.BackendApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpGet("roles/getAll")]
         public async Task<IActionResult> GetAllRole()
         {
             var roles = await _userService.GetAllRole();

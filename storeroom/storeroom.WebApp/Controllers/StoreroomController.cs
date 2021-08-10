@@ -39,7 +39,16 @@ namespace storeroom.WebApp.Controllers
         [HttpPost()]
         public async Task<IActionResult> Create(StoreroomCreateRequest request)
         {
-            var result = await _storeroomService.Create(request);
+            var result = 0;
+            try
+            {
+                result = await _storeroomService.Create(request);
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.InnerException.Message);
+            }
             return Ok(result);
         }
         [HttpPut()]
@@ -59,7 +68,7 @@ namespace storeroom.WebApp.Controllers
         [HttpGet("/Inventory")]
         public async Task<IActionResult> GetInventory(string keyword, DateTime? date, int? storeroomId)
         {
-            var materialgroups = await _storeroomService.GetInventoryDetail(keyword,date,storeroomId);
+            var materialgroups = await _storeroomService.GetInventoryDetail(keyword, date, storeroomId);
             return Ok(materialgroups);
         }
 

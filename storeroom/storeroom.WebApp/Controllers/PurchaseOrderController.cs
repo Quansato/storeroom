@@ -60,7 +60,7 @@ namespace storeroom.WebApp.Controllers
             return Ok(result);
         }
 
-        [HttpPut("status")]
+        [HttpPut("status/{Id}/{Stt}")]
         public async Task<IActionResult> UpdateStatus(int Id,int Stt)
         {
             var result = await _purchaseOrderService.UpdateStatus(Id,Stt);

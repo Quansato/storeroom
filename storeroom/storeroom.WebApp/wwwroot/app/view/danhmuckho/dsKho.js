@@ -142,14 +142,14 @@ Ext.define('Admin.view.danhmuckho.dsKho', {
                     text: 'Thêm',
                     iconCls: 'fa fa-plus',
                     ui: 'soft-blue',
-                    //hidden: !(app.session.isAdmin),
+                    hidden: !(app.session.isAdmin),
                     handler: "onThemKho"
                 }, {
                     reference: 'btnSua',
                     text: 'Sửa',
                     bind: {
                         disabled: '{!selectionKho}',
-                        //hidden: !(app.session.isAdmin)
+                        hidden: !(app.session.isAdmin)
                     },
                     iconCls: 'fa fa-pencil',
                     ui: 'soft-blue',
@@ -159,7 +159,7 @@ Ext.define('Admin.view.danhmuckho.dsKho', {
                     text: 'Xoá',
                     bind: {
                         disabled: '{!selectionKho}',
-                        //hidden: !(app.session.isAdmin)
+                        hidden: !(app.session.isAdmin)
                     },
                     iconCls: 'fa fa-minus-circle',
                     ui: 'soft-red',

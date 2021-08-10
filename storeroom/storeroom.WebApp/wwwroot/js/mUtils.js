@@ -114,7 +114,7 @@
                     if (fnError) fnError(exx);
                 },
             });
-        },
+        },  
         /**
          * 
          * @param {any} source
@@ -323,13 +323,24 @@
             //...
             sessionStorage.setItem("session", JSON.stringify(response));
         }
-        app.session = JSON.parse(sessionStorage.getItem("session"));
-        app.session.isAdmin = app.session.role == 'Admin' ? true : false
+        if (localStorage.getItem("session") === null) {
+            //...
+            localStorage.setItem("session", JSON.stringify(response));
+        }
+        app.session = JSON.parse(localStorage.getItem("session"));
+        app.session.isAdmin = app.session.roles.includes('Admin') ? true : false
         //app.session = response;
         return response;
+    }, null, function () {
+        console.log('Log out')
+        if (Object.keys(app.session).length == 0) {
+            console.log()
+            window.location.href = '/Login/Login'
+        }
     })
     app.mUtils.fnGETAjax('api/Dashboard', function (response) {
         sessionStorage.setItem("data", JSON.stringify(response))
+        localStorage.setItem("data", JSON.stringify(response))
     })
     console.log(1);
 })();

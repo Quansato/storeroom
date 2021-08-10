@@ -29,7 +29,9 @@ namespace storeroom.Application.Catalog.Storerooms
                 Area = request.Area,
                 Address = request.Address,
                 Status = request.Status,
-                UserId = request.UserId
+                UserId = request.UserId,
+                x = request.x,
+                y = request.y
             };
             _context.Storerooms.Add(storeroom);
             return await _context.SaveChangesAsync();
@@ -56,7 +58,7 @@ namespace storeroom.Application.Catalog.Storerooms
 
         public async Task<int> Delete(int StoreroomId)
         {
-            var sMaterial= await _context.MaterialStorerooms.FirstOrDefaultAsync(x=>x.StoreroomId==StoreroomId);
+            var sMaterial = await _context.MaterialStorerooms.FirstOrDefaultAsync(x => x.StoreroomId == StoreroomId);
             if (sMaterial != null)
             {
                 return -1;
@@ -153,12 +155,12 @@ namespace storeroom.Application.Catalog.Storerooms
                        {
                            MaterialId = x.a.MaterialId,
                            MaterialCode = x.c.MaterialCode,
-                           InventoryId=x.a.InventoryId,
-                           MaterialName=x.c.DisplayName,
-                           QuantityTT =x.a.QuantityTT,
-                           QuantityLT=x.a.QuantityLT,
-                           UnitName=x.b.DisplayName,
-                           Description=x.a.Description
+                           InventoryId = x.a.InventoryId,
+                           MaterialName = x.c.DisplayName,
+                           QuantityTT = x.a.QuantityTT,
+                           QuantityLT = x.a.QuantityLT,
+                           UnitName = x.b.DisplayName,
+                           Description = x.a.Description
                        }).ToListAsync();
             //4. Select and projection
             var pagedResult = new PagedResult<InventoryDetailViewModel>()

@@ -132,6 +132,10 @@
         background: #00c292;
     }
 
+    .status.assignment.phieudong {
+        background: red;
+    }
+
 
 .trangThaiPhieuCho .x-grid-cell {
     color: black;
